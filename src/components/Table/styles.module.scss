@@ -1,0 +1,87 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 168vh;
+
+  .container_search_and_create {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    .search_and__date {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .iconSearch {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+      }
+
+      .search {
+        display: flex;
+        width: 280px;
+        align-items: center;
+        gap: 0.5rem;
+        align-content: center;
+        cursor: pointer;
+        
+        .iconSearch {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+
+    }
+    
+  }
+
+.divTable {
+  overflow: auto;
+  height: 25rem;
+  overflow-x: hidden;
+
+  .table {
+    width: 170vh;
+    border-spacing: 0 8px;
+    text-align: center;
+    
+    thead {
+      background-color: #cdcdcd;
+      font-size: 18px;
+      position: sticky; /* Adicione posição sticky ao cabeçalho */
+      top: -1px; /* Defina o deslocamento negativo para ficar imediatamente acima da div.container */
+      z-index: 1; /* Ajuste o valor de z-index para garantir que o cabeçalho fique acima do conteúdo */
+      :hover{
+        background-color: #cdcdcd !important;
+      }
+    }
+
+    .th_thead {
+      width: 20rem;
+      text-align: center;
+    }
+
+    td, th {
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:hover {
+      background-color: #bae5f5;
+      cursor: pointer;
+    }
+
+    tr:nth-child(even) {
+      background-color: #e9f3fa;
+
+      &:hover {
+        background-color: #bae5f5;
+      }
+    }
+  }
+}
+
+}
