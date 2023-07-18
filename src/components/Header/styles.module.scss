@@ -1,0 +1,16 @@
+.navBarItens {
+  display: flex;
+  
+  .logout {
+     display: flex;
+     justify-content: space-evenly;
+     gap: 1rem;
+
+     .iconLogout {
+       width: 1.5rem;
+       height: 1.5rem;
+     }
+   }
+   
+}
+
