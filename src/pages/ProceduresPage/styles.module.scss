@@ -1,0 +1,25 @@
+.pageInitial {
+   display: flex;
+   flex-direction: column;
+   height: 90vh;
+   align-items: center;
+
+   .table {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem;
+   }
+
+   .divCards{
+      visibility: hidden; // deixa o conteudo oculto, mas deixa o estilo lá. 
+   }
+   
+   .cards{
+      display: flex;
+      gap: 1rem;
+      margin: 1rem;
+      height: 80px;
+      
+   }
+}
