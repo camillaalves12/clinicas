@@ -22,15 +22,15 @@ export function CreateExamPage() {
          <div className={S.forms}>
             <Forms
                title='Criar exame'
-               controlIdFirst='controlIdPacient'
+               idFirst='idPacient'
                labelProfessional='Profissional:'
-               controlIdSecond='controlIdProfessional'
+               idSecond='idProfessional'
                labelProcedure='Procedimento:'
-               controlIdFThird='controlIdExam'
-               nameEspecialty='Procedimento:'
+               idThird='idExam'
+               nameSpecialty='Procedimento:'
                placeholderProcedure='Selecione o procedimento:'
-               controlIdfourth='controlIdMoney'
-               controlIdFifth ='controlId_form_of_payment'
+               idFourth='idMoney'
+               idFifth ='id_form_of_payment'
                procedures={exames}
             />
          </div>

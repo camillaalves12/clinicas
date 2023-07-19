@@ -10,15 +10,16 @@ export function Login() {
     <section className={S.section}>
       <GiPadlock className={S.lock}/>
       <FloatingLabel className={S.input}
-          controlId="floatingInput"
+          id="InputLogin"
           label="Login"
           style={{outline:'none'}}
+          
         >
-          <Form.Control type="text" placeholder="name@example.com" style={{height:'50px', outline:'none', boxShadow:'none', border:'none' }} />
+          <Form.Control type="text" placeholder="name@example.com" id='InputLogin' style={{height:'50px', outline:'none', boxShadow:'none', border:'none' }} />
       </FloatingLabel>
 
-      <FloatingLabel  className={S.input} controlId="floatingPassword" label="Senha">
-        <Form.Control  type="password" placeholder="password" style={{height:'50px', outline:'none', boxShadow:'none', border:'none' }}/>
+      <FloatingLabel  className={S.input} id="inputPassword" label="Senha">
+        <Form.Control  type="password" placeholder="password" id='inputPassword' style={{height:'50px', outline:'none', boxShadow:'none', border:'none' }}/>
       </FloatingLabel>
       <Button variant="primary" className={S.btn}>Entrar</Button>
 

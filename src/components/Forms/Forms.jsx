@@ -13,7 +13,7 @@ export function Forms(props) {
     <Form className={S.container}>
       <div className={S.containerForm}>
         <h2 style={{ marginBottom: '1.5rem' }}>{props.title}</h2>
-        <Form.Group className="mb-3" controlId={props.controlIdFirst}>
+        <Form.Group className="mb-3" id={props.idFirst}>
           <Form.Label>Paciente:</Form.Label>
           <Form.Control
             type="text"
@@ -22,7 +22,7 @@ export function Forms(props) {
         </Form.Group>
 
         <div className={S.doctor}>
-          <Form.Group className="mb-3" controlId={props.controlIdSecond}>
+          <Form.Group className="mb-3" id={props.idSecond}>
             <Form.Label>Profissional:</Form.Label>
             <Form.Control
               className={S.inputDoctor}
@@ -31,7 +31,7 @@ export function Forms(props) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId={props.controlIdFThird}>
+          <Form.Group className="mb-3" id={props.idThird}>
             <Form.Label>{props.labelProcedure}</Form.Label>
             <Form.Select
               style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
@@ -51,7 +51,7 @@ export function Forms(props) {
         </div>
 
         <div className={S.money}>
-          <Form.Group className="mb-3" controlId={props.controlIdfourth}>
+          <Form.Group className="mb-3" id={props.idFourth}>
             <Form.Label>Valor:</Form.Label>
             <Form.Control
               type="medico"
@@ -60,7 +60,7 @@ export function Forms(props) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId={props.controlIdControlIdFifth}>
+          <Form.Group className="mb-3" id={props.idFifth}>
             <Form.Label>Forma de Pagamento:</Form.Label>
             <Form.Select style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}>
               <option>Selecione a forma de pagamento</option>

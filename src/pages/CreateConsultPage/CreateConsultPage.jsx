@@ -25,13 +25,13 @@ export function CreateConsultPage() {
          <div className={S.forms}>
             <Forms
                title='Criar Consulta'
-               controlIdFirst='controlIdPacient'
-               controlIdSecond='controlIdProfessional'
+               idFirst='idPacient'
+               idSecond='idProfessional'
                procedure='Consulta:'
-               controlIdFThird='controlIdConsult'
+               idThird='idConsult'
                placeholderProcedure='Selecione a consulta'
-               controlIdfourth='controlIdMoney'
-               controlIdFifth ='controlId_form_of_payment'
+               idFourth='idMoney'
+               idFifth ='id_form_of_payment'
                procedures={consultas}
             />
          </div>

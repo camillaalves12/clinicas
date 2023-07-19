@@ -10,7 +10,7 @@ export function SearchPatient(props){
       <Form className={S.container}>
          <div className={S.containerForm}>
             <h2 style={{ marginBottom:'1.5rem'}}>{props.title}</h2>
-               <Form.Group className="mb-3" controlId="formBasicEmail">
+               <Form.Group className="mb-3" id="inputNameCPF">
                   <Form.Label>Nome/CPF:</Form.Label>
                   <Form.Control
                   required
@@ -19,7 +19,7 @@ export function SearchPatient(props){
                </Form.Group>
 
                <div className={S.date_nasc}>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Group className="mb-3" id="inputDateNasc">
                      <Form.Label>Data de nascimento:</Form.Label>
                      <Form.Control
                      required
@@ -28,7 +28,7 @@ export function SearchPatient(props){
                      style={{outline:'none', boxShadow:'none', border:'1px solid #cdcdcd' }} />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Group className="mb-3" id="inputPhone">
                      <Form.Label>Telefone:</Form.Label>
                      <Form.Control
                      required

@@ -9,7 +9,7 @@ export function RegisterPatient(props) {
         <Form className={S.container}>
             <div className={S.containerForm}>
             <h2 style={{ marginBottom:'1.5rem'}}>{props.title}</h2>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" id="inputName">
                 <Form.Label>Nome completo:</Form.Label>
                 <Form.Control
                 required
@@ -18,7 +18,7 @@ export function RegisterPatient(props) {
             </Form.Group>
 
             <div className={S.date_nasc}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" id="inputDateNasc">
                 <Form.Label>Data de nascimento:</Form.Label>
                 <Form.Control
                 required
@@ -26,7 +26,7 @@ export function RegisterPatient(props) {
                 type="date" 
                 style={{outline:'none', boxShadow:'none', border:'1px solid #cdcdcd' }} />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" id="inputCPF">
                 <Form.Label>CPF:</Form.Label>
                 <Form.Control
                 required
@@ -48,20 +48,20 @@ export function RegisterPatient(props) {
                     type="radio"
                     label="Masculino"
                     name="formHorizontalRadios"
-                    id="formHorizontalRadios1"
+                    id="InputCheckMasc"
                     />
                     <Form.Check
                     inline
                     type="radio"
                     label="Feminino"
                     name="formHorizontalRadios"
-                    id="formHorizontalRadios2"
+                    id="InputCheckFem"
                     />
                 </Col>
             </Form.Group>
             </div>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" id="inputPhone">
                 <Form.Label>Telefone:</Form.Label>
                 <Form.Control
                 required

@@ -10,7 +10,7 @@ function ButtonCase(props) {
 
   return (
     <div className={S.containerBtn}>
-      <Button variant="primary" onClick={handleShow} className={S.buttonCase} type='reset'>
+      <Button variant="primary" onClick={handleShow} className={S.buttonCase} id='btnCase' type='reset'>
         {props.nameBtn}
       </Button>
 
