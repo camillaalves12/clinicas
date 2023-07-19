@@ -12,6 +12,12 @@ export function Table() {
       { index: 3, patient: 'Maria', professional: 'Gisele', specialty:'Geral', value: 150, form_of_payment: 'pix', date:23 },
       { index: 4, patient: 'Pedro', professional: 'LAB. NATLAB', specialty:'Exame', value: 150, form_of_payment: 'pix', date:23 },
       { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
+      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
     ];
   
   const Tabela = ({ dados }) => {

@@ -12,6 +12,11 @@ export function Details() {
         { index: 3, patient: 'João', professional: 'Gisele', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
         { index: 4, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
         { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
         { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
       ];
 

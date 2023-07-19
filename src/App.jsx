@@ -22,7 +22,6 @@ import {
 
 function App() {
   return (
-
     <Router>
       <Routes>
         <Route exact path='/' element={<LoginPage/>}/>
@@ -36,8 +35,7 @@ function App() {
         <Route exact path='/scheduling_consult' element={<SchedulingConsultPage/>}/>
         <Route exact path='/search_patient/details' element={<DetailsPage/>}/>
       </Routes>
-    </Router>
-    
+    </Router>  
 
   );
 }
