@@ -8,21 +8,21 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadingStorageData = async () => {
-      const storagedToken = localStorage.getItem(token)
-      const storagedUser = localStorage.getItem(user)
+      const storagedToken = localStorage.getItem('token') // Corrected: pass 'token' as a string
+      const storagedUser = localStorage.getItem('user') // Corrected: pass 'user' as a string
 
       if (storagedToken && storagedUser) {
-        setUser(storagedUser)
+        setUser(JSON.parse(storagedUser)) // Corrected: parse storagedUser to JSON if it's a stringified object
       }
     }
 
     loadingStorageData()
   }, [])
 
-  const signIn = async (email, password) => {
+  const signIn = async (email, senha) => {
     const response = await api.post('/auth', {
       email,
-      password
+      senha
     })
 
     if (response.data.error) {
@@ -30,11 +30,13 @@ export const AuthProvider = ({ children }) => {
     } else {
       setUser(response.data)
       api.defaults.headers.common[
-        Authorization
+        'Authorization'
       ] = `Bearer ${response.data.token}`
-      localStorage.setItem(token, response.data.token)
-      localStorage.setItem(user, response.data.user)
+      localStorage.setItem('token', response.data.token) // Corrected: pass 'token' as a string
+      localStorage.setItem('user', JSON.stringify(response.data)) // Corrected: stringify the response.data object before storing
     }
+
+    console.log(response)
   }
 
   return (

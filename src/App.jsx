@@ -1,12 +1,13 @@
-
-import './App.scss';
-import { AppRouter } from './routes';
-
+import './App.scss'
+import { AuthProvider } from './context/auth'
+import { AppRouter } from './routes'
 
 function App() {
   return (
-    <AppRouter/>
-  );
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  )
 }
 
-export default App;
+export default App
