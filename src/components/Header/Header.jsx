@@ -1,17 +1,45 @@
+import React, { useEffect } from 'react'
 import S from './styles.module.scss'
-import { HiOutlineLogout } from 'react-icons/hi';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import { HiOutlineLogout } from 'react-icons/hi'
+import Container from 'react-bootstrap/Container'
+import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
+import { Button } from 'react-bootstrap'
+import { Link, useNavigate } from 'react-router-dom'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
-export function Header(){
-    return (
-      <div className={S.navBar}>
-      <Navbar style={{background:'#e0f1e0'}} expand="lg" className={S.navBarItens}>
-        <Container fluid >
-          <Navbar.Brand>Clínica tal</Navbar.Brand>
+export function Header() {
+  const getUserName = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    return userData?.user?.nome
+  }
+
+  const getClinicName = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    const clinicName = userData?.user?.clinica
+    return clinicName
+  }
+
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    window.location.reload()
+    navigate("/")
+  } 
+
+  return (
+    <div className={S.navBar}>
+      <Navbar
+        style={{ background: '#e0f1e0' }}
+        expand="lg"
+        className={S.navBarItens}
+      >
+        <Container fluid>
+          <Navbar.Brand>{getClinicName()}</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -19,31 +47,45 @@ export function Header(){
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link as={Link} to='/initial'>Painel Administrativo</Nav.Link>
-              <Nav.Link as={Link} to='/procedures'>Resumo Diário</Nav.Link>
+              <Nav.Link as={Link} to="/initial">
+                Painel Administrativo
+              </Nav.Link>
+              <Nav.Link as={Link} to="/procedures">
+                Resumo Diário
+              </Nav.Link>
               <NavDropdown title="Procedimentos">
-                <NavDropdown.Item as={Link} to='/create_consult'>Criar consultas</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to='/create_exam'>Criar exame</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to='/scheduling_consult'>Agendamento</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/create_consult">
+                  Criar consultas
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/create_exam">
+                  Criar exame
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/scheduling_consult">
+                  Agendamento
+                </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Cadastros">
-                <NavDropdown.Item  as={Link} to='/register_patient'>Cadastrar paciente</NavDropdown.Item >
-                <NavDropdown.Item as={Link} to='/register_doctor'>Cadastrar Doutor</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/register_patient">
+                  Cadastrar paciente
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/register_doctor">
+                  Cadastrar Doutor
+                </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link as={Link} to='/search_patient'>Procurar paciente</Nav.Link>
-              </Nav>
+              <Nav.Link as={Link} to="/search_patient">
+                Procurar paciente
+              </Nav.Link>
+            </Nav>
 
-              <Nav className={S.logout}>
-                <Nav.Link className={S.Username}>Olá, fulana</Nav.Link>
-                <Nav.Link eventKey={2} href="#memes">
-                  <HiOutlineLogout className={S.iconLogout} />
-                </Nav.Link>
-          </Nav>
+            <Nav className={S.logout}>
+              <Nav.Link className={S.Username}>Olá, {getUserName()}</Nav.Link>
+              <Button eventKey={2} onClick={handleLogout}>
+                <HiOutlineLogout className={S.iconLogout} />
+              </Button>
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      </div>
-    );
-  }
-  
-   
+    </div>
+  )
+}
