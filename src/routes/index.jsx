@@ -50,23 +50,25 @@ export const AppRouter = () => {
           />
         </Route>
 
-        <Route exact path="/search_patient" element={<PrivateRoute />} >
-        <Route exact path="/search_patient" element={<SearchPatientPage />} />
-
+        <Route exact path="/search_patient" element={<PrivateRoute />}>
+          <Route exact path="/search_patient" element={<SearchPatientPage />} />
         </Route>
 
         <Route exact path="/scheduling_consult" element={<PrivateRoute />}>
-        <Route
-          exact
-          path="/scheduling_consult"
-          element={<SchedulingConsultPage />}
-        />
+          <Route
+            exact
+            path="/scheduling_consult"
+            element={<SchedulingConsultPage />}
+          />
         </Route>
 
         <Route exact path="/search_patient/details" element={<PrivateRoute />}>
-
-        <Route exact path="/search_patient/details" element={<DetailsPage />} />
-          </Route>
+          <Route
+            exact
+            path="/search_patient/details"
+            element={<DetailsPage />}
+          />
+        </Route>
       </Routes>
     </Router>
   )
