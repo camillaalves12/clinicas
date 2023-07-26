@@ -44,45 +44,46 @@ export function RegisterPatientPage() {
     return clinicId
   }
 
-  const formatDateToApiFormat = (date) => {
-    const parts = date.split('/');
+  const formatDateToApiFormat = date => {
+    const parts = date.split('/')
     if (parts.length === 3) {
-      return `${parts[0]}/${parts[1]}/${parts[2]}`;
+      return `${parts[0]}/${parts[1]}/${parts[2]}`
     }
-    return date;
-  };
+    return date
+  }
 
   const handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Cria uma cópia do formData para evitar alterações diretas no estado
-    const dataToSend = { ...formData };
+    const dataToSend = { ...formData }
 
     // Converte a data para o formato esperado pela API antes de enviar
-    dataToSend.data_de_nascimento = formatDateToApiFormat(formData.data_de_nascimento);
+    dataToSend.data_de_nascimento = formatDateToApiFormat(
+      formData.data_de_nascimento
+    )
 
-    console.log(dataToSend);
-    const clinicId = getClinicId();
+    console.log(dataToSend)
+    const clinicId = getClinicId()
 
     api
       .post(`/patient/${clinicId}`, dataToSend)
       .then(response => {
-        console.log(response);
-        alert('Paciente cadastrado com sucesso!');
+        console.log(response)
+        alert('Paciente cadastrado com sucesso!')
+        // Limpa os campos do formulário
+        setFormData({
+          nome: '',
+          cpf: '',
+          data_de_nascimento: '',
+          telefone: '',
+          sexo: ''
+        })
       })
       .catch(error => {
-        alert(error.response.data.error);
-        console.log(error.response.data.error);
-      });
-
-    // Limpa os campos do formulário
-    setFormData({
-      nome: '',
-      cpf: '',
-      data_de_nascimento: '',
-      telefone: '',
-      sexo: ''
-    });
+        alert(error.response.data.error)
+        console.log(error.response.data.error)
+      })
   }
 
   return (
