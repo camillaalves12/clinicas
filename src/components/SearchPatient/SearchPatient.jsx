@@ -12,8 +12,13 @@ export function SearchPatient(props) {
   const [searchRoute, setSearchRoute] = useState('');
   const [patients, setPatients] = useState([]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (event) => {
+    event.preventDefault(); // Impede que o formulário seja enviado por requisição HTTP tradicional
+
     try {
+      // Limpar resultados de pesquisa anteriores
+      setPatients([]);
+
       let response;
 
       switch (searchRoute) {
@@ -39,7 +44,7 @@ export function SearchPatient(props) {
 
   return (
     <>
-      <Form className={S.container}>
+      <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
           <h2 style={{ marginBottom: '1.5rem' }}>{props.title}</h2>
           <Form.Group className="mb-3" id="searchRoute">
@@ -85,8 +90,8 @@ export function SearchPatient(props) {
 
           <div className={S.btnSearch}>
             <Button
+              type="submit"
               style={{ width: '250px', height: '38px', textAlign: 'center' }}
-              onClick={handleSearch}
             >
               Procurar
             </Button>
