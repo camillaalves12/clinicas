@@ -15,37 +15,40 @@
      border-radius: 24px;
      box-shadow: 0 8px 16px rgba(0, 0, 0, .05), 0 8px 16px rgba(0, 0, 0, .3);
      gap: 1rem;
+
+     .inputForm{
+      outline: none;
+      border: 1px solid #cdcdcd;
+      border-radius: 4px;
+      height: 2rem;
+    }
+    
+    .divBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      .btn {
+        width: 200px;
+        border: none;
+        border-radius: 4px;
+        background: #007BFF;
+        color: #fff;
+        height: 2rem;
+        text-align: center;
+      
+        &:hover {
+          background: #0070e8;
+        }
+      }
+      
+    }
+
    }
 
  }
 
- .inputForm{
-   outline: none;
-   border: 1px solid #cdcdcd;
-   border-radius: 4px;
-   height: 2rem;
- }
- 
- .divBtn {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   margin-top: 1rem;
-   .btn {
-     width: 200px;
-     border: none;
-     border-radius: 4px;
-     background: #007BFF;
-     color: #fff;
-     height: 2rem;
-     text-align: center;
-   
-     &:hover {
-       background: #0070e8;
-     }
-   }
-   
- }
+
  
  
  

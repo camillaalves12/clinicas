@@ -26,8 +26,27 @@ export function InitialPage() {
                money= '2250' 
                />
             </div>
-            <div className={S.searchDate}>
-               <Form>
+            <div>
+               <form className={S.searchDate}> 
+                  <input type="date" name="" id="" className={S.inputDate}/>
+                  <input type="date" name="" id="" className={S.inputDate}/>
+                  <button>
+                     <BiSearch className={S.iconSearch} />
+                  </button> 
+               </form>
+            </div>
+         </div>
+         <div className={S.dashs}>
+            <DashPie />
+            <DashSpline />
+         </div>
+      </div>
+</>
+
+   )
+}
+
+  {/* <Form>
                   <Form.Control
                      placeholder="Pesquisar por período"
                      className={S.inputDate}
@@ -45,16 +64,6 @@ export function InitialPage() {
                      type="date"
                   />
                </Form>
+               <button>
                <BiSearch className={S.iconSearch} />
-            </div>
-            
-         </div>
-         <div className={S.dashs}>
-            <DashPie />
-            <DashSpline />
-         </div>
-      </div>
-</>
-
-   )
-}
+               </button> */}

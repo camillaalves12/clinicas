@@ -3,22 +3,13 @@
   flex-direction: column;
   margin: 0 auto;
   width: 180vh;
+}
 
   .container_search_and_create {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
-
-    .search_and__date {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-
-      .iconSearch {
-        width: 1.2rem;
-        height: 1.2rem;
-        cursor: pointer;
-      }
+  }
 
       .search {
         display: flex;
@@ -28,15 +19,28 @@
         align-content: center;
         cursor: pointer;
         
+      }
         .iconSearch {
           width: 1.5rem;
           height: 1.5rem;
         }
-      }
 
-    }
-    
-  }
+        .searchDate {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+       }
+       
+       .inputDate {
+          padding: 0.4rem;
+          border-radius: 6px;
+          border: 1px solid #cdcdcd;
+       }
+
+       .divCreates {
+        display: flex;
+        gap: 1rem;
+       }
 
 .divTable {
   overflow: auto;
@@ -84,4 +88,3 @@
   }
 }
 
-}
