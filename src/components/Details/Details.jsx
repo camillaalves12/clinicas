@@ -69,7 +69,14 @@ export function Details() {
           <>
           <Header />
             <div className={S.container}>
-              <div className={S.container_search_and_create}>
+            <div className={S.container_search_and_create}>
+          <div className={S.search_and__date}>
+               <form className={S.searchDate}> 
+                  <input type="date" name="" id="" className={S.inputDate}/>
+                  <input type="date" name="" id="" className={S.inputDate}/>
+                  <button type='submit'>
+                     <BiSearch className={S.iconSearch} />
+                  </button> 
                 <Form className={S.search}>
                   <Form.Control
                     type="search"
@@ -78,21 +85,26 @@ export function Details() {
                     aria-label="Search"
                     style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
                   />
-                  <BiSearch className={S.iconSearch} />
+                    <button>
+                      <BiSearch className={S.iconSearch} />
+                    </button> 
                 </Form>
-                <div>
-                  <Link to="/create_consult">
-                    <Button variant="primary">
-                      + Criar nova consulta
-                    </Button>
-                  </Link>
-                  <Link to="/create_exam">
-                    <Button variant="primary" style={{ margin: '5px', background: '#fff', color: '#0d6efd' }}>
-                      + Criar novo exame
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+               </form>
+        </div>
+          <div className={S.divCreates}>
+
+            <Link to="/create_consult">
+              <Button variant="primary">
+                + Criar nova consulta
+              </Button>
+            </Link>
+            <Link to="/create_exam">
+              <Button variant="primary" className={S.input} style={{background: '#fff', color: '#0d6efd' }}>
+                + Criar novo exame
+              </Button>
+            </Link>
+          </div>
+        </div>
               <div className={S.divTable}>
                 {dados.length > 0 ? (
                   <Tabela dados={dados} />

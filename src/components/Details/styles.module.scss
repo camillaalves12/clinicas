@@ -4,6 +4,12 @@
   margin: 0 auto;
   width: 172vh;
   margin-top: 4.7rem ;
+  
+  .iconSearch {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+ }
 
   .container_search_and_create {
     display: flex;
@@ -15,19 +21,34 @@
       width: 250px;
       align-items: center;
       cursor: pointer;
-    
-      .iconSearch {
-        width: 2.2rem;
-        height: 2.2rem;
+    }
+
+    .searchDate {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+  
+      .inputDate {
+         padding: 0.4rem;
+         border-radius: 6px;
+         border: 1px solid #cdcdcd;
       }
     }
+    
+    .divCreates {
+     display: flex;
+     gap: 1rem;
+    }
   }
-  
+
+
+
+
+
   .divTable {
     overflow: auto;
     height: 25rem;
     overflow-x: hidden;
-  }
 
     .table {
       width: 170vh;
@@ -69,4 +90,6 @@
         }
       }
     }
+  }
+
 }

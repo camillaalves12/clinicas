@@ -69,7 +69,7 @@ export function Login() {
               onChange={handlePasswordChange}
             />
           </FloatingLabel>
-          <Button variant="primary" className={S.btn} onClick={handleSignIn}>
+          <Button type='submit' variant="primary" className={S.btn} onClick={handleSignIn}>
             Entrar
           </Button>
         </section>
