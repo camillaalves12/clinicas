@@ -19,6 +19,8 @@ export function CreateConsultPage() {
     { id: 12, nome: 'Mastologista' }
   ]
 
+  const [procediments, setProcediments] = useState([])
+
   const [professionals, setProfessionals] = useState([])
 
   const [dataToSend, setDataToSend] = useState([{}])
@@ -32,7 +34,9 @@ export function CreateConsultPage() {
   })
 
   useEffect(() => {
-    findProfessionals()
+    fetchProfessionals()
+    fetchProcediments()
+    console.log(procediments)
   }, [])
 
   const getClinicId = () => {
@@ -121,7 +125,7 @@ export function CreateConsultPage() {
     }
   }
 
-  const findProfessionals = async () => {
+  const fetchProfessionals = async () => {
     try {
       const response = await api.post('/professionalForName')
       if (!response.data) {
@@ -131,6 +135,23 @@ export function CreateConsultPage() {
       }
     } catch (error) {
       console.error('Erro ao buscar profissional:', error)
+    }
+  }
+
+  const fetchProcediments = async () => {
+    const consultProcediment = 6
+
+    try {
+      const response = await api.get(`/procedimentsForType/${consultProcediment}`)
+
+      if (!response.data) {
+        alert('Não existem procedimentos de consulta cadastrados!')
+      } else {
+        setProcediments(response.data)
+      }
+
+    } catch (error) {
+      
     }
   }
 
@@ -162,7 +183,7 @@ export function CreateConsultPage() {
 
               <div className={S.divForms}>
                 <div>
-                  <label className={S.labelForm} for="procedure">
+                  <label className={S.labelForm} for="professional">
                     Profissional:
                   </label>
                   <select
@@ -195,9 +216,9 @@ export function CreateConsultPage() {
                     required
                   >
                     <option>Selecione a consulta</option>
-                    {procedures.map(procedure => (
-                      <option key={procedure.id} value={procedure.id}>
-                        {procedure.nome}
+                    {procediments.map(procediments => (
+                      <option key={procediments.id} value={procediments.id}>
+                        {procediments.nome}
                       </option>
                     ))}
                   </select>
