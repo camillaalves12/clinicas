@@ -13,7 +13,6 @@ export function RegisterDoctorPage() {
   const handleInputChange = e => {
     const { name, value } = e.target
 
-<<<<<<< Updated upstream
     setFormData({ ...formData, [name]: value })
   }
 
@@ -92,17 +91,3 @@ export function RegisterDoctorPage() {
     </>
   )
 }
-=======
-               <label className={S.labelForm} for="specialty">Especialidade:</label>
-
-               <input className={S.inputForm} type="text" id="specialty" required/>
-               
-               <div className={S.divBtn}>
-                    <input className={S.btn} type="submit" option="Enviar"/>
-                </div>
-            </div>
-            </form>
-        </>
-    )
-}
->>>>>>> Stashed changes
