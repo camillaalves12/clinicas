@@ -70,42 +70,29 @@ export function Details() {
           <Header />
             <div className={S.container}>
             <div className={S.container_search_and_create}>
-          <div className={S.search_and__date}>
-               <form className={S.searchDate}> 
-                  <input type="date" name="" id="" className={S.inputDate}/>
-                  <input type="date" name="" id="" className={S.inputDate}/>
-                  <button type='submit'>
-                     <BiSearch className={S.iconSearch} />
-                  </button> 
-                <Form className={S.search}>
+              <div className={S.search_and__date}>
+                  <form className={S.searchDate}> 
+                  <button className={S.btnHoje}>Hoje</button>
+                      <input type="date" name="" id="" className={S.inputDate}/>
+                      <button type='submit'>
+                        <BiSearch className={S.iconSearch} />
+                      </button> 
+                  </form>
+              </div>
+               <Form className={S.search}>
                   <Form.Control
                     type="search"
-                    placeholder="Pesquisar"
+                    placeholder="Pesquisar por profissional????"
                     className="me-2"
                     aria-label="Search"
-                    style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
+                    style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd'}}
                   />
-                    <button>
-                      <BiSearch className={S.iconSearch} />
-                    </button> 
-                </Form>
-               </form>
-        </div>
-          <div className={S.divCreates}>
-
-            <Link to="/create_consult">
-              <Button variant="primary">
-                + Criar nova consulta
-              </Button>
-            </Link>
-            <Link to="/create_exam">
-              <Button variant="primary" className={S.input} style={{background: '#fff', color: '#0d6efd' }}>
-                + Criar novo exame
-              </Button>
-            </Link>
-          </div>
-        </div>
-              <div className={S.divTable}>
+                  <button>
+                    <BiSearch className={S.iconSearch} />
+                  </button> 
+              </Form>
+          </div>       
+            <div className={S.divTable}>
                 {dados.length > 0 ? (
                   <Tabela dados={dados} />
                 ) : (

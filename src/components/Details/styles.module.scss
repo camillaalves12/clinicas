@@ -4,6 +4,7 @@
   margin: 0 auto;
   width: 172vh;
   margin-top: 4.7rem ;
+  height: 90vh;
   
   .iconSearch {
     width: 1.5rem;
@@ -18,7 +19,7 @@
 
     .search {
       display: flex;
-      width: 250px;
+      width: 300px;
       align-items: center;
       cursor: pointer;
     }
@@ -27,6 +28,18 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+
+      .btnHoje {
+        background: #cdcdcd;
+        border-radius: 4px;
+        padding: 0.5rem;
+
+        &:hover {
+          cursor: pointer;
+          background: #b8b8b8;
+        }
+
+      }
   
       .inputDate {
          padding: 0.4rem;

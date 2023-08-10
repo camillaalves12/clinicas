@@ -50,9 +50,15 @@ export function Header() {
               <Nav.Link as={Link} to="/initial">
                 Painel Administrativo
               </Nav.Link>
-              <Nav.Link as={Link} to="/procedures">
-                Resumo Diário
-              </Nav.Link>
+              <NavDropdown title="Resumos">
+              <NavDropdown.Item as={Link} to="/procedures">
+                Resumos Diário
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/proceduresScheduling">
+                Agendamentos de Procedimentos
+              </NavDropdown.Item>
+              </NavDropdown>
+
               <NavDropdown title="Procedimentos">
                 <NavDropdown.Item as={Link} to="/create_consult">
                   Criar consultas
@@ -61,7 +67,7 @@ export function Header() {
                   Criar exame
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/scheduling_consult">
-                  Agendamento
+                  Criar Agendamento
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Cadastros">
