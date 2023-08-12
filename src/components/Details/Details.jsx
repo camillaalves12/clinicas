@@ -7,9 +7,9 @@ import { Header } from '../Header/Header';
 
 export function Details() {
     const dados = [
-        { index: 1, patient: 'João', professional: 'Marcos', procedure_group:'UILTRASSONOGRAFIA', procedures: 'USG DA COXA', value: 150, form_of_payment: 'pix', date:20 },
+        { index: 1, patient: 'João', professional: 'Marcos', procedure_group:'UILTRASSONOGRAFIA', procedures: 'USG DA COXA', value: 150, form_of_payment: 'pix', date:'12/08/2022' },
         { index: 2, patient: 'João', professional: 'Marcos', procedure_group:'UILTRASSONOGRAFIA', procedures: 'USG DO OMBRO', value: 150, form_of_payment: 'Cartão de crédito', date:23 },
-        { index: 3, patient: 'João', professional: 'Gisele', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
+        { index: 3, patient: 'João', professional: 'Gisele', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date: '23/01/2002'},
         { index: 4, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
         { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
         { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
@@ -68,30 +68,7 @@ export function Details() {
         return (
           <>
           <Header />
-            <div className={S.container}>
-            <div className={S.container_search_and_create}>
-              <div className={S.search_and__date}>
-                  <form className={S.searchDate}> 
-                  <button className={S.btnHoje}>Hoje</button>
-                      <input type="date" name="" id="" className={S.inputDate}/>
-                      <button type='submit'>
-                        <BiSearch className={S.iconSearch} />
-                      </button> 
-                  </form>
-              </div>
-               <Form className={S.search}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Pesquisar por profissional????"
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd'}}
-                  />
-                  <button>
-                    <BiSearch className={S.iconSearch} />
-                  </button> 
-              </Form>
-          </div>       
+            <div className={S.container}>    
             <div className={S.divTable}>
                 {dados.length > 0 ? (
                   <Tabela dados={dados} />
