@@ -68,6 +68,8 @@ export function ProceduresSchedulingPage() {
           <>
           <Header />
             <div className={S.container}>
+
+                  <h2>Agendamentos</h2>
             <div className={S.container_search_and_create}>
               <div className={S.search_and__date}>
                   <form className={S.searchDate}> 
@@ -77,6 +79,7 @@ export function ProceduresSchedulingPage() {
                         <BiSearch className={S.iconSearch} />
                       </button> 
                   </form>
+
               </div>
                <Form className={S.search}>
                   <Form.Control
