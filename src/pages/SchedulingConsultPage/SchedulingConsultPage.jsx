@@ -1,89 +1,252 @@
+import { useState, useEffect } from 'react'
 import S from './styles.module.scss'
-import {Header} from '../../components/Header/Header'
+import { Header } from '../../components/Header/Header'
+import { api } from '../../services/api'
 
 export function SchedulingConsultPage() {
+  const procedure = [
+    { id: 1, nome: 'Ultrassonografia' },
+    { id: 2, nome: 'Raio X Digital' },
+    { id: 3, nome: 'MAMOGRAFIA DIGITAL' },
+    { id: 4, nome: 'Densitometria Óssea' },
+    { id: 5, nome: 'Tomografia computadorizada' },
+    { id: 6, nome: 'Endoscopia digestiva alta' },
+    { id: 7, nome: 'PAAF' },
+    {
+      id: 8,
+      nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'
+    },
+    { id: 9, nome: 'Gastroenterologista' },
+    { id: 10, nome: 'Clínico geral' },
+    { id: 11, nome: 'Cirurgião' },
+    { id: 12, nome: 'Mastologista' },
+    { id: 13, nome: 'Oftalmologista' },
+    { id: 14, nome: 'Ortopedista' },
+    { id: 15, nome: 'Otorrinolaringologista' },
+    { id: 16, nome: 'Dermatologista' },
+    { id: 17, nome: 'Urologista' },
+    { id: 18, nome: 'Geriatra' },
+    { id: 19, nome: 'Médico do trabalho' },
+    { id: 20, nome: 'Psiquiatra' }
+  ]
 
-    const procedure = [
-        { id: 1, nome: 'Ultrassonografia' },
-        { id: 2, nome: 'Raio X Digital' },
-        { id: 3, nome: 'MAMOGRAFIA DIGITAL' },
-        { id: 4, nome: 'Densitometria Óssea' },
-        { id: 5, nome: 'Tomografia computadorizada' },
-        { id: 6, nome: 'Endoscopia digestiva alta' },
-        { id: 7, nome: 'PAAF' },
-        { id: 8, nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)' },
-        { id: 9, nome: 'Gastroenterologista' },
-        { id: 10, nome: 'Clínico geral' },
-        { id: 11, nome: 'Cirurgião' },
-        { id: 12, nome: 'Mastologista' },
-        { id: 13, nome: 'Oftalmologista' },
-        { id: 14, nome: 'Ortopedista' },
-        { id: 15, nome: 'Otorrinolaringologista' },
-        { id: 16, nome: 'Dermatologista' },
-        { id: 17, nome: 'Urologista' },
-        { id: 18, nome: 'Geriatra' },
-        { id: 19, nome: 'Médico do trabalho' },
-        { id: 20, nome: 'Psiquiatra' },
-    ]
+  const [procediments, setProcediments] = useState([])
 
-    return(
-        <>
-        <Header />
-        <form id="schedulingForm" className={S.container}>
+  const [professionals, setProfessionals] = useState([])
+
+  const [dataToSend, setDataToSend] = useState([{}])
+
+  const [formData, setFormData] = useState({
+    paciente: '',
+    profissional: '',
+    procedimento: '',
+    valor: '',
+    forma_de_pagamento: ''
+  })
+
+  useEffect(() => {
+    fetchProfessionals()
+    fetchProcediments()
+    console.log(procediments)
+  }, [])
+
+  const getClinicId = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    const clinicId = userData?.user?.clinicaId
+    console.log(clinicId)
+    return clinicId
+  }
+
+  const fetchProfessionals = async () => {
+    try {
+      const response = await api.post('/professionalForName')
+      if (!response.data) {
+        alert('Não existem profissionais cadastrados!')
+      } else {
+        console.log(response.data)
+        setProfessionals(response.data)
+      }
+    } catch (error) {
+      console.error('Erro ao buscar profissional:', error)
+    }
+  }
+
+  const fetchProcediments = async () => {
+    try {
+      const response = await api.get(`/procediments`)
+
+      if (!response.data) {
+        alert('Não existem procedimentos de consulta cadastrados!')
+      } else {
+        console.log(response.data)
+        setProcediments(response.data)
+      }
+    } catch (error) {}
+  }
+
+  const handleInputChange = e => {
+    const { name, value } = e.target
+
+    // Verifica se o campo é o CPF e formata o valor com pontos e traço
+    if (name === 'paciente') {
+      const formattedCPF = formatCPF(value)
+      setFormData({ ...formData, [name]: formattedCPF })
+    } else {
+      setFormData({ ...formData, [name]: value })
+    }
+  }
+
+  const formatCPF = value => {
+    // Remove qualquer caractere não numérico do valor do CPF
+    const numericCPF = value.replace(/\D/g, '')
+
+    // Aplica a formatação: XXX.XXX.XXX-XX
+    const formattedCPF = numericCPF.replace(
+      /(\d{3})(\d{3})(\d{3})(\d{2})/,
+      '$1.$2.$3-$4'
+    )
+    return formattedCPF
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const clinicId = getClinicId()
+
+    processForm()
+      .then(dataToSend => {
+        console.log(dataToSend)
+        api
+          .post(`/consult/${clinicId}`, dataToSend)
+          .then(response => {
+            alert('Exame criado com sucesso!')
+            console.log(response)
+          })
+          .catch(error => {
+            console.error('Erro ao processar o formulário:', error)
+          })
+      })
+      .catch(error => {
+        console.error('Erro ao processar o formulário:', error)
+      })
+  }
+
+  const processForm = async () => {
+    try {
+      const patientCPF = await findPatient(formData.paciente)
+
+      const dataToSend = {
+        pacienteId: patientCPF,
+        profissionalId: parseInt(formData.profissional),
+        procedimentoId: parseInt(formData.procedimento),
+        valor_da_consulta: parseInt(formData.valor),
+        tipo_de_pagamento: formData.forma_de_pagamento,
+        clinicaId: getClinicId()
+      }
+
+      return dataToSend
+    } catch (error) {
+      console.error('Erro ao processar o formulário:', error)
+    }
+  }
+
+  const findPatient = async patient => {
+    try {
+      const response = await api.post('/patientForCPF', { cpf: patient })
+
+      if (!response.data.id) {
+        alert('Paciente não encontrado')
+      } else {
+        return response.data.id
+      }
+    } catch (error) {
+      console.error('Erro ao buscar paciente:', error)
+    }
+  }
+
+  return (
+    <>
+      <Header />
+      <form id="schedulingForm" className={S.container} onSubmit={handleSubmit}>
         <div className={S.containerForm}>
           <h3 style={{ marginBottom: '1.5rem' }}>Agendamento</h3>
 
-            <label className={S.labelForm} for="cpf_paciente">CPF do Paciente:</label>
-            <input className={S.inputForm} type="text" id="cpf_paciente" required/>
+          <label className={S.labelForm} for="paciente">
+            Paciente (CPF):
+          </label>
+          <input
+            className={S.inputForm}
+            type="text"
+            id="paciente"
+            name="paciente"
+            onChange={handleInputChange}
+            value={formData.paciente}
+            required
+          />
 
           <div className={S.divForms}>
-
             <div>
-            <label className={S.labelForm} for="date_procedure">Data do procedimento:</label>
-            <input className={S.inputForm} style={{width:'255px', padding:'5px'}} type="date" id="date_procedure" required/>
-
+              <label className={S.labelForm} for="date_procedure">
+                Data do procedimento:
+              </label>
+              <input
+                className={S.inputForm}
+                style={{ width: '255px', padding: '5px' }}
+                type="date"
+                id="date_procedure"
+                required
+              />
             </div>
 
             <div>
-              <label className={S.labelForm} for='procedure'>Procedimento:</label>
-              <select className={S.inputForm} style={{width:'255px'}}>
+              <label className={S.labelForm} for="procedure">
+                Procedimento:
+              </label>
+              <select className={S.inputForm} style={{ width: '255px' }}>
                 <option>Selecione o procedimento</option>
-                  {procedure.map((procedure) => (
-                    <option key={procedure.id} value={procedure.id}>
-                      {procedure.nome}
-                    </option>
-                  ))}
+                {procedure.map(procedure => (
+                  <option key={procedure.id} value={procedure.id}>
+                    {procedure.nome}
+                  </option>
+                ))}
               </select>
-
             </div>
-
           </div>
 
           <div className={S.divForms}>
+            <div>
+              <label className={S.labelForm} for="valor">
+                Valor:
+              </label>
+              <input
+                className={S.inputForm}
+                style={{ width: '235px' }}
+                type="text"
+                id="valor"
+                step="0.01"
+                required
+              />
+            </div>
 
-              <div>
-                <label className={S.labelForm} for="valor">Valor:</label>
-                <input className={S.inputForm}  style={{width:'235px'}} type="text" id="valor" step="0.01" required/>
-              </div>
-
-              <div>
-                <label className={S.labelForm}>Forma de Pagamento:</label>
-                <select className={S.inputForm} style={{width:'275px'}} >
-                  <option option='Selecione a forma de pagamento'>Selecione a forma de pagamento</option>
-                  <option option="Dinheiro">Dinheiro</option>
-                  <option option="Cartão de Crédito">Cartão de Crédito</option>
-                  <option option="Cartão de Débito">Cartão de Débito</option>
-                  <option option="Cheque">Pix</option>
-                </select>
-              </div>
-
+            <div>
+              <label className={S.labelForm}>Forma de Pagamento:</label>
+              <select className={S.inputForm} style={{ width: '275px' }}>
+                <option option="Selecione a forma de pagamento">
+                  Selecione a forma de pagamento
+                </option>
+                <option option="Dinheiro">Dinheiro</option>
+                <option option="Cartão de Crédito">Cartão de Crédito</option>
+                <option option="Cartão de Débito">Cartão de Débito</option>
+                <option option="Cheque">Pix</option>
+              </select>
+            </div>
           </div>
 
           <div className={S.divBtn}>
-            <input className={S.btn} type="submit" option="Enviar"/>
+            <input className={S.btn} type="submit" option="Enviar" />
           </div>
         </div>
       </form>
-        </>
-    )
+    </>
+  )
 }
