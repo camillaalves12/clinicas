@@ -192,13 +192,34 @@ export function CreateExamPage() {
                 </div>
 
                 <div>
-                  <label className={S.labelForm} for="procedure">
-                    Exame:
+                  <label className={S.labelForm} for="type_exam">
+                    Tipo de Exame:
                   </label>
                   <select
                     className={S.inputForm}
                     style={{ width: '255px' }}
-                    name="procedimento"
+                    name="type_exam"
+                    onChange={handleInputChange}
+                    value={formData.procedimento}
+                    required
+                  >
+                    <option>Selecione o tipo de exame</option>
+                    {procediments.map(procediments => (
+                      <option key={procediments.id} value={procediments.id}>
+                        {procediments.nome}
+                      </option>
+                    ))}
+                  </select>
+                  
+                </div>
+              </div>
+
+              <label className={S.labelForm} for="procedure">
+                    Exame:
+                  </label>
+                  <select
+                    className={S.inputForm}
+                    name="procedure"
                     onChange={handleInputChange}
                     value={formData.procedimento}
                     required
@@ -210,9 +231,6 @@ export function CreateExamPage() {
                       </option>
                     ))}
                   </select>
-                  
-                </div>
-              </div>
 
               <div className={S.divForms}>
                 <div>
