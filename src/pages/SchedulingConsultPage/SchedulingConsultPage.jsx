@@ -12,10 +12,7 @@ export function SchedulingConsultPage() {
     { id: 5, nome: 'Tomografia computadorizada' },
     { id: 6, nome: 'Endoscopia digestiva alta' },
     { id: 7, nome: 'PAAF' },
-    {
-      id: 8,
-      nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'
-    },
+    { id: 8, nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'},
     { id: 9, nome: 'Gastroenterologista' },
     { id: 10, nome: 'Clínico geral' },
     { id: 11, nome: 'Cirurgião' },
@@ -28,6 +25,12 @@ export function SchedulingConsultPage() {
     { id: 18, nome: 'Geriatra' },
     { id: 19, nome: 'Médico do trabalho' },
     { id: 20, nome: 'Psiquiatra' }
+  ]
+  const date = [
+    { id: 1, hours: '10:00' },
+    { id: 2, hours: '10:30' },
+    { id: 3, hours: '12:00' },
+
   ]
 
   const [procediments, setProcediments] = useState([])
@@ -200,9 +203,23 @@ export function SchedulingConsultPage() {
 
             <div>
               <label className={S.labelForm} for="procedure">
-                Procedimento:
+                Horário:
               </label>
               <select className={S.inputForm} style={{ width: '255px' }}>
+                <option>Selecione o horário</option>
+                {date.map(date => (
+                  <option key={date.id} value={date.id}>
+                    {date.hours}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+ 
+              <label className={S.labelForm} for="procedure">
+                Procedimento:
+              </label>
+              <select className={S.inputForm}>
                 <option>Selecione o procedimento</option>
                 {procedure.map(procedure => (
                   <option key={procedure.id} value={procedure.id}>
@@ -210,8 +227,7 @@ export function SchedulingConsultPage() {
                   </option>
                 ))}
               </select>
-            </div>
-          </div>
+      
 
           <div className={S.divForms}>
             <div>
