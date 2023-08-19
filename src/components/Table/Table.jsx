@@ -15,8 +15,6 @@ export function Table() {
 
   const handleDateSubmit = e => {
     e.preventDefault()
-    console.log(initialDate, 'initialDate')
-    console.log(finalDate, 'finalDate')
 
     const dataToSend = {
       data_inicial: initialDate,
@@ -145,7 +143,23 @@ export function Table() {
           {consults.length > 0 ? (
             <Tabela />
           ) : (
-            <p className={S.p}>Nenhuma consulta encontrada</p>
+            <>
+              <table className={S.table}>
+                <thead>
+                  <tr>
+                    <th className={S.th_thead}>Paciente</th>
+                    <th className={S.th_thead}>Profissional</th>
+                    <th className={S.th_thead}>Especialidade</th>
+                    <th className={S.th_thead}>Valor</th>
+                    <th className={S.th_thead}>Forma de pagamento</th>
+                    <th className={S.th_thead}>Data</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <p className={S.p}>Nenhuma consulta encontrada</p>
+                </tbody>
+              </table>
+            </>
           )}
         </div>
       </div>

@@ -1,134 +1,148 @@
 import S from './styles.module.scss'
-import PropTypes from 'prop-types';
-import { BiSearch } from 'react-icons/bi';
-import { Form, Button } from 'react-bootstrap';
-import { Header } from '../../components/Header/Header';
+import PropTypes from 'prop-types'
+import { BiSearch } from 'react-icons/bi'
+import { Form, Button } from 'react-bootstrap'
+import { Header } from '../../components/Header/Header'
+import { useState, useEffect } from 'react'
+import { api } from '../../services/api'
 
 export function ProceduresSchedulingPage() {
-    const dados = [
-        { index: 1, patient: 'João', professional: 'Marcos', procedure_group:'UILTRASSONOGRAFIA', procedures: 'USG DA COXA', value: 150, form_of_payment: 'pix', date:20 },
-        { index: 2, patient: 'João', professional: 'Marcos', procedure_group:'UILTRASSONOGRAFIA', procedures: 'USG DO OMBRO', value: 150, form_of_payment: 'Cartão de crédito', date:23 },
-        { index: 3, patient: 'João', professional: 'Gisele', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 4, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 5, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-        { index: 6, patient: 'João', professional: 'Antonio', procedure_group:'Obtetra', procedures: 'blabkabka', value: 150, form_of_payment: 'pix', date:23 },
-      ];
 
-      const Tabela = ({ dados }) => {
-          return (
-            <table className={S.table}>
-              <thead>
-                <tr>
-                  <th className={S.th_thead}>Paciente</th>
-                  <th className={S.th_thead}>Profissional</th>
-                  <th className={S.th_thead}>Grupo de procedimento</th>
-                  <th className={S.th_thead}>Procedimento</th>
-                  <th className={S.th_thead}>Valor</th>
-                  <th className={S.th_thead}>Forma de pagamento</th>
-                  <th className={S.th_thead}>Data</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dados.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.patient}</td>
-                    <td>{item.professional}</td>
-                    <td>{item.procedure_group}</td>
-                    <td>{item.procedures}</td>
-                    <td>{`R$ ${item.value}`}</td>
-                    <td>{item.form_of_payment}</td>
-                    <td>{item.date}</td>
+  const [schedulings, setSchedulings] = useState([])
+
+  const [date, setDate] = useState('')
+
+  const [professional, setProfessional] = useState('')
+
+  const getClinicId = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    const clinicId = userData?.user?.clinicaId
+    console.log(clinicId)
+    return clinicId
+  }
+
+  const handleDateSubmit = e => {
+    e.preventDefault()
+
+    const dataToSend = {
+      data: date
+    }
+
+    api
+      .put(`/schedulingsForDate`, dataToSend)
+      .then(response => {
+        console.log(response.data)
+        setSchedulings(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  const handleButtonClick = () => {
+    const currentDate = new Date()
+    const year = currentDate.getFullYear()
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+
+    const formattedDate = `${year}-${month}-${day}`
+
+    setDate(formattedDate)
+    console.log(formattedDate)
+    handleDateSubmit()
+  }
+
+  const fetchSchedulings = async () => {
+    try {
+      const response = await api.get('/schedulings')
+      setSchedulings(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchSchedulings()
+  }, [])
+
+  const Tabela = () => {
+    return (
+      <table className={S.table}>
+        <thead>
+          <tr>
+            <th className={S.th_thead}>Paciente</th>
+            <th className={S.th_thead}>Profissional</th>
+            <th className={S.th_thead}>Procedimento</th>
+            <th className={S.th_thead}>Valor</th>
+            <th className={S.th_thead}>Horário</th>
+            <th className={S.th_thead}>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {schedulings.map(schedulings => (
+            <tr key={schedulings.id}>
+              <td>{schedulings.paciente.nome}</td>
+              <td>{schedulings.profissional.nome}</td>
+              <td>{schedulings.procedimento.nome}</td>
+              <td>{`R$ ${schedulings.valor_da_consulta}`}</td>
+              <td>{schedulings.hora_da_consulta}</td>
+              <td>
+                {new Date(schedulings.data_da_consulta).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
+
+  return (
+    <>
+      <Header />
+      <div className={S.container}>
+        <h2>Agendamentos</h2>
+        <div className={S.container_search_and_create}>
+          <div className={S.search_and__date}>
+            <form className={S.searchDate} onSubmit={handleDateSubmit}>
+              <button className={S.btnHoje} onClick={handleButtonClick}>
+                Hoje
+              </button>
+              <input
+                type="date"
+                name="date"
+                className={S.inputDate}
+                onChange={e => setDate(e.target.value)}
+              />
+              <button type="submit">
+                <BiSearch className={S.iconSearch} />
+              </button>
+            </form>
+          </div>
+        </div>
+        <div className={S.divTable}>
+          {schedulings.length > 0 ? (
+            <Tabela />
+          ) : (
+            <>
+              <table className={S.table}>
+                <thead>
+                  <tr>
+                    <th className={S.th_thead}>Paciente</th>
+                    <th className={S.th_thead}>Profissional</th>
+                    <th className={S.th_thead}>Procedimento</th>
+                    <th className={S.th_thead}>Valor</th>
+                    <th className={S.th_thead}>Horário</th>
+                    <th className={S.th_thead}>Data</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          );
-        };
-      
-        Tabela.propTypes = {
-          dados: PropTypes.arrayOf(
-            PropTypes.shape({
-              patient: PropTypes.string.isRequired,
-              professional: PropTypes.string.isRequired,
-              procedure_group: PropTypes.string.isRequired,
-              procedures: PropTypes.string.isRequired,
-              value: PropTypes.string.isRequired,
-              form_of_payment:PropTypes.string.isRequired,
-              date: PropTypes.number.isRequired,
-            })
-          ).isRequired,
-        };
-
-        return (
-          <>
-          <Header />
-            <div className={S.container}>
-
-                  <h2>Agendamentos</h2>
-            <div className={S.container_search_and_create}>
-              <div className={S.search_and__date}>
-                  <form className={S.searchDate}> 
-                  <button className={S.btnHoje}>Hoje</button>
-                      <input type="date" name="" id="" className={S.inputDate}/>
-                      <button type='submit'>
-                        <BiSearch className={S.iconSearch} />
-                      </button> 
-                  </form>
-
-              </div>
-               <Form className={S.search}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Pesquisar por profissional????"
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd'}}
-                  />
-                  <button>
-                    <BiSearch className={S.iconSearch} />
-                  </button> 
-              </Form>
-            </div>       
-            <div className={S.divTable}>
-                {dados.length > 0 ? (
-                  <Tabela dados={dados} />
-                ) : (
-
-                  <table className={S.table}>
-                    <thead>
-                      <tr>
-                        <th className={S.th_thead}>Paciente</th>
-                        <th className={S.th_thead}>Profissional</th>
-                        <th className={S.th_thead}>Grupo de procedimento</th>
-                        <th className={S.th_thead}>Procedimento</th>
-                        <th className={S.th_thead}>Valor</th>
-                        <th className={S.th_thead}>Forma de pagamento</th>
-                        <th className={S.th_thead}>Data</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dados.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.patient}</td>
-                          <td>{item.professional}</td>
-                          <td>{item.procedure_group}</td>
-                          <td>{item.procedures}</td>
-                          <td>{`R$ ${item.value}`}</td>
-                          <td>{item.form_of_payment}</td>
-                          <td>{item.date}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                </table>
-                )}
-              </div>
-            </div>
-          </>
-        );
-    
+                </thead>
+                <tbody>
+                  <p className={S.p}>Nenhuma consulta encontrada</p>
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  )
 }
