@@ -4,36 +4,6 @@ import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
 
 export function SchedulingConsultPage() {
-  const procedure = [
-    { id: 1, nome: 'Ultrassonografia' },
-    { id: 2, nome: 'Raio X Digital' },
-    { id: 3, nome: 'MAMOGRAFIA DIGITAL' },
-    { id: 4, nome: 'Densitometria Óssea' },
-    { id: 5, nome: 'Tomografia computadorizada' },
-    { id: 6, nome: 'Endoscopia digestiva alta' },
-    { id: 7, nome: 'PAAF' },
-    {
-      id: 8,
-      nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'
-    },
-    { id: 9, nome: 'Gastroenterologista' },
-    { id: 10, nome: 'Clínico geral' },
-    { id: 11, nome: 'Cirurgião' },
-    { id: 12, nome: 'Mastologista' },
-    { id: 13, nome: 'Oftalmologista' },
-    { id: 14, nome: 'Ortopedista' },
-    { id: 15, nome: 'Otorrinolaringologista' },
-    { id: 16, nome: 'Dermatologista' },
-    { id: 17, nome: 'Urologista' },
-    { id: 18, nome: 'Geriatra' },
-    { id: 19, nome: 'Médico do trabalho' },
-    { id: 20, nome: 'Psiquiatra' }
-  ]
-  const date = [
-    { id: 1, hours: '10:00' },
-    { id: 2, hours: '10:30' },
-    { id: 3, hours: '12:00' }
-  ]
 
   const [procediments, setProcediments] = useState([])
 

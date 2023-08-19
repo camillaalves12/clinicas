@@ -45,25 +45,3 @@ export function InitialPage() {
 
    )
 }
-
-  {/* <Form>
-                  <Form.Control
-                     placeholder="Pesquisar por período"
-                     className={S.inputDate}
-                     aria-label="Search"
-                     style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
-                     type="date"
-                     />
-               </Form>
-               <Form>
-                  <Form.Control
-                     placeholder="Pesquisar por período"
-                     className={S.inputDate}
-                     aria-label="Search"
-                     style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
-                     type="date"
-                  />
-               </Form>
-               <button>
-               <BiSearch className={S.iconSearch} />
-               </button> */}
