@@ -12,7 +12,10 @@ export function SchedulingConsultPage() {
     { id: 5, nome: 'Tomografia computadorizada' },
     { id: 6, nome: 'Endoscopia digestiva alta' },
     { id: 7, nome: 'PAAF' },
-    { id: 8, nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'},
+    {
+      id: 8,
+      nome: 'Exames ginecológicos (preventivo, colposcopia, biópsia do colo uterino)'
+    },
     { id: 9, nome: 'Gastroenterologista' },
     { id: 10, nome: 'Clínico geral' },
     { id: 11, nome: 'Cirurgião' },
@@ -29,8 +32,7 @@ export function SchedulingConsultPage() {
   const date = [
     { id: 1, hours: '10:00' },
     { id: 2, hours: '10:30' },
-    { id: 3, hours: '12:00' },
-
+    { id: 3, hours: '12:00' }
   ]
 
   const [procediments, setProcediments] = useState([])
@@ -44,20 +46,19 @@ export function SchedulingConsultPage() {
     profissional: '',
     procedimento: '',
     valor: '',
-    forma_de_pagamento: ''
+    data_da_consulta: '',
+    hora_da_consulta: ''
   })
 
   useEffect(() => {
     fetchProfessionals()
     fetchProcediments()
-    console.log(procediments)
   }, [])
 
   const getClinicId = () => {
     const userDataString = localStorage.getItem('user')
     const userData = JSON.parse(userDataString)
     const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
     return clinicId
   }
 
@@ -67,7 +68,6 @@ export function SchedulingConsultPage() {
       if (!response.data) {
         alert('Não existem profissionais cadastrados!')
       } else {
-        console.log(response.data)
         setProfessionals(response.data)
       }
     } catch (error) {
@@ -82,7 +82,6 @@ export function SchedulingConsultPage() {
       if (!response.data) {
         alert('Não existem procedimentos de consulta cadastrados!')
       } else {
-        console.log(response.data)
         setProcediments(response.data)
       }
     } catch (error) {}
@@ -117,21 +116,21 @@ export function SchedulingConsultPage() {
     const clinicId = getClinicId()
 
     processForm()
-      .then(dataToSend => {
-        console.log(dataToSend)
-        api
-          .post(`/consult/${clinicId}`, dataToSend)
-          .then(response => {
-            alert('Exame criado com sucesso!')
-            console.log(response)
-          })
-          .catch(error => {
-            console.error('Erro ao processar o formulário:', error)
-          })
-      })
-      .catch(error => {
-        console.error('Erro ao processar o formulário:', error)
-      })
+    // .then(dataToSend => {
+    //   console.log(dataToSend)
+    //   api
+    //     .post(`/consult/${clinicId}`, dataToSend)
+    //     .then(response => {
+    //       alert('Exame criado com sucesso!')
+    //       console.log(response)
+    //     })
+    //     .catch(error => {
+    //       console.error('Erro ao processar o formulário:', error)
+    //     })
+    // })
+    // .catch(error => {
+    //   console.error('Erro ao processar o formulário:', error)
+    // })
   }
 
   const processForm = async () => {
@@ -143,10 +142,12 @@ export function SchedulingConsultPage() {
         profissionalId: parseInt(formData.profissional),
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),
-        tipo_de_pagamento: formData.forma_de_pagamento,
+        data_da_consulta: formData.data_da_consulta,
+        hora_da_consulta: formData.hora_da_consulta,
         clinicaId: getClinicId()
       }
 
+      console.log(dataToSend)
       return dataToSend
     } catch (error) {
       console.error('Erro ao processar o formulário:', error)
@@ -197,6 +198,9 @@ export function SchedulingConsultPage() {
                 style={{ width: '255px', padding: '5px' }}
                 type="date"
                 id="date_procedure"
+                name="data_da_consulta"
+                onChange={handleInputChange}
+                value={formData.data_da_consulta}
                 required
               />
             </div>
@@ -205,29 +209,40 @@ export function SchedulingConsultPage() {
               <label className={S.labelForm} for="procedure">
                 Horário:
               </label>
-              <select className={S.inputForm} style={{ width: '255px' }}>
+              <select
+                className={S.inputForm}
+                style={{ width: '255px' }}
+                name="hora_da_consulta"
+                onChange={handleInputChange}
+                value={formData.hora_da_consulta}
+              >
                 <option>Selecione o horário</option>
                 {date.map(date => (
-                  <option key={date.id} value={date.id}>
+                  <option key={date.id} value={date.hours}>
                     {date.hours}
                   </option>
                 ))}
               </select>
             </div>
           </div>
- 
-              <label className={S.labelForm} for="procedure">
-                Procedimento:
-              </label>
-              <select className={S.inputForm}>
-                <option>Selecione o procedimento</option>
-                {procedure.map(procedure => (
-                  <option key={procedure.id} value={procedure.id}>
-                    {procedure.nome}
-                  </option>
-                ))}
-              </select>
-      
+
+          <label className={S.labelForm} for="procedure">
+            Procedimento:
+          </label>
+          <select
+            className={S.inputForm}
+            name="procedimento"
+            onChange={handleInputChange}
+            value={formData.procedimento}
+            required
+          >
+            <option>Selecione o procedimento</option>
+            {procediments.map(procediments => (
+              <option key={procediments.id} value={procediments.id}>
+                {procediments.nome}
+              </option>
+            ))}
+          </select>
 
           <div className={S.divForms}>
             <div>
@@ -240,13 +255,23 @@ export function SchedulingConsultPage() {
                 type="text"
                 id="valor"
                 step="0.01"
+                name="valor"
+                onChange={handleInputChange}
+                value={formData.valor}
                 required
               />
             </div>
 
             <div>
               <label className={S.labelForm}>Forma de Pagamento:</label>
-              <select className={S.inputForm} style={{ width: '275px' }}>
+              <select
+                className={S.inputForm}
+                style={{ width: '275px' }}
+                name="forma_de_pagamento"
+                onChange={handleInputChange}
+                value={formData.forma_de_pagamento}
+                required
+              >
                 <option option="Selecione a forma de pagamento">
                   Selecione a forma de pagamento
                 </option>
