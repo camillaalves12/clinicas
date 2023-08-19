@@ -1,26 +1,61 @@
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { BiSearch } from 'react-icons/bi';
-import { Form, Button } from 'react-bootstrap';
-import S from './styles.module.scss'; 
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import { BiSearch } from 'react-icons/bi'
+import { Form, Button } from 'react-bootstrap'
+import S from './styles.module.scss'
+import { useState, useEffect } from 'react'
+import { api } from '../../services/api'
 
 export function Table() {
+  const [consults, setConsults] = useState([])
 
-   const dados = [
-      { index: 1, patient: 'João', professional: 'Marcos', specialty:'Obstetra', value: 100, form_of_payment: 'pix', date:23 },
-      { index: 2, patient: 'João', professional: 'Marcos', specialty:'Cardíaco', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 3, patient: 'Maria', professional: 'Gisele', specialty:'Geral', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 4, patient: 'Pedro', professional: 'LAB. NATLAB', specialty:'Exame', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-      { index: 5, patient: 'Pedro', professional: 'Antonio', specialty:'Obstetra', value: 150, form_of_payment: 'pix', date:23 },
-    ];
-  
-  const Tabela = ({ dados }) => {
+  const [initialDate, setInitialDate] = useState('')
+
+  const [finalDate, setFinalDate] = useState('')
+
+  const handleDateSubmit = e => {
+    e.preventDefault()
+    console.log(initialDate, 'initialDate')
+    console.log(finalDate, 'finalDate')
+
+    const dataToSend = {
+      data_inicial: initialDate,
+      data_final: finalDate
+    }
+
+    api
+      .put(`/consultForPeriod/${getClinicId()}`, dataToSend)
+      .then(response => {
+        console.log(response.data)
+        setConsults(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  const getClinicId = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    const clinicId = userData?.user?.clinicaId
+    console.log(clinicId)
+    return clinicId
+  }
+
+  const fetchConsults = async () => {
+    try {
+      const response = await api.get('/consults')
+      setConsults(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchConsults()
+  }, [])
+
+  const Tabela = () => {
     return (
       <table className={S.table}>
         <thead>
@@ -34,106 +69,86 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {dados.map((item, index) => (
-            <tr key={index}>
-              <td>{item.patient}</td>
-              <td>{item.professional}</td>
-              <td>{item.specialty}</td>
-              <td>{`R$ ${item.value}`}</td>
-              <td>{item.form_of_payment}</td>
-              <td>{item.date}</td>
+          {consults.map(consults => (
+            <tr key={consults.id}>
+              <td>{consults.paciente.nome}</td>
+              <td>{consults.profissional.nome}</td>
+              <td>{consults.procedimento.nome}</td>
+              <td>{`R$ ${consults.valor_da_consulta}`}</td>
+              <td>{consults.tipo_de_pagamento}</td>
+              <td>{new Date(consults.data_de_criacao).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    );
-  };
-
-  Tabela.propTypes = {
-    dados: PropTypes.arrayOf(
-      PropTypes.shape({
-        patient: PropTypes.string.isRequired,
-        professional: PropTypes.string.isRequired,
-        specialty: PropTypes.string.isRequired,
-        value: PropTypes.number.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-  };
-
+    )
+  }
 
   return (
     <>
       <div className={S.container}>
         <div className={S.container_search_and_create}>
           <div className={S.search_and__date}>
-               <form className={S.searchDate}> 
-                  <input type="date" name="" id="" className={S.inputDate}/>
-                  <input type="date" name="" id="" className={S.inputDate}/>
-                  <button type='submit'>
-                     <BiSearch className={S.iconSearch} />
-                  </button> 
-                <Form className={S.search}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Pesquisar"
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
-                  />
-                    <button>
-                      <BiSearch className={S.iconSearch} />
-                    </button> 
-                </Form>
-               </form>
-        </div>
-          <div className={S.divCreates}>
+            <form className={S.searchDate} onSubmit={handleDateSubmit}>
+              <input
+                type="date"
+                name="initialDate"
+                value={initialDate}
+                onChange={e => setInitialDate(e.target.value)}
+                className={S.inputDate}
+              />
 
+              <input
+                type="date"
+                name="finalDate"
+                value={finalDate}
+                onChange={e => setFinalDate(e.target.value)}
+                className={S.inputDate}
+              />
+              <button type="submit">
+                <BiSearch className={S.iconSearch} />
+              </button>
+              <Form className={S.search}>
+                <Form.Control
+                  type="search"
+                  placeholder="Pesquisar"
+                  className="me-2"
+                  aria-label="Search"
+                  style={{
+                    outline: 'none',
+                    boxShadow: 'none',
+                    border: '1px solid #cdcdcd'
+                  }}
+                />
+                <button>
+                  <BiSearch className={S.iconSearch} />
+                </button>
+              </Form>
+            </form>
+          </div>
+          <div className={S.divCreates}>
             <Link to="/create_consult">
-              <Button variant="primary">
-                + Criar nova consulta
-              </Button>
+              <Button variant="primary">+ Criar nova consulta</Button>
             </Link>
             <Link to="/create_exam">
-              <Button variant="primary" className={S.input} style={{background: '#fff', color: '#0d6efd' }}>
+              <Button
+                variant="primary"
+                className={S.input}
+                style={{ background: '#fff', color: '#0d6efd' }}
+              >
                 + Criar novo exame
               </Button>
             </Link>
-
-
           </div>
         </div>
         <div className={S.divTable}>
-          {dados.length > 0 ? (
-            <Tabela dados={dados} />
+          {consults.length > 0 ? (
+            <Tabela />
           ) : (
-            <table className={S.table}>
-            <thead>
-              <tr>
-                <th className={S.th_thead}>Paciente</th>
-                <th className={S.th_thead}>Profissional</th>
-                <th className={S.th_thead}>Especialidade</th>
-                <th className={S.th_thead}>Valor</th>
-                <th className={S.th_thead}>Forma de pagamento</th>
-                <th className={S.th_thead}>Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dados.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.patient}</td>
-                  <td>{item.professional}</td>
-                  <td>{item.specialty}</td>
-                  <td>{`R$ ${item.value}`}</td>
-                  <td>{item.form_of_payment}</td>
-                  <td>{item.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <p className={S.p}>Nenhuma consulta encontrada</p>
           )}
         </div>
       </div>
     </>
-  );
+  )
 }
