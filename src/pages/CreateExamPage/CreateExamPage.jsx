@@ -52,7 +52,7 @@ export function CreateExamPage() {
 
     try {
       const response = await api.get(
-        `/procedimentsForType/${consultProcediment}`
+        `/procediments`
       )
 
       if (!response.data) {
