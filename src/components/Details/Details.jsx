@@ -130,7 +130,6 @@ export function Details() {
     try {
       const response = await api.get(`/consultsForPatient/${pacienteId}`)
       setConsults(response.data)
-      console.log(response.data)
     } catch (error) {
       console.log(error)
     }
