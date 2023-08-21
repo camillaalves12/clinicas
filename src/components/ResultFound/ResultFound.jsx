@@ -17,13 +17,13 @@ export function ResultFound({ dados }) {
           </tr>
         </thead>
         <tbody>
-          {dados.map((item, index) => (
-            <tr key={index}>
+          {dados.map((item) => (
+            <tr key={item.id}>
               <td>{item.nome}</td>
               <td>{item.cpf}</td>
               <td>{item.data_de_nascimento}</td>
               <td>{item.telefone}</td>
-              <Link to="./details">
+              <Link to={`./details/${item.id}`}>
                 <td>
                   <BiInfoCircle className={S.iconInfo} />
                 </td>

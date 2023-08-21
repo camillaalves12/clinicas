@@ -67,10 +67,10 @@ export const AppRouter = () => {
           />
         </Route>
 
-        <Route exact path="/search_patient/details" element={<PrivateRoute />}>
+        <Route exact path="/search_patient/details/:id" element={<PrivateRoute />}>
           <Route
             exact
-            path="/search_patient/details"
+            path="/search_patient/details/:id"
             element={<DetailsPage />}
           />
         </Route>
