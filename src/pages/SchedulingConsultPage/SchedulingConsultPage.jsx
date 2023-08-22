@@ -164,6 +164,53 @@ export function SchedulingConsultPage() {
             required
           />
 
+<div className={S.divForms}>
+              <div>
+                  <label className={S.labelForm} for="procedure">
+                      Procedimento:
+                  </label>
+                  <select
+                  style={{ width: '255px' }}
+                    className={S.inputForm}
+                    name="procedimento"
+                    onChange={handleInputChange}
+                    value={formData.procedimento}
+                    required
+                  >
+                <option>Selecione o procedimento</option>
+                {procediments.map(procediments => (
+                  <option key={procediments.id} value={procediments.id}>
+                    {procediments.nome}
+                  </option>
+                ))}
+              </select>
+              </div>
+
+              <div>
+
+              <div>
+                  <label className={S.labelForm} for="professional">
+                    Profissional:
+                  </label>
+                  <select
+                    className={S.inputForm}
+                    style={{ width: '255px' }}
+                    name="profissional"
+                    onChange={handleInputChange}
+                    value={formData.profissional}
+                    required
+                  >
+                    <option>Selecione o profissional</option>
+                    {professionals.map(professionals => (
+                      <option key={professionals.id} value={professionals.id}>
+                        {professionals.nome}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
           <div className={S.divForms}>
             <div>
               <label className={S.labelForm} for="date_procedure">
@@ -202,23 +249,8 @@ export function SchedulingConsultPage() {
             </div>
           </div>
 
-          <label className={S.labelForm} for="procedure">
-            Procedimento:
-          </label>
-          <select
-            className={S.inputForm}
-            name="procedimento"
-            onChange={handleInputChange}
-            value={formData.procedimento}
-            required
-          >
-            <option>Selecione o procedimento</option>
-            {procediments.map(procediments => (
-              <option key={procediments.id} value={procediments.id}>
-                {procediments.nome}
-              </option>
-            ))}
-          </select>
+
+
 
           <div className={S.divForms}>
             <div>
