@@ -4,6 +4,12 @@ import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
 
 export function SchedulingConsultPage() {
+  const date = [
+    { id: 1, hours: '10:00' },
+    { id: 2, hours: '10:30' },
+    { id: 3, hours: '12:00' },
+
+  ]
 
   const [procediments, setProcediments] = useState([])
 
