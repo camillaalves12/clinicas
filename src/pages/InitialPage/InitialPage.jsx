@@ -58,9 +58,6 @@ export function InitialPage() {
       .put(`/monthlyData/${getClinicId()}`, dataToSend)
       .then(response => {
         setMonthlyData(response.data)
-        console.log(dataToSend)
-        console.log(response.data)
-        
       })
       .catch(error => {
         console.log(error)
@@ -85,7 +82,6 @@ export function InitialPage() {
     api
       .put(`/dataForPeriod/${getClinicId()}`, dataToSend)
       .then(response => {
-        console.log(response.data)
         setDataForPeriod(response.data)
       })
       .catch(error => {
@@ -101,7 +97,10 @@ export function InitialPage() {
           <div className={S.cards}>
             <Card title="Saldo Diário" money={dailyData.valor_total} />
             <Card title="Saldo Mensal" money={monthlyData.valor_total} />
-            <Card title="Saldo do Período Selecionado" money="500" />
+            <Card
+              title="Saldo por Período"
+              money={dataForPeriod.valor_total}
+            />
           </div>
           <div>
             <form className={S.searchDate} onSubmit={handleDateSubmit}>
