@@ -60,7 +60,7 @@ export function Details() {
       <Header />
       <div className={S.container}>
         <div className={S.divTable}>
-          {dados.length > 0 ? (
+          {consults.length > 0 ? (
             <Tabela />
           ) : (
             <>
