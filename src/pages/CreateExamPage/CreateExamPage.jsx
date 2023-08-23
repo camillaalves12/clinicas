@@ -5,6 +5,8 @@ import S from './styles.module.scss'
 
 export function CreateExamPage() {
 
+  const [procedimentsType, setProcedimentsType] = useState([])
+
   const [procediments, setProcediments] = useState([])
 
   const [professionals, setProfessionals] = useState([])
@@ -16,14 +18,18 @@ export function CreateExamPage() {
     profissional: '',
     procedimento: '',
     valor: '',
-    forma_de_pagamento: ''
+    forma_de_pagamento: '',
+    tipo_de_procedimento: 'Selecione o Tipo de Procedimento'
   })
 
   useEffect(() => {
     fetchProfessionals()
-    fetchProcediments()
-    console.log(procediments)
+    fetchProcedimentsType()
   }, [])
+
+  useEffect(() => {
+    fetchProcediments()
+  }, [formData.tipo_de_procedimento])
 
   const getClinicId = () => {
     const userDataString = localStorage.getItem('user')
@@ -52,7 +58,7 @@ export function CreateExamPage() {
 
     try {
       const response = await api.get(
-        `/procediments`
+        `/procedimentsForType/${parseInt(formData.tipo_de_procedimento)}`
       )
 
       if (!response.data) {
@@ -60,6 +66,23 @@ export function CreateExamPage() {
       } else {
         console.log(response.data)
         setProcediments(response.data)
+      }
+    } catch (error) {}
+  }
+
+  const fetchProcedimentsType = async () => {
+    const consultProcediment = 1
+
+    try {
+      const response = await api.get(
+        `/procedimentTypes`
+      )
+
+      if (!response.data) {
+        alert('Não existem procedimentos de consulta cadastrados!')
+      } else {
+        console.log(response.data)
+        setProcedimentsType(response.data)
       }
     } catch (error) {}
   }
@@ -192,21 +215,21 @@ export function CreateExamPage() {
                 </div>
 
                 <div>
-                  <label className={S.labelForm} for="type_exam">
+                  <label className={S.labelForm} for="tipo_de_procedimento">
                     Tipo de Exame:
                   </label>
                   <select
                     className={S.inputForm}
                     style={{ width: '255px' }}
-                    name="type_exam"
+                    name="tipo_de_procedimento"
                     onChange={handleInputChange}
-                    value={formData.procedimento}
+                    value={formData.tipo_de_procedimento}
                     required
                   >
                     <option>Selecione o tipo de exame</option>
-                    {procediments.map(procediments => (
-                      <option key={procediments.id} value={procediments.id}>
-                        {procediments.nome}
+                    {procedimentsType.map(procedimentsType => (
+                      <option key={procedimentsType.id} value={procedimentsType.id}>
+                        {procedimentsType.nome}
                       </option>
                     ))}
                   </select>
@@ -214,22 +237,22 @@ export function CreateExamPage() {
                 </div>
               </div>
 
-              <label className={S.labelForm} for="procedure">
+              <label className={S.labelForm} for="procedimento">
                     Exame:
                   </label>
                   <select
                     className={S.inputForm}
-                    name="procedure"
+                    name="procedimento"
                     onChange={handleInputChange}
                     value={formData.procedimento}
                     required
                   >
                     <option>Selecione o exame</option>
-                    {procediments.map(procediments => (
+                    {procediments.length > 0 ? procediments.map(procediments => (
                       <option key={procediments.id} value={procediments.id}>
                         {procediments.nome}
                       </option>
-                    ))}
+                    )) : <option>Nenhum exame encontrado</option>}
                   </select>
 
               <div className={S.divForms}>
