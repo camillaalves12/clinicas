@@ -19,7 +19,7 @@ export function CreateExamPage() {
     procedimento: '',
     valor: '',
     forma_de_pagamento: '',
-    tipo_de_procedimento: 'Selecione o Tipo de Procedimento'
+    tipo_de_procedimento: ''
   })
 
   useEffect(() => {
@@ -54,7 +54,6 @@ export function CreateExamPage() {
   }
 
   const fetchProcediments = async () => {
-    const consultProcediment = 1
 
     try {
       const response = await api.get(
@@ -206,11 +205,11 @@ export function CreateExamPage() {
                     required
                   >
                     <option>Selecione o profissional</option>
-                    {professionals.map(professionals => (
+                    {professionals.length > 0 ? professionals.map(professionals => (
                       <option key={professionals.id} value={professionals.id}>
                         {professionals.nome}
                       </option>
-                    ))}
+                    )) : <option>Nenhum profissional encontrado</option>}
                   </select>
                 </div>
 
@@ -227,11 +226,11 @@ export function CreateExamPage() {
                     required
                   >
                     <option>Selecione o tipo de exame</option>
-                    {procedimentsType.map(procedimentsType => (
+                    {procedimentsType.length > 0 ? procedimentsType.map(procedimentsType => (
                       <option key={procedimentsType.id} value={procedimentsType.id}>
                         {procedimentsType.nome}
                       </option>
-                    ))}
+                    )) : <option>Nenhum tipo de exame encontrado</option>}
                   </select>
                   
                 </div>

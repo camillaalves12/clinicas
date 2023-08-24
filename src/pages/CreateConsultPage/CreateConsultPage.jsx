@@ -181,11 +181,11 @@ export function CreateConsultPage() {
                     required
                   >
                     <option>Selecione o profissional</option>
-                    {professionals.map(professionals => (
+                    {professionals.length > 0 ? professionals.map(professionals => (
                       <option key={professionals.id} value={professionals.id}>
                         {professionals.nome}
                       </option>
-                    ))}
+                    )) : <option>Nenhum profissional encontrado</option>}
                   </select>
                 </div>
 
@@ -201,12 +201,12 @@ export function CreateConsultPage() {
                     value={formData.procedimento}
                     required
                   >
-                    <option>Selecione a consulta</option>
-                    {procediments.map(procediments => (
+                    <option>Selecione o procedimento</option>
+                    {procediments.length > 0 ? procediments.map(procediments => (
                       <option key={procediments.id} value={procediments.id}>
                         {procediments.nome}
                       </option>
-                    ))}
+                    )) : <option>Nenhum procedimento encontrado</option>}
                   </select>
                 </div>
               </div>
