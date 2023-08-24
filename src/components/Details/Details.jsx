@@ -28,7 +28,8 @@ export function Details() {
 
   const Tabela = () => {
     return (
-      <table className={S.table}>
+
+        <table className={S.table}>
         <thead>
           <tr>
             <th className={S.th_thead}>Paciente</th>
@@ -51,7 +52,7 @@ export function Details() {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
     )
   }
 
@@ -59,6 +60,7 @@ export function Details() {
     <>
       <Header />
       <div className={S.container}>
+      <h3 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Detalhes do paciente</h3>
         <div className={S.divTable}>
           {consults.length > 0 ? (
             <Tabela />
