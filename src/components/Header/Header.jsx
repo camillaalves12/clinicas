@@ -52,7 +52,7 @@ export function Header() {
               </Nav.Link>
               <NavDropdown title="Resumos">
               <NavDropdown.Item as={Link} to="/procedures">
-                Resumos Diário
+                Resumo Diário
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/proceduresScheduling">
                 Agendamentos de Procedimentos
