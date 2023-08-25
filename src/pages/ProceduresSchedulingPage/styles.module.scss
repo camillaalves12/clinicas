@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 172vh;
-  margin-top: 4.7rem ;
+  width: 180vh;
+  margin-top: 1.5rem ;
   height: 75vh;
 
   h2 {
@@ -59,14 +59,11 @@
     }
   }
 
-
-
-
-
   .divTable {
     overflow: auto;
-    height: 25rem;
     overflow-x: hidden;
+    min-height: 25vh;
+    height: 70vh;
 
     .table {
       width: 170vh;
@@ -76,9 +73,9 @@
       thead {
         background-color: #cdcdcd;
         font-size: 18px;
-        position: sticky; /* Adicione posição sticky ao cabeçalho */
-        top: -1px; /* Defina o deslocamento negativo para ficar imediatamente acima da div.container */
-        z-index: 1; /* Ajuste o valor de z-index para garantir que o cabeçalho fique acima do conteúdo */
+        position: sticky;
+        top: -1px;
+        z-index: 1;
         
         :hover{
           background-color: #cdcdcd !important;

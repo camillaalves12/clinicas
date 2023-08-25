@@ -3,10 +3,11 @@ import { Header } from '../../components/Header/Header'
 import { DashPie } from '../../components/DashPie/DashPie'
 import { DashSpline } from '../../components/DashSpline/DashSpline'
 import { BiSearch } from 'react-icons/bi'
-import { Form } from 'react-bootstrap'
 import S from './styles.module.scss'
 import { useEffect, useState } from 'react'
 import { api } from '../../services/api'
+
+
 
 export function InitialPage() {
   const [initialDate, setInitialDate] = useState('')

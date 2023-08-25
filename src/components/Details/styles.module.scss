@@ -59,9 +59,10 @@
 
   .divTable {
     overflow: auto;
-    height: 22rem;
     overflow-x: hidden;
-
+    min-height: 25vh;
+    height: 70vh;
+    
     .table {
       width: 170vh;
       border-spacing: 0 8px;
