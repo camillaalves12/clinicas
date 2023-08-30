@@ -48,14 +48,17 @@ export function Header() {
               navbarScroll
             >
               <Nav.Link as={Link} to="/initial">
-                Painel Administrativo
+                Painel administrativo
               </Nav.Link>
               <NavDropdown title="Resumos">
               <NavDropdown.Item as={Link} to="/procedures">
-                Resumo Diário
+                Resumo diário
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/proceduresScheduling">
-                Agendamentos de Procedimentos
+              <NavDropdown.Item as={Link} to="/procedures_scheduling">
+                Agendamentos de procedimentos
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/report_professional">
+                Relatório por profissional
               </NavDropdown.Item>
               </NavDropdown>
 
@@ -67,7 +70,7 @@ export function Header() {
                   Criar exame
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/scheduling_consult">
-                  Criar Agendamento
+                  Criar agendamento
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Cadastros">
@@ -75,7 +78,7 @@ export function Header() {
                   Cadastrar paciente
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/register_doctor">
-                  Cadastrar Doutor
+                  Cadastrar doutor
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link as={Link} to="/search_patient">

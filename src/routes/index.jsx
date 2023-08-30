@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { LoginPage } from '../pages/LoginPage/LoginPage'
 import { InitialPage } from '../pages/InitialPage/InitialPage'
 import {ProceduresSchedulingPage} from '../pages/ProceduresSchedulingPage/ProceduresSchedulingPage'
+import {ReportProfessional} from '../pages/ReportProfessional/ReportProfessional'
 import { CreateConsultPage } from '../pages/CreateConsultPage/CreateConsultPage'
 import { CreateExamPage } from '../pages/CreateExamPage/CreateExamPage'
 import { ProceduresPage } from '../pages/ProceduresPage/ProceduresPage'
@@ -23,12 +24,16 @@ export const AppRouter = () => {
           <Route exact path="/initial" element={<InitialPage />} />
         </Route>
 
-        <Route exact path="/proceduresScheduling" element={<PrivateRoute />}>
-          <Route exact path="/proceduresScheduling" element={<ProceduresSchedulingPage />} />
+        <Route exact path="/procedures_scheduling" element={<PrivateRoute />}>
+          <Route exact path="/procedures_scheduling" element={<ProceduresSchedulingPage />} />
         </Route>
 
         <Route exact path="/create_consult" element={<PrivateRoute />}>
           <Route exact path="/create_consult" element={<CreateConsultPage />} />
+        </Route>
+
+        <Route exact path="/report_professional" element={<PrivateRoute />}>
+          <Route exact path="/report_professional" element={<ReportProfessional />} />
         </Route>
 
         <Route exact path="/create_exam" element={<PrivateRoute />}>
