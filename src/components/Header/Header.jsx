@@ -55,7 +55,7 @@ export function Header() {
                 Resumo diário
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/procedures_scheduling">
-                Agendamentos de procedimentos
+                Agendamento de procedimento
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/report_professional">
                 Relatório por profissional
