@@ -5,7 +5,8 @@ import { Form, Button } from 'react-bootstrap'
 import { Header } from '../../components/Header/Header'
 import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
-import { BiCheckCircle} from "react-icons/bi";
+import { HiCheck} from "react-icons/hi";
+import { HiOutlineX} from "react-icons/hi";
 
 
 export function ProceduresSchedulingPage() {
@@ -92,7 +93,17 @@ export function ProceduresSchedulingPage() {
               <td>
                 {new Date(schedulings.data_da_consulta).toLocaleDateString()}
               </td>
-              <td className={S.iconCheck}><BiCheckCircle/></td>
+
+              <td className={S.iconCheck}> 
+
+                <HiCheck style={{width:'3rem'}}/> 
+                
+                <div className={S.iconCheckX}>
+                  <HiOutlineX/>
+                </div>
+
+              </td>
+
             </tr>
           ))}
         </tbody>

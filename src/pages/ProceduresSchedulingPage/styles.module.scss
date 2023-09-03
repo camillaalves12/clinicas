@@ -66,10 +66,17 @@
     height: 70vh;
 
   .iconCheck {
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
     color: #0d6efd;
+
+    .iconCheckX {
+      color: #fd0d0d;
+      width: 3rem;
+    }
+
     }
 
 
