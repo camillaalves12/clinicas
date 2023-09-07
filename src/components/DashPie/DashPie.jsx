@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import ReactApexChart from 'react-apexcharts'
 import S from './styles.module.scss'
-import { api } from '../../services/api' // Importe a instância do axios ou método de acesso à API
+import { api } from '../../services/api'
+import Refresh from '../../components/Refresh/Refresh'
 
 export function DashPie() {
   const [dailyData, setDailyData] = useState() // Inicializando como null
@@ -38,15 +39,15 @@ export function DashPie() {
   }
 
   if (!dailyData) {
-    return <p>Carregando</p> 
+    return <p>Carregando</p>
   }
-
 
   const series = dailyData.valor_por_profissional.map(
     profissional => profissional.totalValue
   )
   const labels = dailyData.valor_por_profissional.map(
-    profissional => `Dr. ${profissional.profissional} - R$ ${profissional.totalValue}`
+    profissional =>
+      `Dr. ${profissional.profissional} - R$ ${profissional.totalValue}`
   )
 
   const options = {
@@ -85,7 +86,11 @@ export function DashPie() {
   return (
     <div className={S.container}>
       <div id="chart" className={S.dashPie}>
-        <ReactApexChart options={options} series={series} type="polarArea" />
+        {dailyData.length > 0 ? (
+          <ReactApexChart options={options} series={series} type="polarArea" />
+        ) : (
+          <p>Nenhum dado encontrado</p>
+        )}
       </div>
     </div>
   )

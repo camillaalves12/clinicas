@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import S from './styles.module.scss'
 
-export function Refresh() {
+export default function Refresh() {
    return(
       <div className={S.container}>
          <div className={S.divItens}>
