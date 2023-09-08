@@ -5,12 +5,10 @@ import { Form, Button } from 'react-bootstrap'
 import { Header } from '../../components/Header/Header'
 import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
-import { HiCheck} from "react-icons/hi";
-import { HiOutlineX} from "react-icons/hi";
-
+import { HiCheck } from 'react-icons/hi'
+import { HiOutlineX } from 'react-icons/hi'
 
 export function ProceduresSchedulingPage() {
-
   const [schedulings, setSchedulings] = useState([])
 
   const [date, setDate] = useState('')
@@ -21,12 +19,10 @@ export function ProceduresSchedulingPage() {
     const userDataString = localStorage.getItem('user')
     const userData = JSON.parse(userDataString)
     const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
     return clinicId
   }
 
-  const handleDateSubmit = e => {
-    e.preventDefault()
+  const handleDateSubmit = () => {
 
     const dataToSend = {
       data: date
@@ -35,7 +31,6 @@ export function ProceduresSchedulingPage() {
     api
       .put(`/schedulingsForDate`, dataToSend)
       .then(response => {
-        console.log(response.data)
         setSchedulings(response.data)
       })
       .catch(error => {
@@ -43,21 +38,31 @@ export function ProceduresSchedulingPage() {
       })
   }
 
-  const handleButtonClick = () => {
+  const handleDailySchedules = () => {
     const currentDate = new Date()
     const year = currentDate.getFullYear()
     const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+    const day = String(currentDate.getDate()).padStart(2, '0')
 
     const formattedDate = `${year}-${month}-${day}`
 
-    setDate(formattedDate)
-    console.log(formattedDate)
-    handleDateSubmit()
+    const dataToSend = {
+      data: formattedDate
+    }
+
+    api
+      .put(`/schedulingsForDate`, dataToSend)
+      .then(response => {
+        setSchedulings(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const fetchSchedulings = async () => {
     try {
-      const response = await api.get('/schedulings')
+      const response = await api.get('/upcomingSchedulings')
       setSchedulings(response.data)
     } catch (error) {
       console.log(error)
@@ -67,6 +72,49 @@ export function ProceduresSchedulingPage() {
   useEffect(() => {
     fetchSchedulings()
   }, [])
+
+  const handleCreateConsult = schedulings => {
+    const dataToSend = {
+      pacienteId: schedulings.paciente.id,
+      profissionalId: schedulings.profissional.id,
+      procedimentoId: schedulings.procedimento.id,
+      valor_da_consulta: schedulings.valor_da_consulta,
+      tipo_de_pagamento: schedulings.tipo_de_pagamento,
+      clinicaId: schedulings.clinica.id
+    }
+
+    api
+      .post(`/consult/${getClinicId()}`, dataToSend)
+      .then(response => {
+        alert('Consulta criada com sucesso!')
+        console.log(response)
+      })
+      .catch(error => {
+        console.error('Erro ao processar o formulário:', error)
+      })
+
+    api
+      .put(`/confirmScheduling/${schedulings.id}`)
+      .then(response => {
+        console.log(response)
+        fetchSchedulings()
+      })
+      .catch(error => {
+        console.error('Erro ao processar o formulário:', error)
+      })
+  }
+
+  const handleDeleteScheduling = schedulings => {
+    api
+      .delete(`/scheduling/${schedulings.id}`)
+      .then(response => {
+        console.log(response)
+        fetchSchedulings()
+      })
+      .catch(error => {
+        console.error('Erro ao processar o formulário:', error)
+      })
+  }
 
   const Tabela = () => {
     return (
@@ -94,16 +142,17 @@ export function ProceduresSchedulingPage() {
                 {new Date(schedulings.data_da_consulta).toLocaleDateString()}
               </td>
 
-              <td className={S.iconCheck}> 
-
-                <HiCheck style={{width:'3rem'}}/> 
-                
+              <td className={S.iconCheck}>
+                <HiCheck
+                  style={{ width: '3rem' }}
+                  onClick={() => handleCreateConsult(schedulings)}
+                />
                 <div className={S.iconCheckX}>
-                  <HiOutlineX/>
+                  <HiOutlineX
+                    onClick={() => handleDeleteScheduling(schedulings)}
+                  />
                 </div>
-
               </td>
-
             </tr>
           ))}
         </tbody>
@@ -118,8 +167,8 @@ export function ProceduresSchedulingPage() {
         <h2>Agendamentos</h2>
         <div className={S.container_search_and_create}>
           <div className={S.search_and__date}>
-            <form className={S.searchDate} onSubmit={handleDateSubmit}>
-              <button className={S.btnHoje} onClick={handleButtonClick}>
+            <form className={S.searchDate}>
+              <button className={S.btnHoje} type="button" onClick={() => handleDailySchedules()}>
                 Hoje
               </button>
               <input
@@ -128,7 +177,7 @@ export function ProceduresSchedulingPage() {
                 className={S.inputDate}
                 onChange={e => setDate(e.target.value)}
               />
-              <button type="submit">
+              <button type="button" onClick={() => handleDateSubmit()}>
                 <BiSearch className={S.iconSearch} />
               </button>
             </form>
