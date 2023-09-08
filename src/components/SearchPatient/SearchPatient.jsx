@@ -1,46 +1,49 @@
-import React, { useState } from 'react';
-import S from './styles.module.scss';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { ResultFound } from '../ResultFound/ResultFound';
-import { ResultNotFound } from '../ResultNotFound/ResultNotFound';
-import { api } from '../../services/api';
+import React, { useState } from 'react'
+import S from './styles.module.scss'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import { ResultFound } from '../ResultFound/ResultFound'
+import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
+import { api } from '../../services/api'
 
 export function SearchPatient(props) {
-  const [nameOrCPF, setNameOrCPF] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [searchRoute, setSearchRoute] = useState('');
-  const [patients, setPatients] = useState([]);
+  const [nameOrCPF, setNameOrCPF] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
+  const [searchRoute, setSearchRoute] = useState('')
+  const [patients, setPatients] = useState([])
 
-  const handleSearch = async (event) => {
-    event.preventDefault(); // Impede que o formulário seja enviado por requisição HTTP tradicional
+  const handleSearch = async event => {
+    event.preventDefault() // Impede que o formulário seja enviado por requisição HTTP tradicional
 
     try {
       // Limpar resultados de pesquisa anteriores
-      setPatients([]);
+      setPatients([])
 
-      let response;
+      let response
 
       switch (searchRoute) {
         case 'name':
-          response = await api.post('/patientForName', { nome: nameOrCPF });
-          break;
+          response = await api.post('/patientForName', { nome: nameOrCPF })
+          break
         case 'dateOfBirth':
-          response = await api.post('/patientForDateOfBirth', { data_de_nasc: dateOfBirth });
-          break;
+          response = await api.post('/patientForDateOfBirth', {
+            data_de_nascimento: dateOfBirth
+          })
+          break
         case 'cpf':
-          response = await api.post('/patientForCPF', { cpf: nameOrCPF });
-          break;
+          response = await api.post('/patientForCPF', { cpf: nameOrCPF })
+          break
         default:
-          return; // Se nenhuma rota válida foi selecionada, não faz nada
+          return // Se nenhuma rota válida foi selecionada, não faz nada
       }
 
+      console.log(response.data)
       // O resultado da API será um array de pacientes correspondentes
-      setPatients(response.data);
+      setPatients(response.data)
     } catch (error) {
-      console.error('Erro ao buscar pacientes:', error);
+      console.error('Erro ao buscar pacientes:', error)
     }
-  };
+  }
 
   return (
     <>
@@ -51,8 +54,12 @@ export function SearchPatient(props) {
             <Form.Label>Buscar por:</Form.Label>
             <Form.Select
               value={searchRoute}
-              onChange={(e) => setSearchRoute(e.target.value)}
-              style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
+              onChange={e => setSearchRoute(e.target.value)}
+              style={{
+                outline: 'none',
+                boxShadow: 'none',
+                border: '1px solid #cdcdcd'
+              }}
             >
               <option value="">Selecione uma opção</option>
               <option value="name">Nome</option>
@@ -63,13 +70,19 @@ export function SearchPatient(props) {
 
           {searchRoute === 'name' || searchRoute === 'cpf' ? (
             <Form.Group className="mb-3" id="inputNameCPF">
-              <Form.Label>{searchRoute === 'name' ? 'Nome:' : 'CPF:'}</Form.Label>
+              <Form.Label>
+                {searchRoute === 'name' ? 'Nome:' : 'CPF:'}
+              </Form.Label>
               <Form.Control
                 required
                 type="text"
-                style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
+                style={{
+                  outline: 'none',
+                  boxShadow: 'none',
+                  border: '1px solid #cdcdcd'
+                }}
                 value={nameOrCPF}
-                onChange={(e) => setNameOrCPF(e.target.value)}
+                onChange={e => setNameOrCPF(e.target.value)}
               />
             </Form.Group>
           ) : null}
@@ -81,9 +94,13 @@ export function SearchPatient(props) {
                 required
                 className={S.inputDoctor}
                 type="date"
-                style={{ outline: 'none', boxShadow: 'none', border: '1px solid #cdcdcd' }}
+                style={{
+                  outline: 'none',
+                  boxShadow: 'none',
+                  border: '1px solid #cdcdcd'
+                }}
                 value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
+                onChange={e => setDateOfBirth(e.target.value)}
               />
             </Form.Group>
           ) : null}
@@ -99,7 +116,11 @@ export function SearchPatient(props) {
         </div>
       </Form>
 
-      {patients.length > 0 ? <ResultFound dados={patients} /> : <ResultNotFound />}
+      {patients.length > 0 ? (
+        <ResultFound dados={patients} />
+      ) : (
+        <ResultNotFound />
+      )}
     </>
-  );
+  )
 }
