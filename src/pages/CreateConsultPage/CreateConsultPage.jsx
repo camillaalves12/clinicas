@@ -12,8 +12,6 @@ export function CreateConsultPage() {
 
   const [patientId, setPatientId] = useState('')
 
-  const [dataToSend, setDataToSend] = useState([{}])
-
   const [formData, setFormData] = useState({
     paciente: '',
     profissional: '',
@@ -83,10 +81,8 @@ export function CreateConsultPage() {
 
   const processForm = async () => {
     try {
-      const patientCPF = await findPatient(formData.paciente)
-
       const dataToSend = {
-        pacienteId: patientCPF,
+        pacienteId: parseInt(patientId),
         profissionalId: parseInt(formData.profissional),
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),

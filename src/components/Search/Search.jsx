@@ -53,7 +53,7 @@ export function Search(props) {
           setShowDropdown(true)
         }}
         // onBlur={() => setShowDropdown(false)}
-        value={selectedPatient ? selectedPatient.nome : searchTerm}
+        value={searchTerm}
         autoComplete="off"
         required
       />
@@ -66,17 +66,22 @@ export function Search(props) {
                 key={patient.id}
                 onClick={() => {
                   setSelectedPatient(patient)
-                  // setShowDropdown(false)
+                  setSearchTerm(patient.nome)
                   props.getPatientId(patient.id)
                 }}
               >
-                <div>
-                  Nome: {patient.nome} | CPF: {patient.cpf}
+                <div className={S.patientData}>
+                  <p className={S.patientName}>Nome: {patient.nome}</p>
+                  <p className={S.patientCPF}>CPF: {patient.cpf}</p>
+                  <p className={S.patientAge}>Data de Nascimento: {patient.data_de_nascimento}</p>
+                  <p className={S.patientTel}>Telefone: {patient.telefone}</p>
                 </div>
               </li>
             ))
           ) : (
-            <> </>
+            <div>
+              <li>Nenhum paciente encontrado</li>
+            </div>
           )}
         </ul>
       </div>

@@ -2,19 +2,20 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  
 }
 
 .searchDropdown {
-  background-color: #cdcdcd;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-height: 10rem;
   overflow-y: auto;
-  z-index: 20;  
+  z-index: 20;
+  border: 1px solid #fff;
+  border-radius: 0.5rem;
 
   ul {
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -25,11 +26,37 @@
     width: 100%;
     list-style: none;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #fff;
+    border: 1px solid #c3c3c3;
+    border-radius: 0.5rem;
     cursor: pointer;
 
     &:hover {
-      background: #fff;
+      background: #c3c3c38d;
+    }
+
+    .patientData{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 0.5rem;
+
+      .patientName {
+        font-weight: bold;
+        width: 100%;
+      }
+
+      .patientAge {
+        font-size: 0.8rem;
+      }
+
+      .patientTel {
+        font-size: 0.8rem;
+      }
+
+      .patientCPF {
+        font-size: 0.8rem;
+      }
     }
   }
 }
