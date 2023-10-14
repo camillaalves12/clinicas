@@ -1,0 +1,35 @@
+.patientSearch {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+.searchDropdown {
+  background-color: #cdcdcd;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 10rem;
+  overflow-y: auto;
+  z-index: 20;  
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  li {
+    width: 100%;
+    list-style: none;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #fff;
+    cursor: pointer;
+
+    &:hover {
+      background: #fff;
+    }
+  }
+}

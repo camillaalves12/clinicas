@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
 import S from './styles.module.scss'
+import { Search } from '../../components/Search/Search'
 
 export function CreateConsultPage() {
 
   const [procediments, setProcediments] = useState([])
 
   const [professionals, setProfessionals] = useState([])
+
+  const [patientId, setPatientId] = useState('')
 
   const [dataToSend, setDataToSend] = useState([{}])
 
@@ -141,6 +144,11 @@ export function CreateConsultPage() {
     }
   }
 
+  const getPatientId = (patientId) => {
+    setPatientId(patientId)
+    console.log("Entrou na função getPatientId" + patientId)
+  }
+
   return (
     <>
       <Header />
@@ -154,18 +162,7 @@ export function CreateConsultPage() {
             <div className={S.containerForm}>
               <h3 style={{ marginBottom: '1.5rem' }}>Criar Consulta</h3>
 
-              <label className={S.labelForm} for="paciente">
-                Paciente (CPF):
-              </label>
-              <input
-                className={S.inputForm}
-                type="text"
-                id="paciente"
-                name="paciente"
-                onChange={handleInputChange}
-                value={formData.paciente}
-                required
-              />
+              <Search getPatientId={getPatientId} />
 
               <div className={S.divForms}>
                 <div>

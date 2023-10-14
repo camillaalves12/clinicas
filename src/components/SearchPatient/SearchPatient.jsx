@@ -23,7 +23,7 @@ export function SearchPatient(props) {
 
       switch (searchRoute) {
         case 'name':
-          response = await api.post('/patientForName', { nome: nameOrCPF })
+          response = await api.put('/patientForName', { nome: nameOrCPF })
           break
         case 'dateOfBirth':
           response = await api.post('/patientForDateOfBirth', {
