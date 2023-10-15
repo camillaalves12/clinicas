@@ -2,19 +2,15 @@ import { useState, useEffect } from 'react'
 import S from './styles.module.scss'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
+import { Search } from '../../components/Search/Search'
 
 export function SchedulingConsultPage() {
-  const date = [
-    { id: 1, hours: '10:00' },
-    { id: 2, hours: '10:30' },
-    { id: 3, hours: '12:00' }
-  ]
 
   const [procediments, setProcediments] = useState([])
 
   const [professionals, setProfessionals] = useState([])
 
-  const [dataToSend, setDataToSend] = useState([{}])
+  const [patientId, setPatientId] = useState('')
 
   const [formData, setFormData] = useState({
     paciente: '',
@@ -65,25 +61,7 @@ export function SchedulingConsultPage() {
   const handleInputChange = e => {
     const { name, value } = e.target
 
-    // Verifica se o campo é o CPF e formata o valor com pontos e traço
-    if (name === 'paciente') {
-      const formattedCPF = formatCPF(value)
-      setFormData({ ...formData, [name]: formattedCPF })
-    } else {
-      setFormData({ ...formData, [name]: value })
-    }
-  }
-
-  const formatCPF = value => {
-    // Remove qualquer caractere não numérico do valor do CPF
-    const numericCPF = value.replace(/\D/g, '')
-
-    // Aplica a formatação: XXX.XXX.XXX-XX
-    const formattedCPF = numericCPF.replace(
-      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-      '$1.$2.$3-$4'
-    )
-    return formattedCPF
+    setFormData({ ...formData, [name]: value })
   }
 
   const handleSubmit = e => {
@@ -111,10 +89,9 @@ export function SchedulingConsultPage() {
 
   const processForm = async () => {
     try {
-      const patientCPF = await findPatient(formData.paciente)
 
       const dataToSend = {
-        pacienteId: patientCPF,
+        pacienteId: parseInt(patientId),
         profissionalId: parseInt(formData.profissional),
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),
@@ -123,25 +100,15 @@ export function SchedulingConsultPage() {
         clinicaId: getClinicId()
       }
 
-      console.log(dataToSend)
       return dataToSend
     } catch (error) {
       console.error('Erro ao processar o formulário:', error)
     }
   }
 
-  const findPatient = async patient => {
-    try {
-      const response = await api.post('/patientForCPF', { cpf: patient })
-
-      if (!response.data.id) {
-        alert('Paciente não encontrado')
-      } else {
-        return response.data.id
-      }
-    } catch (error) {
-      console.error('Erro ao buscar paciente:', error)
-    }
+  const getPatientId = patientId => {
+    setPatientId(patientId)
+    console.log('Entrou na função getPatientId' + patientId)
   }
 
   return (
@@ -151,18 +118,7 @@ export function SchedulingConsultPage() {
         <div className={S.containerForm}>
           <h3 style={{ marginBottom: '1.5rem' }}>Agendamento</h3>
 
-          <label className={S.labelForm} for="paciente">
-            Paciente (CPF):
-          </label>
-          <input
-            className={S.inputForm}
-            type="text"
-            id="paciente"
-            name="paciente"
-            onChange={handleInputChange}
-            value={formData.paciente}
-            required
-          />
+          <Search getPatientId={getPatientId} />
 
           <div className={S.divForms}>
             <div>
