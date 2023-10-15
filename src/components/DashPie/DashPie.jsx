@@ -33,6 +33,7 @@ export function DashPie() {
     try {
       const response = await api.put(`/dailyData/${getClinicId()}`, dataToSend)
       setDailyData(response.data)
+      console.log(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -86,7 +87,8 @@ export function DashPie() {
   return (
     <div className={S.container}>
       <div id="chart" className={S.dashPie}>
-        {dailyData.length > 0 ? (
+        {dailyData.valor_por_profissional &&
+        dailyData.valor_por_profissional.length > 0 ? (
           <ReactApexChart options={options} series={series} type="polarArea" />
         ) : (
           <p>Nenhum dado encontrado</p>
