@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
 import S from './styles.module.scss'
+import { Search } from '../../components/Search/Search'
 
 export function CreateExamPage() {
 
@@ -11,7 +12,7 @@ export function CreateExamPage() {
 
   const [professionals, setProfessionals] = useState([])
 
-  const [dataToSend, setDataToSend] = useState([{}])
+  const [patientId, setPatientId] = useState('')
 
   const [formData, setFormData] = useState({
     paciente: '',
@@ -35,7 +36,6 @@ export function CreateExamPage() {
     const userDataString = localStorage.getItem('user')
     const userData = JSON.parse(userDataString)
     const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
     return clinicId
   }
 
@@ -89,25 +89,7 @@ export function CreateExamPage() {
   const handleInputChange = e => {
     const { name, value } = e.target
 
-    // Verifica se o campo é o CPF e formata o valor com pontos e traço
-    if (name === 'paciente') {
-      const formattedCPF = formatCPF(value)
-      setFormData({ ...formData, [name]: formattedCPF })
-    } else {
-      setFormData({ ...formData, [name]: value })
-    }
-  }
-
-  const formatCPF = value => {
-    // Remove qualquer caractere não numérico do valor do CPF
-    const numericCPF = value.replace(/\D/g, '')
-
-    // Aplica a formatação: XXX.XXX.XXX-XX
-    const formattedCPF = numericCPF.replace(
-      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-      '$1.$2.$3-$4'
-    )
-    return formattedCPF
+    setFormData({ ...formData, [name]: value })
   }
 
   const handleSubmit = e => {
@@ -116,12 +98,10 @@ export function CreateExamPage() {
 
     processForm()
       .then(dataToSend => {
-        console.log(dataToSend)
         api
           .post(`/consult/${clinicId}`, dataToSend)
           .then(response => {
             alert('Exame criado com sucesso!')
-            console.log(response)
           })
           .catch(error => {
             console.error('Erro ao processar o formulário:', error)
@@ -134,10 +114,8 @@ export function CreateExamPage() {
 
   const processForm = async () => {
     try {
-      const patientCPF = await findPatient(formData.paciente)
-
       const dataToSend = {
-        pacienteId: patientCPF,
+        pacienteId: parseInt(patientId),
         profissionalId: parseInt(formData.profissional),
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),
@@ -151,18 +129,9 @@ export function CreateExamPage() {
     }
   }
 
-  const findPatient = async patient => {
-    try {
-      const response = await api.post('/patientForCPF', { cpf: patient })
-
-      if (!response.data.id) {
-        alert('Paciente não encontrado')
-      } else {
-        return response.data.id
-      }
-    } catch (error) {
-      console.error('Erro ao buscar paciente:', error)
-    }
+  const getPatientId = patientId => {
+    setPatientId(patientId)
+    console.log('Entrou na função getPatientId' + patientId)
   }
 
   return (
@@ -178,18 +147,7 @@ export function CreateExamPage() {
             <div className={S.containerForm}>
               <h3 style={{ marginBottom: '1.5rem' }}>Criar Exame</h3>
 
-              <label className={S.labelForm} for="paciente">
-                Paciente (CPF):
-              </label>
-              <input
-                className={S.inputForm}
-                type="text"
-                id="paciente"
-                name="paciente"
-                onChange={handleInputChange}
-                value={formData.paciente}
-                required
-              />
+              <Search getPatientId={getPatientId} />
 
               <div className={S.divForms}>
                 <div>

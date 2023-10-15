@@ -40,10 +40,9 @@ export function Search(props) {
 
   const dropdownExibition = () => {
     if (showDropdown) {
-      return {display: 'flex'}
+      return { display: 'flex' }
     } else {
-      return {display: 'none'}
-
+      return { display: 'none' }
     }
   }
 
@@ -61,7 +60,6 @@ export function Search(props) {
           setSearchTerm(e.target.value)
           setShowDropdown(true)
         }}
-        // onBlur={() => setShowDropdown(false)}
         value={searchTerm}
         autoComplete="off"
         required
@@ -83,7 +81,9 @@ export function Search(props) {
                 <div className={S.patientData}>
                   <p className={S.patientName}>Nome: {patient.nome}</p>
                   <p className={S.patientCPF}>CPF: {patient.cpf}</p>
-                  <p className={S.patientAge}>Data de Nascimento: {patient.data_de_nascimento}</p>
+                  <p className={S.patientAge}>
+                    Data de Nascimento: {patient.data_de_nascimento}
+                  </p>
                   <p className={S.patientTel}>Telefone: {patient.telefone}</p>
                 </div>
               </li>

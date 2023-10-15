@@ -5,7 +5,6 @@ import S from './styles.module.scss'
 import { Search } from '../../components/Search/Search'
 
 export function CreateConsultPage() {
-
   const [procediments, setProcediments] = useState([])
 
   const [professionals, setProfessionals] = useState([])
@@ -23,39 +22,19 @@ export function CreateConsultPage() {
   useEffect(() => {
     fetchProfessionals()
     fetchProcediments()
-    console.log(procediments)
   }, [])
 
   const getClinicId = () => {
     const userDataString = localStorage.getItem('user')
     const userData = JSON.parse(userDataString)
     const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
     return clinicId
   }
 
   const handleInputChange = e => {
     const { name, value } = e.target
 
-    // Verifica se o campo é o CPF e formata o valor com pontos e traço
-    if (name === 'paciente') {
-      const formattedCPF = formatCPF(value)
-      setFormData({ ...formData, [name]: formattedCPF })
-    } else {
-      setFormData({ ...formData, [name]: value })
-    }
-  }
-
-  const formatCPF = value => {
-    // Remove qualquer caractere não numérico do valor do CPF
-    const numericCPF = value.replace(/\D/g, '')
-
-    // Aplica a formatação: XXX.XXX.XXX-XX
-    const formattedCPF = numericCPF.replace(
-      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-      '$1.$2.$3-$4'
-    )
-    return formattedCPF
+    setFormData({ ...formData, [name]: value })
   }
 
   const handleSubmit = e => {
@@ -64,15 +43,14 @@ export function CreateConsultPage() {
 
     processForm()
       .then(dataToSend => {
-        console.log(dataToSend)
-         api.post(`/consult/${clinicId}`, dataToSend)
-            .then(response => {
-               alert('Consulta criada com sucesso!')
-               console.log(response)
-            })
-            .catch(error => {
-               console.error('Erro ao processar o formulário:', error)
-            })
+        api
+          .post(`/consult/${clinicId}`, dataToSend)
+          .then(response => {
+            alert('Consulta criada com sucesso!')
+          })
+          .catch(error => {
+            console.error('Erro ao processar o formulário:', error)
+          })
       })
       .catch(error => {
         console.error('Erro ao processar o formulário:', error)
@@ -96,20 +74,6 @@ export function CreateConsultPage() {
     }
   }
 
-  const findPatient = async patient => {
-    try {
-      const response = await api.post('/patientForCPF', { cpf: patient })
-
-      if (!response.data.id) {
-        alert('Paciente não encontrado')
-      } else {
-        return response.data.id
-      }
-    } catch (error) {
-      console.error('Erro ao buscar paciente:', error)
-    }
-  }
-
   const fetchProfessionals = async () => {
     try {
       const response = await api.post('/professionalForName')
@@ -127,22 +91,21 @@ export function CreateConsultPage() {
     const consultProcediment = 1
 
     try {
-      const response = await api.get(`/procedimentsForType/${consultProcediment}`)
+      const response = await api.get(
+        `/procedimentsForType/${consultProcediment}`
+      )
 
       if (!response.data) {
         alert('Não existem procedimentos de consulta cadastrados!')
       } else {
         setProcediments(response.data)
       }
-
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
-  const getPatientId = (patientId) => {
+  const getPatientId = patientId => {
     setPatientId(patientId)
-    console.log("Entrou na função getPatientId" + patientId)
+    console.log('Entrou na função getPatientId' + patientId)
   }
 
   return (
@@ -174,11 +137,15 @@ export function CreateConsultPage() {
                     required
                   >
                     <option>Selecione o profissional</option>
-                    {professionals.length > 0 ? professionals.map(professionals => (
-                      <option key={professionals.id} value={professionals.id}>
-                        {professionals.nome}
-                      </option>
-                    )) : <option>Nenhum profissional encontrado</option>}
+                    {professionals.length > 0 ? (
+                      professionals.map(professionals => (
+                        <option key={professionals.id} value={professionals.id}>
+                          {professionals.nome}
+                        </option>
+                      ))
+                    ) : (
+                      <option>Nenhum profissional encontrado</option>
+                    )}
                   </select>
                 </div>
 
@@ -195,11 +162,15 @@ export function CreateConsultPage() {
                     required
                   >
                     <option>Selecione o procedimento</option>
-                    {procediments.length > 0 ? procediments.map(procediments => (
-                      <option key={procediments.id} value={procediments.id}>
-                        {procediments.nome}
-                      </option>
-                    )) : <option>Nenhum procedimento encontrado</option>}
+                    {procediments.length > 0 ? (
+                      procediments.map(procediments => (
+                        <option key={procediments.id} value={procediments.id}>
+                          {procediments.nome}
+                        </option>
+                      ))
+                    ) : (
+                      <option>Nenhum procedimento encontrado</option>
+                    )}
                   </select>
                 </div>
               </div>
