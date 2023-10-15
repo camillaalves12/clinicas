@@ -38,6 +38,15 @@ export function Search(props) {
     } catch (error) {}
   }
 
+  const dropdownExibition = () => {
+    if (showDropdown) {
+      return {display: 'flex'}
+    } else {
+      return {display: 'none'}
+
+    }
+  }
+
   return (
     <div className={S.patientSearch}>
       <label className={S.labelForm} htmlFor="paciente">
@@ -58,9 +67,9 @@ export function Search(props) {
         required
       />
 
-      <div className={S.searchDropdown}>
+      <div className={S.searchDropdown} style={dropdownExibition()}>
         <ul>
-          {showDropdown && patients.length > 0 ? (
+          {patients.length > 0 ? (
             patients.map(patient => (
               <li
                 key={patient.id}
@@ -68,6 +77,7 @@ export function Search(props) {
                   setSelectedPatient(patient)
                   setSearchTerm(patient.nome)
                   props.getPatientId(patient.id)
+                  setShowDropdown(false)
                 }}
               >
                 <div className={S.patientData}>

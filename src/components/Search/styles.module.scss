@@ -1,18 +1,26 @@
+
+
 .patientSearch {
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+  z-index: 999;
 }
 
 .searchDropdown {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 10rem;
+  max-height: 20rem;
   overflow-y: auto;
-  z-index: 20;
   border: 1px solid #fff;
+  box-shadow: 0 0 0.5rem #00000079;
   border-radius: 0.5rem;
+  position: absolute;
+  top: 100%; /* Coloca a dropdown abaixo do input */
+  left: 0;
+  z-index: 999;
 
   ul {
     background-color: #fff;
