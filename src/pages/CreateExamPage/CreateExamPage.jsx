@@ -177,7 +177,7 @@ export function CreateExamPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '255px' }}
+                    style={{ width: '277px' }}
                     name="tipo_de_procedimento"
                     onChange={handleInputChange}
                     value={formData.tipo_de_procedimento}
@@ -219,7 +219,7 @@ export function CreateExamPage() {
                   </label>
                   <input
                     className={S.inputForm}
-                    style={{ width: '235px' }}
+                    style={{ width: '255px' }}
                     type="text"
                     id="valor"
                     step="0.01"
@@ -234,7 +234,7 @@ export function CreateExamPage() {
                   <label className={S.labelForm}>Forma de Pagamento:</label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '275px' }}
+                    style={{ width: '277px' }}
                     name="forma_de_pagamento"
                     onChange={handleInputChange}
                     value={formData.forma_de_pagamento}

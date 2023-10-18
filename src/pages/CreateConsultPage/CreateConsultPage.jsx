@@ -130,7 +130,7 @@ export function CreateConsultPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '255px' }}
+                    style={{ width: '290px' }}
                     name="profissional"
                     onChange={handleInputChange}
                     value={formData.profissional}
@@ -155,7 +155,7 @@ export function CreateConsultPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '255px' }}
+                    style={{ width: '242px' }}
                     name="procedimento"
                     onChange={handleInputChange}
                     value={formData.procedimento}
@@ -182,7 +182,7 @@ export function CreateConsultPage() {
                   </label>
                   <input
                     className={S.inputForm}
-                    style={{ width: '235px' }}
+                    style={{ width: '240px' }}
                     type="text"
                     id="valor"
                     step="0.01"
@@ -197,7 +197,7 @@ export function CreateConsultPage() {
                   <label className={S.labelForm}>Forma de Pagamento:</label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '275px' }}
+                    style={{ width: '291px' }}
                     name="forma_de_pagamento"
                     onChange={handleInputChange}
                     value={formData.forma_de_pagamento}
