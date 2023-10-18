@@ -3,6 +3,9 @@ import { api } from '../../services/api'
 
 import S from './styles.module.scss'
 
+import { BiInfoCircle } from 'react-icons/bi'
+
+
 export function Search(props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [patients, setPatients] = useState([])
@@ -77,7 +80,7 @@ export function Search(props) {
                   props.getPatientId(patient.id)
                   setShowDropdown(false)
                 }}
-              >
+                >
                 <div className={S.patientData}>
                   <p className={S.patientName}>Nome: {patient.nome}</p>
                   <p className={S.patientCPF}>CPF: {patient.cpf}</p>
@@ -85,6 +88,8 @@ export function Search(props) {
                     Data de Nascimento: {patient.data_de_nascimento}
                   </p>
                   <p className={S.patientTel}>Telefone: {patient.telefone}</p>
+                <p><BiInfoCircle className={S.iconInfo} /></p>
+
                 </div>
               </li>
             ))
