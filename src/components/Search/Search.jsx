@@ -3,6 +3,8 @@ import { api } from '../../services/api'
 
 import S from './styles.module.scss'
 
+import { Link } from 'react-router-dom'
+
 import { BiInfoCircle } from 'react-icons/bi'
 
 
@@ -88,7 +90,12 @@ export function Search(props) {
                     Data de Nascimento: {patient.data_de_nascimento}
                   </p>
                   <p className={S.patientTel}>Telefone: {patient.telefone}</p>
-                <p><BiInfoCircle className={S.iconInfo} /></p>
+                  <Link to={`/search_patient/details/${patient.id}`}>
+                    <p>
+                      <BiInfoCircle className={S.iconInfo} />
+                    </p>
+                  </Link>
+                  
 
                 </div>
               </li>

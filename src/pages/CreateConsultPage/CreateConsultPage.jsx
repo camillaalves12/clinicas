@@ -130,6 +130,13 @@ export function CreateConsultPage() {
             className={S.container}
             onSubmit={handleSubmit}
           >
+
+            <Alert
+                      message={confirmationAlert.message}
+                      isVisible={confirmationAlert.visible}
+                      onClose={() => setConfirmationAlert({ visible: false, message: '' })}
+              />
+
             <div className={S.containerForm}>
               <h3 style={{ marginBottom: '1.5rem' }}>Criar Consulta</h3>
 
@@ -232,11 +239,7 @@ export function CreateConsultPage() {
                 <input className={S.btn} type="submit" option="Enviar" />
               </div>
             </div>
-            <Alert
-                message={confirmationAlert.message}
-                isVisible={confirmationAlert.visible}
-                onClose={() => setConfirmationAlert({ visible: false, message: '' })}
-        />
+           
           </form>
         </div>
       </div>
