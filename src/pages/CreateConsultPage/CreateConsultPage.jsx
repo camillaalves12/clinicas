@@ -4,6 +4,8 @@ import { api } from '../../services/api'
 import S from './styles.module.scss'
 import { Search } from '../../components/Search/Search'
 
+import Alert from '../../components/Alert/Alert'; 
+
 export function CreateConsultPage() {
   const [procediments, setProcediments] = useState([])
 
@@ -18,6 +20,13 @@ export function CreateConsultPage() {
     valor: '',
     forma_de_pagamento: ''
   })
+
+
+  const [confirmationAlert, setConfirmationAlert] = useState({
+    visible: false,
+    message: '',
+  });
+
 
   useEffect(() => {
     fetchProfessionals()
@@ -37,25 +46,28 @@ export function CreateConsultPage() {
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const clinicId = getClinicId()
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const clinicId = getClinicId();
 
-    processForm()
-      .then(dataToSend => {
-        api
-          .post(`/consult/${clinicId}`, dataToSend)
-          .then(response => {
-            alert('Consulta criada com sucesso!')
+        processForm()
+          .then((dataToSend) => {
+            api
+              .post(`/consult/${clinicId}`, dataToSend)
+              .then((response) => {
+                setConfirmationAlert({ visible: true, message: 'Consulta criada com sucesso!' });
+                setTimeout(() => {
+                  setConfirmationAlert({ visible: false, message: '' });
+                },4000);
+              })
+              .catch((error) => {
+                console.error('Erro ao processar o formulário:', error);
+              });
           })
-          .catch(error => {
-            console.error('Erro ao processar o formulário:', error)
-          })
-      })
-      .catch(error => {
-        console.error('Erro ao processar o formulário:', error)
-      })
-  }
+          .catch((error) => {
+            console.error('Erro ao processar o formulário:', error);
+          });
+      };
 
   const processForm = async () => {
     try {
@@ -220,6 +232,11 @@ export function CreateConsultPage() {
                 <input className={S.btn} type="submit" option="Enviar" />
               </div>
             </div>
+            <Alert
+                message={confirmationAlert.message}
+                isVisible={confirmationAlert.visible}
+                onClose={() => setConfirmationAlert({ visible: false, message: '' })}
+        />
           </form>
         </div>
       </div>

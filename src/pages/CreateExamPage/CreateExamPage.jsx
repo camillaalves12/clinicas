@@ -4,6 +4,9 @@ import { api } from '../../services/api'
 import S from './styles.module.scss'
 import { Search } from '../../components/Search/Search'
 
+import Alert from '../../components/Alert/Alert'; 
+ 
+
 export function CreateExamPage() {
 
   const [procedimentsType, setProcedimentsType] = useState([])
@@ -22,6 +25,12 @@ export function CreateExamPage() {
     forma_de_pagamento: '',
     tipo_de_procedimento: ''
   })
+
+  const [confirmationAlert, setConfirmationAlert] = useState({
+    visible: false,
+    message: '',
+  });
+
 
   useEffect(() => {
     fetchProfessionals()
@@ -92,25 +101,29 @@ export function CreateExamPage() {
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const clinicId = getClinicId()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const clinicId = getClinicId();
 
     processForm()
-      .then(dataToSend => {
+      .then((dataToSend) => {
         api
           .post(`/consult/${clinicId}`, dataToSend)
-          .then(response => {
-            alert('Exame criado com sucesso!')
+          .then((response) => {
+            setConfirmationAlert({ visible: true, message: 'Exame criado com sucesso!' });
+            setTimeout(() => {
+              setConfirmationAlert({ visible: false, message: '' });
+            },4000);
           })
-          .catch(error => {
-            console.error('Erro ao processar o formulário:', error)
-          })
+          .catch((error) => {
+            console.error('Erro ao processar o formulário:', error);
+          });
       })
-      .catch(error => {
-        console.error('Erro ao processar o formulário:', error)
-      })
-  }
+      .catch((error) => {
+        console.error('Erro ao processar o formulário:', error);
+      });
+  };
+
 
   const processForm = async () => {
     try {
@@ -257,6 +270,11 @@ export function CreateExamPage() {
                 <input className={S.btn} type="submit" option="Enviar" />
               </div>
             </div>
+            <Alert
+                message={confirmationAlert.message}
+                isVisible={confirmationAlert.visible}
+                onClose={() => setConfirmationAlert({ visible: false, message: '' })}
+            />
           </form>
         </div>
       </div>

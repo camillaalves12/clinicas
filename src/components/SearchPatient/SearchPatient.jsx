@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import { ResultFound } from '../ResultFound/ResultFound'
 import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
 import { api } from '../../services/api'
+import { Alert } from 'react-bootstrap'
 
 export function SearchPatient(props) {
   const [nameOrCPF, setNameOrCPF] = useState('')
