@@ -65,7 +65,6 @@ export function SchedulingConsultPage() {
   }
 
   const handleSubmit = e => {
-    e.preventDefault()
     const clinicId = getClinicId()
 
     processForm()

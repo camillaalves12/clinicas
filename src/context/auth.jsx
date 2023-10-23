@@ -1,23 +1,31 @@
 import { createContext, useEffect, useState } from 'react'
 import { api } from '../services/api'
+import Refresh from '../components/Refresh/Refresh'
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const loadingStorageData = async () => {
-      const storagedToken = localStorage.getItem('token') // Corrected: pass 'token' as a string
-      const storagedUser = localStorage.getItem('user') // Corrected: pass 'user' as a string
-
-      if (storagedToken && storagedUser) {
-        setUser(JSON.parse(storagedUser)) // Corrected: parse storagedUser to JSON if it's a stringified object
-      }
-    }
-
     loadingStorageData()
   }, [])
+
+  const loadingStorageData = async () => {
+    const storagedToken = localStorage.getItem('token')
+    const storagedUser = localStorage.getItem('user')
+
+    if (storagedToken && storagedUser) {
+      setUser(JSON.parse(storagedUser))
+    }
+
+    setLoading(false)
+  }
+
+  if (loading) {
+    return <Refresh />
+  }
 
   const signIn = async (email, senha) => {
     const response = await api.post('/auth', {
@@ -32,8 +40,8 @@ export const AuthProvider = ({ children }) => {
       api.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${response.data.token}`
-      localStorage.setItem('token', response.data.token) // Corrected: pass 'token' as a string
-      localStorage.setItem('user', JSON.stringify(response.data)) // Corrected: stringify the response.data object before storing
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('user', JSON.stringify(response.data))
     }
 
     console.log(response)

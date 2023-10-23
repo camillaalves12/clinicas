@@ -17,7 +17,6 @@ export function Search(props) {
 
   useEffect(() => {
     fetchPatients()
-    console.log(patients)
   }, [searchTerm])
 
   useEffect(() => {
@@ -25,10 +24,6 @@ export function Search(props) {
       setPatientId(selectedPatient.id)
     }
   }, [selectedPatient])
-
-  useEffect(() => {
-    console.log(patientId)
-  }, [patientId])
 
   const fetchPatients = async () => {
     try {

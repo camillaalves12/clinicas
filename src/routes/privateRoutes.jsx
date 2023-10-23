@@ -1,11 +1,16 @@
-import { useContext } from "react"
-import { AuthContext } from "../context/auth"
-import { Navigate, Outlet } from "react-router-dom"
-
+import { useContext } from 'react'
+import { AuthContext } from '../context/auth'
+import { Navigate, Outlet } from 'react-router-dom'
 
 export const PrivateRoute = () => {
-  
   const { signed } = useContext(AuthContext)
 
-  return signed ? <Outlet /> : <Navigate to="/" />
+  if (!signed) {
+    console.log('Não está logado')
+
+    return <Navigate to="/" />
+  }
+
+  console.log('Está logado')
+  return <Outlet />
 }

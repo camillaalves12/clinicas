@@ -47,7 +47,6 @@ export function CreateConsultPage() {
   }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         const clinicId = getClinicId();
 
         processForm()
@@ -117,7 +116,6 @@ export function CreateConsultPage() {
 
   const getPatientId = patientId => {
     setPatientId(patientId)
-    console.log('Entrou na função getPatientId' + patientId)
   }
 
   return (

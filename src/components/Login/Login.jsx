@@ -21,7 +21,6 @@ export function Login() {
   }
 
   const handleSignIn = async e => {
-    e.preventDefault()
 
     await signIn(email, password)
   }

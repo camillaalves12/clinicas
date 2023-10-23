@@ -102,7 +102,6 @@ export function CreateExamPage() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     const clinicId = getClinicId();
 
     processForm()

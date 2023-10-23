@@ -73,7 +73,6 @@ export function InitialPage() {
   }
 
   const handleDateSubmit = e => {
-    e.preventDefault()
 
     const dataToSend = {
       data_inicial: initialDate,

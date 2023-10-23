@@ -14,7 +14,6 @@ export function Table() {
   const [finalDate, setFinalDate] = useState('')
 
   const handleDateSubmit = e => {
-    e.preventDefault()
 
     const dataToSend = {
       data_inicial: initialDate,
