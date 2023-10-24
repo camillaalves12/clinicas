@@ -10,6 +10,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     loadingStorageData()
+
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+    
   }, [])
 
   const loadingStorageData = async () => {
@@ -37,13 +44,9 @@ export const AuthProvider = ({ children }) => {
       alert(response.data.error)
     } else {
       setUser(response.data)
-      api.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${response.data.token}`
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('user', JSON.stringify(response.data))
     }
-
     console.log(response)
   }
 
