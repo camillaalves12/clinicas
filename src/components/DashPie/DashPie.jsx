@@ -40,7 +40,7 @@ export function DashPie() {
   }
 
   if (!dailyData) {
-    return <p>Carregando</p>
+    return <Refresh title='Carregando' />
   }
 
   const series = dailyData.valor_por_profissional.map(
