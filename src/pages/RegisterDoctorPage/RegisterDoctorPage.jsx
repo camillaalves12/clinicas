@@ -91,6 +91,7 @@ export function RegisterDoctorPage() {
             </Button>
 
             <Confirm
+              description='Profissional registrado com sucesso!'
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
