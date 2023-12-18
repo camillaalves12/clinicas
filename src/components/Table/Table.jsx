@@ -5,6 +5,7 @@ import { Form, Button } from 'react-bootstrap'
 import S from './styles.module.scss'
 import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
+import Refresh from '../Refresh/Refresh'
 
 export function Table() {
   const [consults, setConsults] = useState([])
@@ -142,23 +143,8 @@ export function Table() {
           {consults.length > 0 ? (
             <Tabela />
           ) : (
-            <>
-              <table className={S.table}>
-                <thead>
-                  <tr>
-                    <th className={S.th_thead}>Paciente</th>
-                    <th className={S.th_thead}>Profissional</th>
-                    <th className={S.th_thead}>Especialidade</th>
-                    <th className={S.th_thead}>Valor</th>
-                    <th className={S.th_thead}>Forma de pagamento</th>
-                    <th className={S.th_thead}>Data</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <p className={S.p}>Nenhuma consulta encontrada</p>
-                </tbody>
-              </table>
-            </>
+            <Refresh title='Carregando'/> 
+            
           )}
         </div>
       </div>
