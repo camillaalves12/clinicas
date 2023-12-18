@@ -16,7 +16,7 @@ export function Confirm(props) {
         </Modal.Header>
         <Modal.Body>
           <h6>
-          Profissional Registrado com sucesso!
+            {props.description}
           </h6>
         </Modal.Body>
         <Modal.Footer>
