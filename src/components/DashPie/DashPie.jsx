@@ -91,7 +91,7 @@ export function DashPie() {
         dailyData.valor_por_profissional.length > 0 ? (
           <ReactApexChart options={options} series={series} type="polarArea" />
         ) : (
-          <p>Nenhum dado encontrado</p>
+          <Refresh/> 
         )}
       </div>
     </div>
