@@ -143,7 +143,7 @@ export function Table() {
           {consults.length > 0 ? (
             <Tabela />
           ) : (
-            <Refresh title='Carregando'/> 
+            <Refresh title='Nenhuma consulta cadastrada'/> 
             
           )}
         </div>
