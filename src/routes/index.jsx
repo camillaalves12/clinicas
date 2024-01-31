@@ -13,6 +13,7 @@ import { SearchPatientPage } from '../pages/SearchPatientPage/SearchPatientPage'
 import { SchedulingConsultPage } from '../pages/SchedulingConsultPage/SchedulingConsultPage'
 import { DetailsPage } from '../pages/DetailsPage/DetailsPage'
 import { PrivateRoute } from './privateRoutes'
+import { ReportsPage } from '../pages/ReportsPage/Reports'
 
 export const AppRouter = () => {
   return (
@@ -34,6 +35,10 @@ export const AppRouter = () => {
 
         <Route exact path="/report_professional" element={<PrivateRoute />}>
           <Route exact path="/report_professional" element={<ReportProfessional />} />
+        </Route>
+
+        <Route exact path="/reports" element={<PrivateRoute />}>
+          <Route exact path="/reports" element={<ReportsPage />} />
         </Route>
 
         <Route exact path="/create_exam" element={<PrivateRoute />}>
