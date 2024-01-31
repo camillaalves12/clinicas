@@ -53,6 +53,7 @@ export function RegisterPatientPage() {
   }
 
   const handleSubmit = e => {
+    e.preventDefault()
 
     // Cria uma cópia do formData para evitar alterações diretas no estado
     const dataToSend = { ...formData }

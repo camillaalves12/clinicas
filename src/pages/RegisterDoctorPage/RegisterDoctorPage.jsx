@@ -25,7 +25,7 @@ export function RegisterDoctorPage() {
   }
 
   const handleSubmit = e => {
-
+    e.preventDefault()
     const dataToSend = { ...formData }
     const clinicId = getClinicId()
     
