@@ -1,6 +1,3 @@
-
-import S from './styles.module.scss'
-
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 export function Confirm(props) {

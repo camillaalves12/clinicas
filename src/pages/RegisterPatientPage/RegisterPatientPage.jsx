@@ -2,8 +2,14 @@ import { useState } from 'react'
 import { Header } from '../../components/Header/Header'
 import S from './styles.module.scss'
 import { api } from '../../services/api'
+import { Confirm } from '../../components/Confirm/Confirm'
+import Button from 'react-bootstrap/Button';
 
 export function RegisterPatientPage() {
+
+  const [modalShow, setModalShow] = useState(false);
+
+
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -197,7 +203,15 @@ export function RegisterPatientPage() {
           />
 
           <div className={S.divBtn}>
-            <input className={S.btn} type="submit" option="Enviar" />
+            <Button variant="primary" onClick={() => setModalShow(true)}>
+              Cadastrar
+            </Button>
+
+            <Confirm
+              description='Paciente registrado com sucesso!'
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </div>
         </div>
       </form>

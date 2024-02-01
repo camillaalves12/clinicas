@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
 import { HiCheck } from 'react-icons/hi'
 import { HiOutlineX } from 'react-icons/hi'
+import Refresh from '../../components/Refresh/Refresh'
+import Spinner from 'react-bootstrap/Spinner';
 
 export function ProceduresSchedulingPage() {
   const [schedulings, setSchedulings] = useState([])
@@ -187,23 +189,7 @@ export function ProceduresSchedulingPage() {
           {schedulings.length > 0 ? (
             <Tabela />
           ) : (
-            <>
-              <table className={S.table}>
-                <thead>
-                  <tr>
-                    <th className={S.th_thead}>Paciente</th>
-                    <th className={S.th_thead}>Profissional</th>
-                    <th className={S.th_thead}>Procedimento</th>
-                    <th className={S.th_thead}>Valor</th>
-                    <th className={S.th_thead}>Horário</th>
-                    <th className={S.th_thead}>Data</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <p className={S.p}>Nenhuma consulta encontrada</p>
-                </tbody>
-              </table>
-            </>
+            <Refresh title='Nenhum agendamento encontrado'/> 
           )}
         </div>
       </div>
