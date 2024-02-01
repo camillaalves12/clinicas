@@ -1,10 +1,13 @@
 import S from './styles.module.scss'
 import { Header } from '../../components/Header/Header'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { api } from '../../services/api'
 import { set } from 'zod'
+import { Confirm } from '../../components/Confirm/Confirm'
+import Button from 'react-bootstrap/Button';
 
 export function RegisterDoctorPage() {
+  const [modalShow, setModalShow] = useState(false);
   const [formData, setFormData] = useState({
     nome: '',
     especialidade: ''
@@ -83,7 +86,15 @@ export function RegisterDoctorPage() {
           />
 
           <div className={S.divBtn}>
-            <input className={S.btn} type="submit" option="Enviar" />
+            <Button variant="primary" onClick={() => setModalShow(true)}>
+              Cadastrar
+            </Button>
+
+            <Confirm
+              description='Profissional registrado com sucesso!'
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </div>
         </div>
       </form>

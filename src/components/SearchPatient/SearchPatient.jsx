@@ -6,12 +6,23 @@ import { ResultFound } from '../ResultFound/ResultFound'
 import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
 import { api } from '../../services/api'
 import { Alert } from 'react-bootstrap'
+import { Confirm } from '../Confirm/Confirm'
 
 export function SearchPatient(props) {
   const [nameOrCPF, setNameOrCPF] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [searchRoute, setSearchRoute] = useState('')
   const [patients, setPatients] = useState([])
+
+
+
+
+  const [modalShow, setModalShow] = useState(false);
+
+
+
+
+
 
   const handleSearch = async event => {
     event.preventDefault() // Impede que o formulário seja enviado por requisição HTTP tradicional
@@ -110,6 +121,7 @@ export function SearchPatient(props) {
             <Button
               type="submit"
               style={{ width: '250px', height: '38px', textAlign: 'center' }}
+              onClick={() => setModalShow(true)}
             >
               Procurar
             </Button>
@@ -120,7 +132,12 @@ export function SearchPatient(props) {
       {patients.length > 0 ? (
         <ResultFound dados={patients} />
       ) : (
-        <ResultNotFound />
+        
+        <Confirm
+        description='TESTESTESTESTESTE!'
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
       )}
     </>
   )
