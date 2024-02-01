@@ -102,7 +102,7 @@ export function CreateConsultPage() {
   }
 
   const fetchProcediments = async () => {
-    const consultProcediment = 1
+    const consultProcediment = 4
 
     try {
       const response = await api.get(
