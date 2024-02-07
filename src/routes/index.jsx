@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import { LoginPage } from '../pages/LoginPage/LoginPage'
 import { InitialPage } from '../pages/InitialPage/InitialPage'
-import {ProceduresSchedulingPage} from '../pages/ProceduresSchedulingPage/ProceduresSchedulingPage'
-import {ReportProfessional} from '../pages/ReportProfessional/ReportProfessional'
+import { ProceduresSchedulingPage } from '../pages/ProceduresSchedulingPage/ProceduresSchedulingPage'
+import { ReportProfessional } from '../pages/ReportProfessional/ReportProfessional'
 import { CreateConsultPage } from '../pages/CreateConsultPage/CreateConsultPage'
 import { CreateExamPage } from '../pages/CreateExamPage/CreateExamPage'
 import { ProceduresPage } from '../pages/ProceduresPage/ProceduresPage'
@@ -14,6 +14,7 @@ import { SchedulingConsultPage } from '../pages/SchedulingConsultPage/Scheduling
 import { DetailsPage } from '../pages/DetailsPage/DetailsPage'
 import { PrivateRoute } from './privateRoutes'
 import { ReportsPage } from '../pages/ReportsPage/Reports'
+import { ReportDocumentsPage } from '../pages/ReportDocumentPage/ReportDocumentPage'
 
 export const AppRouter = () => {
   return (
@@ -26,7 +27,11 @@ export const AppRouter = () => {
         </Route>
 
         <Route exact path="/procedures_scheduling" element={<PrivateRoute />}>
-          <Route exact path="/procedures_scheduling" element={<ProceduresSchedulingPage />} />
+          <Route
+            exact
+            path="/procedures_scheduling"
+            element={<ProceduresSchedulingPage />}
+          />
         </Route>
 
         <Route exact path="/create_consult" element={<PrivateRoute />}>
@@ -34,11 +39,19 @@ export const AppRouter = () => {
         </Route>
 
         <Route exact path="/report_professional" element={<PrivateRoute />}>
-          <Route exact path="/report_professional" element={<ReportProfessional />} />
+          <Route
+            exact
+            path="/report_professional"
+            element={<ReportProfessional />}
+          />
         </Route>
 
         <Route exact path="/reports" element={<PrivateRoute />}>
           <Route exact path="/reports" element={<ReportsPage />} />
+        </Route>
+
+        <Route exact path="/report_document" element={<PrivateRoute />}>
+          <Route exact path="/report_document" element={<ReportDocumentsPage />} />
         </Route>
 
         <Route exact path="/create_exam" element={<PrivateRoute />}>
@@ -77,7 +90,11 @@ export const AppRouter = () => {
           />
         </Route>
 
-        <Route exact path="/search_patient/details/:id" element={<PrivateRoute />}>
+        <Route
+          exact
+          path="/search_patient/details/:id"
+          element={<PrivateRoute />}
+        >
           <Route
             exact
             path="/search_patient/details/:id"

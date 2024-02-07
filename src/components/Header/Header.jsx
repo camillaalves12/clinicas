@@ -25,11 +25,11 @@ export function Header() {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
     window.location.reload()
-    navigate("/")
-  } 
+    navigate('/')
+  }
 
   return (
     <div className={S.navBar}>
@@ -51,15 +51,18 @@ export function Header() {
                 Painel administrativo
               </Nav.Link>
               <NavDropdown title="Resumos">
-              <NavDropdown.Item as={Link} to="/procedures">
-                Resumo diário
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/procedures_scheduling">
-                Agendamento de procedimento
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/report_professional">
-                Relatório por profissional
-              </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/procedures">
+                  Resumo diário
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/procedures_scheduling">
+                  Agendamento de procedimento
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/report_professional">
+                  Relatório por profissional
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/report_document">
+                  Relatório em PDF
+                </NavDropdown.Item>
               </NavDropdown>
 
               <NavDropdown title="Procedimentos">
