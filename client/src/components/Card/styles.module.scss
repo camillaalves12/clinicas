@@ -1,0 +1,49 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+    height: 80px;
+    background: #cdcdcd;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAABZCAMAAAD//SY8AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAO1QTFRF/Ors/Ojs+ubrAAAA/Ojs++np/Ojs9ujo/Onq8+Hh+urr9Onp++rr/Orq+Obr++Xl+urq+enr++bm+uns+ubr/Ors++nr/Ors+ubr+ujs++Xl/Ofs/Orq++fr+ers+ujsv7+/++rq+Ofs+urs++rq/Ors/Onq8d3j7dvb+urs+urr+ufr+ujs+Orq+ers++js9OPj+ujs/Ojo+unq9+ns9+bo++jr/Ofn/Orr+enp8uXl/Orq/Obm/Ors+urq2NjY+urr/Onp/OXo1dXV+ujq/Ojr8Ojo+Obo9uTn/Ojr++ns+urr+urq/Ors8+fnTQPn1wAAAE90Uk5T/+EzAOw57TfnK9cXvptwO86KPcVl43LiZMk6kuY/hcYIPGmRs+TzJQ6QzIzTSISuLcdNz1xar0nliCepUvtfDdiUTgbRmSFvVqO4ytnwFVkGdGQAAAKuSURBVHic7d3XVhRBGEXhAoExoZjGBKKCcVTMWcxK9P0fxwvvq6u7z79OlezvCeqsvYABOqSkMDd/DO2QNE9pYdE9BOVE0dPSxL0ExVTR0/ET7ikoJYueTp5yb0EhXfR02r0FhYTR07J7DMooo6cz7jUoIo2ezrrnoIQ2+op7Dkpoo6dz7j0oII6ezrsHoZs6+gX3IHRTR08X3YvQSR79knsROsmjp6l7Erroo192T0IXffR0xb0JHQKiX3VvQoeA6OmaexTyIqJfd49CXkT0Vfco5EVET2vuVcgKiX7DvQpZIdHX3auQFRI93XTPQk5M9FvuWciJiX7bPQs5MdE33LOQExN90z0LOTHRuUCyajHR77hnIScm+l33LOTERE/uWcgh+hFE9CMopjk/06sWE51P71WLic7v6VWLic5f5KoWE33DPQs5MdH5L1vVYqLz//SqxUTnypmqhTTnGrm6hUTnati6hUTnuve6RTTnDpfKRUTnXrbKRUTnrtXKBTTn/vTaBUTnSRS10zfnmTPV00fn6VLVkzfnOXL1k0fniZH1Uzfn2bANUEfnKdANEDfnee8t0DbngsgmaKPzDpcmSJvztqY2KJvzXrZGCJvzBsZW6JrzrtVmyJrzVuV2qJrz/vSGiJovLLqHoJym+dy8ewd6kDRfueeegT4UzTfvu1egF0HzB+4N6Gl8c66aaM7Y5A/5CNeekc1n7vNjgFHJHz12Hx9DjGn+xH14DDM8+dZT99kx0NDkz567T47BhiV/8dJ9boww6Kv8lfvUGKV/8tdv3GfGSD2Lv3333n1ijNYr+YeP7uNCoTj4p63tz+7DQqOs+Jev3767TwqZ7uA/fm7/cp8SUrncS+vLv9f4nv7/SZOd6Wx3b/9g9fBf6cPVg/293dl0Z/LHfTYE+Qucis5DBf5HsAAAAABJRU5ErkJggg==) no-repeat;
+    border: 1px solid #cdc5c5;
+    padding: 10px;
+    border-radius: 0.5rem;
+    align-items: center;
+
+    .iconReal {
+        width: 3rem;
+        height: 3rem;
+        color: #dc5858;
+    }
+    
+    .description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.2;
+        
+        .description_title {
+            color: #00000099;
+            font-size: 18px;
+        }
+        
+        .description_money{
+            font-size: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 400;
+
+            .iconRealDescription {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}
+
+
+
+

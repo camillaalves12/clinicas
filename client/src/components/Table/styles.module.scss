@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 180vh;
+}
+
+  .container_search_and_create {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+      .search {
+        display: flex;
+        width: 280px;
+        align-items: center;
+        gap: 0.5rem;
+        align-content: center;
+        cursor: pointer;
+        
+      }
+        .iconSearch {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+
+        .searchDate {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+       }
+       
+       .inputDate {
+          padding: 0.4rem;
+          border-radius: 6px;
+          border: 1px solid #cdcdcd;
+       }
+
+       .divCreates {
+        display: flex;
+        gap: 1rem;
+       }
+
+.divTable {
+  overflow: auto;
+  overflow-x: hidden;
+  min-height: 25vh;
+  height: 70vh;
+
+  .table {
+    width: 180vh;
+    border-spacing: 0 8px;
+    text-align: center;
+    
+    thead {
+      background-color: #cdcdcd;
+      font-size: 18px;
+      position: sticky; /* Adicione posição sticky ao cabeçalho */
+      top: -1px; /* Defina o deslocamento negativo para ficar imediatamente acima da div.container */
+      z-index: 1; /* Ajuste o valor de z-index para garantir que o cabeçalho fique acima do conteúdo */
+      :hover{
+        background-color: #cdcdcd !important;
+      }
+    }
+
+    .th_thead {
+      width: 20rem;
+      text-align: center;
+    }
+
+    td, th {
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:hover {
+      background-color: #bae5f5;
+      cursor: pointer;
+    }
+
+    tr:nth-child(even) {
+      background-color: #e9f3fa;
+
+      &:hover {
+        background-color: #bae5f5;
+      }
+    }
+  }
+}
+
