@@ -146,7 +146,7 @@ export function CreateConsultPage() {
 
               <div className={S.divForms}>
                 <div>
-                  <label className={S.labelForm} for="professional">
+                  <label className={S.labelForm} htmlFor="professional">
                     Profissional:
                   </label>
                   <select
@@ -171,7 +171,7 @@ export function CreateConsultPage() {
                 </div>
 
                 <div>
-                  <label className={S.labelForm} for="procedure">
+                  <label className={S.labelForm} htmlFor="procedure">
                     Consulta:
                   </label>
                   <select
@@ -198,7 +198,7 @@ export function CreateConsultPage() {
 
               <div className={S.divForms}>
                 <div>
-                  <label className={S.labelForm} for="valor">
+                  <label className={S.labelForm} htmlFor="valor">
                     Valor:
                   </label>
                   <input
