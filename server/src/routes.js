@@ -16,43 +16,34 @@ import DashboardController from './controller/DashboardController'
 const router = Router()
 
 router.route('/user')
-  .get(AuthMiddleware, UserController.findAllUsers);
+  .get(AuthMiddleware, UserController.findAllUsers); //ok
 
 router.route('/user/:id')
-  .post(AuthMiddleware, UserController.createUser)
-  .get(AuthMiddleware, UserController.findUser)
-  .put(AuthMiddleware, UserController.updateUser)
-  .delete(AuthMiddleware, UserController.deleteUser);
+  .post(AuthMiddleware, UserController.createUser) // ok
+  .get(AuthMiddleware, UserController.findUser) //ok
+  .put(AuthMiddleware, UserController.updateUser) //ok
+  .delete(AuthMiddleware, UserController.deleteUser); //ok
 
 router.route('/clinic')
-  .post(AuthMiddleware, ClinicController.createClinic)
-  .get(AuthMiddleware, ClinicController.findAllClinics);
+  .post(AuthMiddleware, ClinicController.createClinic) // ok
+  .get(AuthMiddleware, ClinicController.findAllClinics); //ok
 
 router.route('/clinic/:id')
-  .get(AuthMiddleware, ClinicController.findClinic)
-  .put(AuthMiddleware, ClinicController.updateClinic)
-  .delete(AuthMiddleware, ClinicController.deleteClinic);  // criar caso for usar. 
-
-router.route('/doctor')
-  .post(AuthMiddleware, DoctorController.createDoctor) // criar, ainda não consegui
-  .get(AuthMiddleware, DoctorController.findAllDoctors); // criar, ainda não consegui
-
-router.route('/doctor/:id')
-  .get(AuthMiddleware, DoctorController.findDoctor) // criar, ainda não consegui
-  .put(AuthMiddleware, DoctorController.updateDoctor)
-  .delete(AuthMiddleware, DoctorController.deleteDoctor);
+  .get(AuthMiddleware, ClinicController.findClinic) //ok
+  .put(AuthMiddleware, ClinicController.updateClinic) //ok
+  .delete(AuthMiddleware, ClinicController.deleteClinic); //ok
 
 router.route('/professional')
-  .get(AuthMiddleware, ProfessionalController.findAllProfessionals);
+  .get(AuthMiddleware, ProfessionalController.findAllProfessionals); //ok
 
 router.route('/professional/:id')
-  .post(AuthMiddleware, ProfessionalController.createProfessional)
-  .get(AuthMiddleware, ProfessionalController.findProfessional)
-  .put(AuthMiddleware, ProfessionalController.updateProfessional) 
-  .delete(AuthMiddleware, ProfessionalController.deleteProfessional); 
+  .post(AuthMiddleware, ProfessionalController.createProfessional) //ok
+  .get(AuthMiddleware, ProfessionalController.findProfessional) //ok
+  .put(AuthMiddleware, ProfessionalController.updateProfessional) //ok
+  .delete(AuthMiddleware, ProfessionalController.deleteProfessional) //ok
 
 router.route('/professionalForName')
-  .post(AuthMiddleware, ProfessionalController.findProfessionalForName); 
+  .post(AuthMiddleware, ProfessionalController.findProfessionalForName) //ok
 
 router.route('/patients')
   .get(AuthMiddleware, PatientController.findAllPatients);
