@@ -73,7 +73,7 @@ export default {
   async updateUser(req, res) {
     try {
       const { id } = req.params
-      const { nome, email, admin } = req.body
+      const { nome, email } = req.body
 
       let user = await prisma.usuario.findUnique({
         where: { id: Number(id) }
@@ -84,12 +84,12 @@ export default {
       user = await prisma.usuario.update(
         {
           where: { id: Number(id) },
-          data: { nome, email, admin }
+          data: { nome, email }
         })
 
       return res.json(user);
     } catch (error) {
-      res.json({ error })
+      res.json({ error: error.message  })
     }
   },
 
