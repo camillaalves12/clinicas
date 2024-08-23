@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Paciente" ALTER COLUMN "cpf" SET DATA TYPE TEXT,
+ALTER COLUMN "data_de_nascimento" SET DATA TYPE TEXT,
+ALTER COLUMN "telefone" SET DATA TYPE TEXT;

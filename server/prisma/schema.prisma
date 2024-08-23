@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Clinica {
+  id   Int    @id @default(autoincrement())
+  nome String @unique
+
+  Usuario              Usuario[]
+  Profissional         Profissional[]
+  Paciente             Paciente[]
+  Consulta             Consulta[]
+  Tipo_de_procedimento Tipo_de_procedimento[]
+  Agendamento          Agendamento[]
+}
+
+model Usuario {
+  id              Int      @id @default(autoincrement())
+  nome            String
+  email           String   @unique
+  data_de_criacao DateTime @default(now())
+  senha           String
+  admin           Role
+  clinica         Clinica  @relation(fields: [clinicaId], references: [id])
+  clinicaId       Int
+}
+
+model Profissional {
+  id              Int           @id @default(autoincrement())
+  nome            String
+  data_de_criacao DateTime      @default(now())
+  cargo           String
+  clinica         Clinica       @relation(fields: [clinicaId], references: [id])
+  clinicaId       Int
+  Consulta        Consulta[]
+  Agendamento     Agendamento[]
+}
+
+model Paciente {
+  id                 Int           @id @default(autoincrement())
+  nome               String
+  cpf                String
+  data_de_criacao    DateTime      @default(now())
+  data_de_nascimento String
+  telefone           String
+  sexo               String
+  clinica            Clinica       @relation(fields: [clinicaId], references: [id])
+  clinicaId          Int
+  Consulta           Consulta[]
+  Agendamento        Agendamento[]
+}
+
+model Consulta {
+  id                Int          @id @default(autoincrement())
+  data_de_criacao   DateTime     @default(now())
+  valor_da_consulta Int
+  tipo_de_pagamento String
+  paciente          Paciente     @relation(fields: [pacienteId], references: [id])
+  pacienteId        Int
+  profissional      Profissional @relation(fields: [profissionalId], references: [id])
+  profissionalId    Int
+  procedimento      Procedimento @relation(fields: [procedimentoId], references: [id])
+  procedimentoId    Int
+  clinica           Clinica      @relation(fields: [clinicaId], references: [id])
+  clinicaId         Int
+}
+
+model Agendamento {
+  id                Int          @id @default(autoincrement())
+  data_de_criacao   DateTime     @default(now())
+  data_da_consulta  String
+  hora_da_consulta  String
+  valor_da_consulta Int
+  tipo_de_pagamento String       @default("Dinheiro")
+  confirmado        Boolean      @default(false)
+  paciente          Paciente     @relation(fields: [pacienteId], references: [id])
+  pacienteId        Int
+  profissional      Profissional @relation(fields: [profissionalId], references: [id])
+  profissionalId    Int
+  procedimento      Procedimento @relation(fields: [procedimentoId], references: [id])
+  procedimentoId    Int
+  clinica           Clinica      @relation(fields: [clinicaId], references: [id])
+  clinicaId         Int
+}
+
+model Tipo_de_procedimento {
+  id           Int            @id @default(autoincrement())
+  nome         String
+  clinica      Clinica        @relation(fields: [clinicaId], references: [id])
+  clinicaId    Int
+  Procedimento Procedimento[]
+}
+
+model Procedimento {
+  id                     Int                  @id @default(autoincrement())
+  nome                   String
+  tipo_de_procedimento   Tipo_de_procedimento @relation(fields: [tipo_de_procedimentoId], references: [id])
+  tipo_de_procedimentoId Int
+  Consulta               Consulta[]
+  Agendamento            Agendamento[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
