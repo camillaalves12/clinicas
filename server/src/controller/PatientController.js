@@ -83,7 +83,7 @@ export default {
       });
 
       if (patient.length === 0) {
-        return res.json([]);
+        return res.status(400).json({ error: 'Não foram encontrados pacientes com esse nome.' });
       }
 
       return res.json(patient);
