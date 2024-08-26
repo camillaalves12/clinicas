@@ -24,6 +24,9 @@ router.route('/user/:id')
   .put(AuthMiddleware, UserController.updateUser) //ok
   .delete(AuthMiddleware, UserController.deleteUser); //ok
 
+  router.route('/auth')
+  .post(AuthController.authenticate)
+
 router.route('/clinic')
   .post(AuthMiddleware, ClinicController.createClinic) // ok
   .get(AuthMiddleware, ClinicController.findAllClinics); //ok
@@ -46,29 +49,61 @@ router.route('/professionalForName')
   .post(AuthMiddleware, ProfessionalController.findProfessionalForName) //ok
 
 router.route('/patients')
-  .get(AuthMiddleware, PatientController.findAllPatients);
+  .get(AuthMiddleware, PatientController.findAllPatients) //ok
 
 router.route('/patient/:id')
-  .post(AuthMiddleware, PatientController.createPatient)
-  .get(AuthMiddleware, PatientController.findPatient)
-  .put(AuthMiddleware, PatientController.updatePatient) 
-  .delete(AuthMiddleware, PatientController.deletePatient);
+  .post(AuthMiddleware, PatientController.createPatient) //ok
+  .get(AuthMiddleware, PatientController.findPatient) //ok
+  .put(AuthMiddleware, PatientController.updatePatient) //ok
+  .delete(AuthMiddleware, PatientController.deletePatient) //ok
 
 router.route('/patientForName')
-  .post(AuthMiddleware, PatientController.findPatientForName);
+  .post(AuthMiddleware, PatientController.findPatientForName) //ok 
 
 router.route('/patientForDateOfBirth')
-  .post(AuthMiddleware, PatientController.findPatientForDateOfBirth);
+  .post(AuthMiddleware, PatientController.findPatientForDateOfBirth) // ok
 
 router.route('/patientForCPF')
-  .post(AuthMiddleware, PatientController.findPatientForCPF);
+  .post(AuthMiddleware, PatientController.findPatientForCPF) //ok
+
+        
+router.route('/procediments')
+  .get(AuthMiddleware, ProcedimentController.findAllProcediments)
+
+
+router.route('/procediment/:id')
+  .post(AuthMiddleware, ProcedimentController.createProcediment)
+  .get(AuthMiddleware, ProcedimentController.findProcediment) //ok
+  .put(AuthMiddleware, ProcedimentController.updateProcediment)
+  .delete(AuthMiddleware, ProcedimentController.deleteProcediment);
+
+router.route('/procedimentsForName')
+.post(AuthMiddleware, ProcedimentController.findProcedimentsForName)
+
+router.route('/procedimentsForType/:id')
+.get(AuthMiddleware, ProcedimentController.findProcedimentsForType)
 
 
 
 
 
+router.route('/procedimentType/:id')
+  .post(AuthMiddleware, ProcedimentTypeController.createProcedimentType) //ok
+  .get(AuthMiddleware, ProcedimentTypeController.findProcedimentType) 
+  .put(AuthMiddleware, ProcedimentTypeController.updateProcedimentType)
+  .delete(AuthMiddleware, ProcedimentTypeController.deleteProcedimentType);
+
+router.route('/procedimentTypes')
+  .get(AuthMiddleware, ProcedimentTypeController.findAllProcedimentTypes)
+
+router.route('/procedimentTypesForName/:id')
+  .post(AuthMiddleware, ProcedimentTypeController.findProcedimentTypesForName)
 
 
+
+
+router.route('/consults')
+  .get(AuthMiddleware, ConsultController.findAllConsults) //ok
 
 router.route('/consult/:id')
   .post(AuthMiddleware, ConsultController.createConsult)
@@ -86,8 +121,9 @@ router.route('/consultForProfessional')
 router.route('/consultForProcediment')
   .get(AuthMiddleware, ConsultController.findConsultForProcediment);
 
-router.route('/consults')
-  .get(AuthMiddleware, ConsultController.findAllConsults);
+
+
+
 
 router.route('/scheduling/:id')
   .post(AuthMiddleware, SchedulingController.createScheduling)
@@ -115,32 +151,8 @@ router.route('/schedulingsForProcediment')
 router.route('/confirmScheduling/:id')
   .put(AuthMiddleware, SchedulingController.confirmScheduling)
 
-router.route('/procedimentType/:id')
-  .post(AuthMiddleware, ProcedimentTypeController.createProcedimentType)
-  .get(AuthMiddleware, ProcedimentTypeController.findProcedimentType)
-  .put(AuthMiddleware, ProcedimentTypeController.updateProcedimentType)
-  .delete(AuthMiddleware, ProcedimentTypeController.deleteProcedimentType);
 
-router.route('/procedimentTypes')
-  .get(AuthMiddleware, ProcedimentTypeController.findAllProcedimentTypes)
 
-router.route('/procedimentTypesForName/:id')
-  .post(AuthMiddleware, ProcedimentTypeController.findProcedimentTypesForName)
-
-router.route('/procediment/:id')
-  .post(AuthMiddleware, ProcedimentController.createProcediment)
-  .get(AuthMiddleware, ProcedimentController.findProcediment)
-  .put(AuthMiddleware, ProcedimentController.updateProcediment)
-  .delete(AuthMiddleware, ProcedimentController.deleteProcediment);
-
-router.route('/procediments')
-  .get(AuthMiddleware, ProcedimentController.findAllProcediments)
-
-router.route('/procedimentsForName')
-  .post(AuthMiddleware, ProcedimentController.findProcedimentsForName)
-
-router.route('/procedimentsForType/:id')
-  .get(AuthMiddleware, ProcedimentController.findProcedimentsForType)
 
 router.route('/dailyData/:id')
   .put(AuthMiddleware, DashboardController.dailyData)
@@ -154,8 +166,6 @@ router.route('/monthlyDataforDay/:id')
 router.route('/dataForPeriod/:id')
   .put(AuthMiddleware, DashboardController.dataForPeriod)
 
-router.route('/auth')
-  .post(AuthController.authenticate)
 
 
 
