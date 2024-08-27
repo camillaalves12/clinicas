@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useState, useEffect } from 'react'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
@@ -8,9 +9,7 @@ import Alert from '../../components/Alert/Alert'
 
 export function CreateConsultPage() {
   const [procediments, setProcediments] = useState([])
-
   const [professionals, setProfessionals] = useState([])
-
   const [patientId, setPatientId] = useState('')
 
   const [formData, setFormData] = useState({
@@ -102,7 +101,7 @@ export function CreateConsultPage() {
   }
 
   const fetchProcediments = async () => {
-    const consultProcediment = 4
+    const consultProcediment = 6
 
     try {
       const response = await api.get(
@@ -114,7 +113,9 @@ export function CreateConsultPage() {
       } else {
         setProcediments(response.data)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Erro:', error)
+    }
   }
 
   const getPatientId = patientId => {
