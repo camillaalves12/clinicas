@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import UserController from './controller/UserController'
 import ClinicController from './controller/ClinicController'
-import DoctorController from './controller/DoctorController'
+// import DoctorController from './controller/DoctorController'
 import ConsultController from './controller/ConsultController'
 import AuthController from './controller/AuthController'
 import { AuthMiddleware } from './middlewares/auth'
@@ -66,65 +66,53 @@ router.route('/patientForDateOfBirth')
 router.route('/patientForCPF')
   .post(AuthMiddleware, PatientController.findPatientForCPF) //ok
 
-        
 router.route('/procediments')
-  .get(AuthMiddleware, ProcedimentController.findAllProcediments)
-
+  .get(AuthMiddleware, ProcedimentController.findAllProcediments) //ok
 
 router.route('/procediment/:id')
-  .post(AuthMiddleware, ProcedimentController.createProcediment)
+  .post(AuthMiddleware, ProcedimentController.createProcediment) //ok
   .get(AuthMiddleware, ProcedimentController.findProcediment) //ok
-  .put(AuthMiddleware, ProcedimentController.updateProcediment)
-  .delete(AuthMiddleware, ProcedimentController.deleteProcediment);
+  .put(AuthMiddleware, ProcedimentController.updateProcediment) //ok
+  .delete(AuthMiddleware, ProcedimentController.deleteProcediment) //ok
 
 router.route('/procedimentsForName')
-.post(AuthMiddleware, ProcedimentController.findProcedimentsForName)
+  .post(AuthMiddleware, ProcedimentController.findProcedimentsForName) //ok
 
 router.route('/procedimentsForType/:id')
-.get(AuthMiddleware, ProcedimentController.findProcedimentsForType)
+  .get(AuthMiddleware, ProcedimentController.findProcedimentsForType) //ok
 
-
-
-
+router.route('/procedimentTypes')
+  .get(AuthMiddleware, ProcedimentTypeController.findAllProcedimentTypes) //ok
 
 router.route('/procedimentType/:id')
   .post(AuthMiddleware, ProcedimentTypeController.createProcedimentType) //ok
-  .get(AuthMiddleware, ProcedimentTypeController.findProcedimentType) 
-  .put(AuthMiddleware, ProcedimentTypeController.updateProcedimentType)
-  .delete(AuthMiddleware, ProcedimentTypeController.deleteProcedimentType);
-
-router.route('/procedimentTypes')
-  .get(AuthMiddleware, ProcedimentTypeController.findAllProcedimentTypes)
+  .get(AuthMiddleware, ProcedimentTypeController.findProcedimentType) //ok
+  .put(AuthMiddleware, ProcedimentTypeController.updateProcedimentType) //ok
+  .delete(AuthMiddleware, ProcedimentTypeController.deleteProcedimentType) //ok
 
 router.route('/procedimentTypesForName/:id')
-  .post(AuthMiddleware, ProcedimentTypeController.findProcedimentTypesForName)
-
-
-
+  .post(AuthMiddleware, ProcedimentTypeController.findProcedimentTypesForName) //ok
 
 router.route('/consults')
   .get(AuthMiddleware, ConsultController.findAllConsults) //ok
 
 router.route('/consult/:id')
-  .post(AuthMiddleware, ConsultController.createConsult)
-  .put(AuthMiddleware, ConsultController.updateConsult)
+  .post(AuthMiddleware, ConsultController.createConsult) //ok
+  .put(AuthMiddleware, ConsultController.updateConsult) //ok
 
 router.route('/consultForPeriod/:id')
-  .put(AuthMiddleware, ConsultController.findConsultForPeriod);
+  .get(AuthMiddleware, ConsultController.findConsultForPeriod) // mais ou menos
 
 router.route('/consultsForPatient/:pacienteId')
-  .get(AuthMiddleware, ConsultController.findConsultForPatient);
+  .get(AuthMiddleware, ConsultController.findConsultForPatient) //ok
 
 router.route('/consultForProfessional')
-  .get(AuthMiddleware, ConsultController.findConsultForProfessional);
+  .get(AuthMiddleware, ConsultController.findConsultForProfessional) //ok
 
 router.route('/consultForProcediment')
-  .get(AuthMiddleware, ConsultController.findConsultForProcediment);
+  .get(AuthMiddleware, ConsultController.findConsultForProcediment) //ok
 
-
-
-
-
+  
 router.route('/scheduling/:id')
   .post(AuthMiddleware, SchedulingController.createScheduling)
   .put(AuthMiddleware, SchedulingController.updateScheduling)

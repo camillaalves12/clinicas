@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useState, useEffect } from 'react'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
@@ -75,11 +76,14 @@ export function CreateExamPage() {
         console.log(response.data)
         setProcediments(response.data)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Erro na pagina de exame:', error)
+
+    }
   }
 
   const fetchProcedimentsType = async () => {
-    const consultProcediment = 1
+    // const consultProcediment = 1
 
     try {
       const response = await api.get(
@@ -90,9 +94,13 @@ export function CreateExamPage() {
         alert('Não existem procedimentos de consulta cadastrados!')
       } else {
         console.log(response.data)
-        setProcedimentsType(response.data)
+        // Filtrar o array para remover o elemento com o ID 6
+        const filteredProcedimentsType = response.data.filter(item => item.id !== 6)
+        setProcedimentsType(filteredProcedimentsType)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Erro na pagina de exame:', error)
+    }
   }
 
   const handleInputChange = e => {
@@ -102,12 +110,14 @@ export function CreateExamPage() {
   }
 
   const handleSubmit = (e) => {
+    e.preventDefault()
     const clinicId = getClinicId();
 
     processForm()
       .then((dataToSend) => {
         api
           .post(`/consult/${clinicId}`, dataToSend)
+          // eslint-disable-next-line no-unused-vars
           .then((response) => {
             setConfirmationAlert({ visible: true, message: 'Exame criado com sucesso!' });
             setTimeout(() => {
@@ -165,7 +175,7 @@ export function CreateExamPage() {
 
               <div className={S.divForms}>
                 <div>
-                  <label className={S.labelForm} for="professional">
+                  <label className={S.labelForm} htmlFor="professional">
                     Profissional:
                   </label>
                   <select
@@ -186,7 +196,7 @@ export function CreateExamPage() {
                 </div>
 
                 <div>
-                  <label className={S.labelForm} for="tipo_de_procedimento">
+                  <label className={S.labelForm} htmlFor="tipo_de_procedimento">
                     Tipo de Exame:
                   </label>
                   <select
@@ -208,7 +218,7 @@ export function CreateExamPage() {
                 </div>
               </div>
 
-              <label className={S.labelForm} for="procedimento">
+              <label className={S.labelForm} htmlFor="procedimento">
                     Exame:
                   </label>
                   <select
@@ -228,7 +238,7 @@ export function CreateExamPage() {
 
               <div className={S.divForms}>
                 <div>
-                  <label className={S.labelForm} for="valor">
+                  <label className={S.labelForm} htmlFor="valor">
                     Valor:
                   </label>
                   <input
