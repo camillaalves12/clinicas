@@ -126,7 +126,7 @@ export default {
         }
       })
 
-      return res.json({ message: "Tipo de procedimento atualizado!", procedimentType })
+      return res.json({procedimentType })
     }
     catch (error) {
       return res.json({ error })
