@@ -9,7 +9,6 @@ export function RegisterPatientPage() {
 
   const [modalShow, setModalShow] = useState(false);
 
-
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -76,7 +75,8 @@ export function RegisterPatientPage() {
       .post(`/patient/${clinicId}`, dataToSend)
       .then(response => {
         console.log(response)
-        alert('Paciente cadastrado com sucesso!')
+        setModalShow(true)  // Exibe o modal após o sucesso
+
         // Limpa os campos do formulário
         setFormData({
           nome: '',
@@ -203,7 +203,7 @@ export function RegisterPatientPage() {
           />
 
           <div className={S.divBtn}>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
+            <Button variant="primary" type="submit">
               Cadastrar
             </Button>
 
