@@ -1,10 +1,9 @@
 import S from './styles.module.scss'
 import { Header } from '../../components/Header/Header'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../services/api'
-import { set } from 'zod'
-import { Confirm } from '../../components/Confirm/Confirm'
 import Button from 'react-bootstrap/Button';
+import { Confirm } from '../../components/Confirm/Confirm'
 
 export function RegisterDoctorPage() {
   const [modalShow, setModalShow] = useState(false);
@@ -12,12 +11,6 @@ export function RegisterDoctorPage() {
     nome: '',
     especialidade: ''
   })
-
-  const handleInputChange = e => {
-    const { name, value } = e.target
-
-    setFormData({ ...formData, [name]: value })
-  }
 
   const getClinicId = () => {
     const userDataString = localStorage.getItem('user')
@@ -27,27 +20,35 @@ export function RegisterDoctorPage() {
     return clinicId
   }
 
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
     const dataToSend = { ...formData }
     const clinicId = getClinicId()
-    
-    console.log(dataToSend, clinicId)
 
+    if (!clinicId) {
+      alert('Erro: ID da clínica não encontrado.')
+      return
+    }
+    
     api.post(`/professional/${clinicId}`, dataToSend)
-    .then(response => {
+      .then(response => {
         console.log(response)
-        alert('Profissional cadastrado com sucesso!')
+        setModalShow(true) // Exibe o modal após o sucesso
 
         setFormData({
             nome: '',
             especialidade: '',
         })
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         alert(error.response.data.error)
         console.log(error.response.data.error)
-    })
+      })
   }
 
   return (
@@ -61,7 +62,7 @@ export function RegisterDoctorPage() {
         <div className={S.containerForm}>
           <h3 style={{ marginBottom: '1.5rem' }}>Cadastrar profissional</h3>
 
-          <label className={S.labelForm} for="nameProfessional">
+          <label className={S.labelForm} htmlFor="nameProfessional">
             Nome:
           </label>
           <input
@@ -70,10 +71,11 @@ export function RegisterDoctorPage() {
             id="nameProfessional"
             name="nome"
             onChange={handleInputChange}
+            value={formData.nome}  // Valor do campo
             required
           />
 
-          <label className={S.labelForm} for="specialty">
+          <label className={S.labelForm} htmlFor="specialty">
             Especialidade:
           </label>
           <input
@@ -82,11 +84,12 @@ export function RegisterDoctorPage() {
             id="specialty"
             name="especialidade"
             onChange={handleInputChange}
+            value={formData.especialidade}  // Valor do campo
             required
           />
 
           <div className={S.divBtn}>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
+            <Button variant="primary" type="submit">
               Cadastrar
             </Button>
 
