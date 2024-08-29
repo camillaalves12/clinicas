@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+
 export function Confirm(props) {
    return (
       <Modal
@@ -10,7 +12,7 @@ export function Confirm(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Cadastro feito
+            {props.title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
