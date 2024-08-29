@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unknown-property */
 import { useState, useEffect } from 'react'
 import S from './styles.module.scss'
 import { Header } from '../../components/Header/Header'
@@ -5,12 +7,10 @@ import { api } from '../../services/api'
 import { Search } from '../../components/Search/Search'
 
 export function SchedulingConsultPage() {
-
   const [procediments, setProcediments] = useState([])
-
   const [professionals, setProfessionals] = useState([])
-
   const [patientId, setPatientId] = useState('')
+  const [scheduledConsults, setScheduledConsults] = useState([])
 
   const [formData, setFormData] = useState({
     paciente: '',
@@ -24,6 +24,7 @@ export function SchedulingConsultPage() {
   useEffect(() => {
     fetchProfessionals()
     fetchProcediments()
+    fetchScheduledConsults()
   }, [])
 
   const getClinicId = () => {
@@ -49,32 +50,44 @@ export function SchedulingConsultPage() {
   const fetchProcediments = async () => {
     try {
       const response = await api.get(`/procediments`)
-
       if (!response.data) {
         alert('Não existem procedimentos de consulta cadastrados!')
       } else {
         setProcediments(response.data)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchScheduledConsults = async () => {
+    try {
+      const clinicId = getClinicId()
+      const response = await api.get(`/scheduling/${clinicId}`)
+      const sortedConsults = response.data.sort((a, b) => {
+        return new Date(a.data_da_consulta) - new Date(b.data_da_consulta)
+      })
+      setScheduledConsults(sortedConsults)
+    } catch (error) {
+      console.error('Erro ao buscar agendamentos:', error)
+    }
   }
 
   const handleInputChange = e => {
     const { name, value } = e.target
-
     setFormData({ ...formData, [name]: value })
   }
 
   const handleSubmit = e => {
+    e.preventDefault()
     const clinicId = getClinicId()
-
     processForm()
       .then(dataToSend => {
-        console.log(dataToSend)
         api
           .post(`/scheduling/${clinicId}`, dataToSend)
           .then(response => {
             alert('Agendamento criado com sucesso!')
-            console.log(response)
+            fetchScheduledConsults() // Atualizar a lista de agendamentos após adicionar um novo
           })
           .catch(error => {
             alert('Erro ao processar o formulário:', error)
@@ -88,7 +101,6 @@ export function SchedulingConsultPage() {
 
   const processForm = async () => {
     try {
-
       const dataToSend = {
         pacienteId: parseInt(patientId),
         profissionalId: parseInt(formData.profissional),
@@ -98,7 +110,6 @@ export function SchedulingConsultPage() {
         hora_da_consulta: formData.hora_da_consulta,
         clinicaId: getClinicId()
       }
-
       return dataToSend
     } catch (error) {
       console.error('Erro ao processar o formulário:', error)
@@ -116,12 +127,10 @@ export function SchedulingConsultPage() {
       <form id="schedulingForm" className={S.container} onSubmit={handleSubmit}>
         <div className={S.containerForm}>
           <h3 style={{ marginBottom: '1.5rem' }}>Agendamento</h3>
-
           <Search getPatientId={getPatientId} />
-
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="procedure">
+              <label className={S.labelForm} htmlFor="procedure">
                 Procedimento:
               </label>
               <select
@@ -140,10 +149,9 @@ export function SchedulingConsultPage() {
                 ))}
               </select>
             </div>
-
             <div>
               <div>
-                <label className={S.labelForm} for="professional">
+                <label className={S.labelForm} htmlFor="professional">
                   Profissional:
                 </label>
                 <select
@@ -164,10 +172,9 @@ export function SchedulingConsultPage() {
               </div>
             </div>
           </div>
-
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="date_procedure">
+              <label className={S.labelForm} htmlFor="date_procedure">
                 Data do procedimento:
               </label>
               <input
@@ -181,9 +188,8 @@ export function SchedulingConsultPage() {
                 required
               />
             </div>
-
             <div>
-              <label className={S.labelForm} for="hour_procedure">
+              <label className={S.labelForm} htmlFor="hour_procedure">
                 Horário:
               </label>
               <input
@@ -195,10 +201,9 @@ export function SchedulingConsultPage() {
               />
             </div>
           </div>
-
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="valor">
+              <label className={S.labelForm} htmlFor="valor">
                 Valor:
               </label>
               <input
@@ -213,7 +218,6 @@ export function SchedulingConsultPage() {
                 required
               />
             </div>
-
             <div>
               <label className={S.labelForm}>Forma de Pagamento:</label>
               <select
@@ -234,12 +238,26 @@ export function SchedulingConsultPage() {
               </select>
             </div>
           </div>
-
           <div className={S.divBtn}>
             <input className={S.btn} type="submit" option="Enviar" />
           </div>
         </div>
       </form>
+      {/* Renderiza os agendamentos ordenados */}
+      <div className={S.containerScheduled}>
+        <h3>Agendamentos Futuros</h3>
+        <ul>
+          {scheduledConsults.map((consult, index) => (
+            <li key={index}>
+              <p>Data: {consult.data_da_consulta}</p>
+              <p>Hora: {consult.hora_da_consulta}</p>
+              <p>Paciente: {consult.paciente.nome}</p>
+              <p>Profissional: {consult.profissional.nome}</p>
+              <p>Procedimento: {consult.procedimento.nome}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   )
 }
