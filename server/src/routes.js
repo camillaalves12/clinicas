@@ -112,14 +112,14 @@ router.route('/consultForProfessional')
 router.route('/consultForProcediment')
   .get(AuthMiddleware, ConsultController.findConsultForProcediment) //ok
 
-  
-router.route('/scheduling/:id')
-  .post(AuthMiddleware, SchedulingController.createScheduling)
-  .put(AuthMiddleware, SchedulingController.updateScheduling)
-  .delete(AuthMiddleware, SchedulingController.deleteScheduling);
-
 router.route('/schedulings')
-  .get(AuthMiddleware, SchedulingController.findAllSchedulings)
+.get(AuthMiddleware, SchedulingController.findAllSchedulings) // ok
+
+
+router.route('/scheduling/:id')
+  .post(AuthMiddleware, SchedulingController.createScheduling) //ok
+  .put(AuthMiddleware, SchedulingController.updateScheduling) //ok
+  .delete(AuthMiddleware, SchedulingController.deleteScheduling) //ok
 
 router.route('/upcomingSchedulings')
   .get(AuthMiddleware, SchedulingController.upcomingSchedulings)
