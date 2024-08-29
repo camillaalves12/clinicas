@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+/* eslint-disable react/prop-types */
+import { useState } from 'react'
 import S from './styles.module.scss'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { ResultFound } from '../ResultFound/ResultFound'
-import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
+// import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
 import { api } from '../../services/api'
-import { Alert } from 'react-bootstrap'
+// import { Alert } from 'react-bootstrap'
 import { Confirm } from '../Confirm/Confirm'
 
 export function SearchPatient(props) {
@@ -13,16 +14,7 @@ export function SearchPatient(props) {
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [searchRoute, setSearchRoute] = useState('')
   const [patients, setPatients] = useState([])
-
-
-
-
   const [modalShow, setModalShow] = useState(false);
-
-
-
-
-
 
   const handleSearch = async event => {
     event.preventDefault() // Impede que o formulário seja enviado por requisição HTTP tradicional
@@ -134,7 +126,8 @@ export function SearchPatient(props) {
       ) : (
         
         <Confirm
-        description='TESTESTESTESTESTE!'
+        title='Paciente não encontrado!'
+        description='Tente novamente'
         show={modalShow}
         onHide={() => setModalShow(false)}
       />

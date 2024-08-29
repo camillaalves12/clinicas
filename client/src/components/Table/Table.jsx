@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { BiSearch } from 'react-icons/bi'
 import { Form, Button } from 'react-bootstrap'
@@ -15,6 +15,8 @@ export function Table() {
   const [finalDate, setFinalDate] = useState('')
 
   const handleDateSubmit = e => {
+    e.preventDefault()
+
 
     const dataToSend = {
       data_inicial: initialDate,

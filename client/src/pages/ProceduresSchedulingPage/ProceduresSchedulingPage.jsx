@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import S from './styles.module.scss'
 import PropTypes from 'prop-types'
 import { BiSearch } from 'react-icons/bi'

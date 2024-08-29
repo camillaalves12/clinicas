@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types'
 import { BiInfoCircle } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import S from './styles.module.scss'
 
 export function ResultFound({ dados }) {
+  
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
