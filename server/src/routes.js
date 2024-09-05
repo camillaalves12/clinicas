@@ -101,7 +101,7 @@ router.route('/consult/:id')
   .put(AuthMiddleware, ConsultController.updateConsult) //ok
 
 router.route('/consultForPeriod/:id')
-  .get(AuthMiddleware, ConsultController.findConsultForPeriod) // mais ou menos
+  .get(AuthMiddleware, ConsultController.findConsultForPeriod) //ok
 
 router.route('/consultsForPatient/:pacienteId')
   .get(AuthMiddleware, ConsultController.findConsultForPatient) //ok
@@ -122,39 +122,34 @@ router.route('/scheduling/:id')
   .delete(AuthMiddleware, SchedulingController.deleteScheduling) //ok
 
 router.route('/upcomingSchedulings')
-  .get(AuthMiddleware, SchedulingController.upcomingSchedulings)
+  .get(AuthMiddleware, SchedulingController.upcomingSchedulings) // ok. mas oq faz?
 
 router.route('/schedulingsForDate')
-  .put(AuthMiddleware, SchedulingController.findSchedulingsForDate)
+  .get(AuthMiddleware, SchedulingController.findSchedulingsForDate) // ok. mas oq faz?    // ESTAVA PUT 
 
 router.route('/schedulingsForPatient')
-  .get(AuthMiddleware, SchedulingController.findSchedulingsForPatient)
+  .get(AuthMiddleware, SchedulingController.findSchedulingsForPatient) //ok
 
 router.route('/schedulingsForProfessional')
-  .get(AuthMiddleware, SchedulingController.findSchedulingsForProfessional)
+  .get(AuthMiddleware, SchedulingController.findSchedulingsForProfessional) //ok
 
 router.route('/schedulingsForProcediment')
-  .get(AuthMiddleware, SchedulingController.findSchedulingsForProcediment)
+  .get(AuthMiddleware, SchedulingController.findSchedulingsForProcediment) //ok
 
 router.route('/confirmScheduling/:id')
-  .put(AuthMiddleware, SchedulingController.confirmScheduling)
-
-
-
+  .put(AuthMiddleware, SchedulingController.confirmScheduling) //ok
 
 router.route('/dailyData/:id')
-  .put(AuthMiddleware, DashboardController.dailyData)
+  .put(AuthMiddleware, DashboardController.dailyData) //ok
 
 router.route('/monthlyData/:id')
-  .put(AuthMiddleware, DashboardController.monthlyData)
+  .put(AuthMiddleware, DashboardController.monthlyData) // ok
 
 router.route('/monthlyDataforDay/:id')
-  .put(AuthMiddleware, DashboardController.monthlyDataforDay)
+  .put(AuthMiddleware, DashboardController.monthlyDataforDay) //ok
 
 router.route('/dataForPeriod/:id')
-  .put(AuthMiddleware, DashboardController.dataForPeriod)
-
-
+  .put(AuthMiddleware, DashboardController.dataForPeriod) // ok
 
 
 export { router }

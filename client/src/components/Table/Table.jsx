@@ -9,51 +9,60 @@ import Refresh from '../Refresh/Refresh'
 
 export function Table() {
   const [consults, setConsults] = useState([])
-
   const [initialDate, setInitialDate] = useState('')
-
   const [finalDate, setFinalDate] = useState('')
 
-  const handleDateSubmit = e => {
-    e.preventDefault()
+  useEffect(() => {
+    fetchConsults()
+  }, [])
 
-
-    const dataToSend = {
-      data_inicial: initialDate,
-      data_final: finalDate
-    }
-
-    api
-      .put(`/consultForPeriod/${getClinicId()}`, dataToSend)
-      .then(response => {
-        console.log(response.data)
-        setConsults(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
-
-  const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
-    return clinicId
-  }
-
-  const fetchConsults = async () => {
+    const fetchConsults = async () => {
     try {
       const response = await api.get('/consults')
+      const data = response.data
+
+
+      console.log('Consultas recebidas:', data);
+
       setConsults(response.data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    fetchConsults()
-  }, [])
+
+  const handleDateSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Initial Date:', initialDate);
+    console.log('Final Date:', finalDate);
+
+    if (!initialDate || !finalDate) {
+      console.log('Datas inválidas fornecidas');
+      return;
+    }
+
+    try {
+      const clinicId = getClinicId();
+      const response = await api.get(`/consultForPeriod/${clinicId}`, {
+        initialDate,
+        finalDate,
+      });
+      const data = response.data;
+
+      console.log('Consultas por período recebidas:', data);
+
+      setConsults(data);
+    } catch (error) {
+      console.log('Erro ao buscar consultas por período:', error);
+    }
+  };
+
+  const getClinicId = () => {
+    const userDataString = localStorage.getItem('user')
+    const userData = JSON.parse(userDataString)
+    const clinicId = userData?.user?.clinicaId
+    return clinicId
+  }
 
   const Tabela = () => {
     return (
@@ -146,7 +155,7 @@ export function Table() {
             <Tabela />
           ) : (
             <Refresh title='Nenhuma consulta cadastrada'/> 
-            
+
           )}
         </div>
       </div>

@@ -366,29 +366,36 @@ export default {
   },
 
   async monthlyDataforDay(req, res) {
-    const { id } = req.params;
-    const { data } = req.body;
-  
-    const transformDateInitial = (date) => {
-      const transformedDate = `${date}-01T00:00:00.000Z`;
-      return transformedDate;
-    };
-  
-    const transformDateFinal = (date) => {
-      const transformedDate = `${date}-31T23:59:59.000Z`;
-      return transformedDate;
-    };
-  
     try {
+      const { id } = req.params;
+      const { data } = req.body;
+
+      // Verifique se a data está no formato correto
+      if (!data || isNaN(Date.parse(data))) {
+        return res.status(400).json({ error: 'Data inválida fornecida' });
+      }
+
+      // Ajuste de fuso horário (para UTC)
+      const startDate = new Date(data);
+      startDate.setUTCHours(0, 0, 0, 0); // Início do dia em UTC
+      const endDate = new Date(data);
+      endDate.setUTCHours(23, 59, 59, 999); // Final do dia em UTC
+
+
       const clinic = await prisma.clinica.findUnique({ where: { id: Number(id) } });
-  
+
+      if (!clinic) {
+        return res.status(404).json({ error: 'Clínica não encontrada' });
+      }
+
+      // Obtenha as consultas pela data e clínica
       const consults = await prisma.consulta.findMany({
         where: {
           data_de_criacao: {
-            gte: new Date(transformDateInitial(data)),
-            lte: new Date(transformDateFinal(data)),
+            gte: startDate,
+            lte: endDate,
           },
-          clinicaId: Number(id),
+          clinicaId: clinic.id,
         },
         select: {
           id: true,
@@ -412,24 +419,33 @@ export default {
           tipo_de_pagamento: true,
         },
       });
-  
+
+      if (consults.length === 0) {
+        console.log('Nenhuma consulta encontrada para a data:', data);
+        return res.json({
+          mes: data,
+          clinica: clinic.nome,
+          detalhes_por_dia: [],
+        });
+      }
+
       const consultsByDayAndProfissional = {};
-  
+
       consults.forEach((consult) => {
-        const consultDate = consult.data_de_criacao.toISOString().substr(0, 10);
+        const consultDate = consult.data_de_criacao.toISOString().split('T')[0];
         const profissionalName = consult.profissional.nome;
-  
+
         if (!consultsByDayAndProfissional[consultDate]) {
           consultsByDayAndProfissional[consultDate] = {};
         }
-  
+
         if (!consultsByDayAndProfissional[consultDate][profissionalName]) {
           consultsByDayAndProfissional[consultDate][profissionalName] = [];
         }
-  
+
         consultsByDayAndProfissional[consultDate][profissionalName].push(consult);
       });
-  
+
       const monthlyData = {
         mes: data,
         clinica: clinic.nome,
@@ -451,12 +467,11 @@ export default {
           };
         }),
       };
-  
+
       return res.json(monthlyData);
     } catch (error) {
-      return res.json({ error });
+      return res.status(500).json({ error: error.message });
     }
   },
-  
 
 }

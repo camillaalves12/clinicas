@@ -1,3 +1,4 @@
+
 import { Card } from '../../components/Card/Card'
 import { Header } from '../../components/Header/Header'
 import { DashPie } from '../../components/DashPie/DashPie'
@@ -73,7 +74,7 @@ export function InitialPage() {
   }
 
   const handleDateSubmit = e => {
-
+    e.preventDefault();
     const dataToSend = {
       data_inicial: initialDate,
       data_final: finalDate

@@ -1,8 +1,9 @@
+/* eslint-disable react/no-unknown-property */
 import { useState, useEffect } from 'react'
 import S from './styles.module.scss'
 import { Header } from '../../components/Header/Header'
 import { api } from '../../services/api'
-import { Search } from '../../components/Search/Search'
+// import { Search } from '../../components/Search/Search'
 
 export function ReportsPage() {
 
@@ -55,7 +56,10 @@ export function ReportsPage() {
       } else {
         setProcediments(response.data)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Não existem procedimentos de consulta cadastrados!', error)
+
+    }
   }
 
   const handleInputChange = e => {
@@ -64,6 +68,7 @@ export function ReportsPage() {
     setFormData({ ...formData, [name]: value })
   }
 
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = e => {
     const clinicId = getClinicId()
 
@@ -119,7 +124,7 @@ export function ReportsPage() {
 
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="procedure">
+              <label className={S.labelForm} htmlFor="procedure">
                 Procedimento:
               </label>
               <select
@@ -141,7 +146,7 @@ export function ReportsPage() {
 
             <div>
               <div>
-                <label className={S.labelForm} for="professional">
+                <label className={S.labelForm} htmlFor="professional">
                   Profissional:
                 </label>
                 <select
@@ -165,7 +170,7 @@ export function ReportsPage() {
 
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="date_procedure">
+              <label className={S.labelForm} htmlFor="date_procedure">
                 Data do procedimento:
               </label>
               <input
@@ -181,7 +186,7 @@ export function ReportsPage() {
             </div>
 
             <div>
-              <label className={S.labelForm} for="hour_procedure">
+              <label className={S.labelForm} htmlFor="hour_procedure">
                 Horário:
               </label>
               <input
@@ -196,7 +201,7 @@ export function ReportsPage() {
 
           <div className={S.divForms}>
             <div>
-              <label className={S.labelForm} for="valor">
+              <label className={S.labelForm} htmlFor="valor">
                 Valor:
               </label>
               <input
