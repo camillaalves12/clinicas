@@ -1,68 +1,66 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
-import S from './styles.module.scss'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import { ResultFound } from '../ResultFound/ResultFound'
+import { useState } from "react";
+import S from "./styles.module.scss";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { ResultFound } from "../ResultFound/ResultFound";
 // import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
-import { api } from '../../services/api'
+import { api } from "../../services/api";
 // import { Alert } from 'react-bootstrap'
-import { Confirm } from '../Confirm/Confirm'
+import { Confirm } from "../Confirm/Confirm";
 
 export function SearchPatient(props) {
-  const [nameOrCPF, setNameOrCPF] = useState('')
-  const [dateOfBirth, setDateOfBirth] = useState('')
-  const [searchRoute, setSearchRoute] = useState('')
-  const [patients, setPatients] = useState([])
+  const [nameOrCPF, setNameOrCPF] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [searchRoute, setSearchRoute] = useState("");
+  const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  const handleSearch = async event => {
-    event.preventDefault() // Impede que o formulário seja enviado por requisição HTTP tradicional
+  const handleSearch = async (event) => {
+    event.preventDefault(); 
 
     try {
       // Limpar resultados de pesquisa anteriores
-      setPatients([])
+      setPatients([]);
 
-      let response
+      let response;
 
       switch (searchRoute) {
-        case 'name':
-          response = await api.post('/patientForName', { nome: nameOrCPF })
-          break
-        case 'dateOfBirth':
-          response = await api.post('/patientForDateOfBirth', {
-            data_de_nascimento: dateOfBirth
-          })
-          break
-        case 'cpf':
-          response = await api.post('/patientForCPF', { cpf: nameOrCPF })
-          break
+        case "name":
+          response = await api.post("/patientForName", { nome: nameOrCPF });
+          break;
+        case "dateOfBirth":
+          response = await api.post("/patientForDateOfBirth", {
+            data_de_nascimento: dateOfBirth,
+          });
+          break;
+        case "cpf":
+          response = await api.post("/patientForCPF", { cpf: nameOrCPF });
+          break;
         default:
-          return // Se nenhuma rota válida foi selecionada, não faz nada
+          return; 
       }
 
-      console.log(response.data)
-      // O resultado da API será um array de pacientes correspondentes
-      setPatients(response.data)
+      setPatients(response.data);
     } catch (error) {
-      console.error('Erro ao buscar pacientes:', error)
+      console.error("Erro ao buscar pacientes:", error);
     }
-  }
+  };
 
   return (
     <>
       <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
-          <h2 style={{ marginBottom: '1.5rem' }}>{props.title}</h2>
+          <h2 style={{ marginBottom: "1.5rem" }}>{props.title}</h2>
           <Form.Group className="mb-3" id="searchRoute">
             <Form.Label>Buscar por:</Form.Label>
             <Form.Select
               value={searchRoute}
-              onChange={e => setSearchRoute(e.target.value)}
+              onChange={(e) => setSearchRoute(e.target.value)}
               style={{
-                outline: 'none',
-                boxShadow: 'none',
-                border: '1px solid #cdcdcd'
+                outline: "none",
+                boxShadow: "none",
+                border: "1px solid #cdcdcd",
               }}
             >
               <option value="">Selecione uma opção</option>
@@ -72,26 +70,26 @@ export function SearchPatient(props) {
             </Form.Select>
           </Form.Group>
 
-          {searchRoute === 'name' || searchRoute === 'cpf' ? (
+          {searchRoute === "name" || searchRoute === "cpf" ? (
             <Form.Group className="mb-3" id="inputNameCPF">
               <Form.Label>
-                {searchRoute === 'name' ? 'Nome:' : 'CPF:'}
+                {searchRoute === "name" ? "Nome:" : "CPF:"}
               </Form.Label>
               <Form.Control
                 required
                 type="text"
                 style={{
-                  outline: 'none',
-                  boxShadow: 'none',
-                  border: '1px solid #cdcdcd'
+                  outline: "none",
+                  boxShadow: "none",
+                  border: "1px solid #cdcdcd",
                 }}
                 value={nameOrCPF}
-                onChange={e => setNameOrCPF(e.target.value)}
+                onChange={(e) => setNameOrCPF(e.target.value)}
               />
             </Form.Group>
           ) : null}
 
-          {searchRoute === 'dateOfBirth' ? (
+          {searchRoute === "dateOfBirth" ? (
             <Form.Group className="mb-3" id="inputDateNasc">
               <Form.Label>Data de nascimento:</Form.Label>
               <Form.Control
@@ -99,12 +97,12 @@ export function SearchPatient(props) {
                 className={S.inputDoctor}
                 type="date"
                 style={{
-                  outline: 'none',
-                  boxShadow: 'none',
-                  border: '1px solid #cdcdcd'
+                  outline: "none",
+                  boxShadow: "none",
+                  border: "1px solid #cdcdcd",
                 }}
                 value={dateOfBirth}
-                onChange={e => setDateOfBirth(e.target.value)}
+                onChange={(e) => setDateOfBirth(e.target.value)}
               />
             </Form.Group>
           ) : null}
@@ -112,7 +110,7 @@ export function SearchPatient(props) {
           <div className={S.btnSearch}>
             <Button
               type="submit"
-              style={{ width: '250px', height: '38px', textAlign: 'center' }}
+              style={{ width: "250px", height: "38px", textAlign: "center" }}
               onClick={() => setModalShow(true)}
             >
               Procurar
@@ -124,14 +122,13 @@ export function SearchPatient(props) {
       {patients.length > 0 ? (
         <ResultFound dados={patients} />
       ) : (
-        
         <Confirm
-        title='Paciente não encontrado!'
-        description='Tente novamente'
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
+          title="Paciente não encontrado!"
+          description="Tente novamente"
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
       )}
     </>
-  )
+  );
 }

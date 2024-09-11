@@ -1,55 +1,56 @@
-import S from './styles.module.scss'
-import { Header } from '../../components/Header/Header'
-import { useState } from 'react'
-import { api } from '../../services/api'
-import Button from 'react-bootstrap/Button';
-import { Confirm } from '../../components/Confirm/Confirm'
+import S from "./styles.module.scss";
+import { Header } from "../../components/Header/Header";
+import { useState } from "react";
+import { api } from "../../services/api";
+import Button from "react-bootstrap/Button";
+import { Confirm } from "../../components/Confirm/Confirm";
 
 export function RegisterDoctorPage() {
   const [modalShow, setModalShow] = useState(false);
   const [formData, setFormData] = useState({
-    nome: '',
-    especialidade: ''
-  })
+    nome: "",
+    especialidade: "",
+  });
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    console.log(clinicId);
+    return clinicId;
+  };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const dataToSend = { ...formData }
-    const clinicId = getClinicId()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const dataToSend = { ...formData };
+    const clinicId = getClinicId();
 
     if (!clinicId) {
-      alert('Erro: ID da clínica não encontrado.')
-      return
+      alert("Erro: ID da clínica não encontrado.");
+      return;
     }
-    
-    api.post(`/professional/${clinicId}`, dataToSend)
-      .then(response => {
-        console.log(response)
-        setModalShow(true) // Exibe o modal após o sucesso
+
+    api
+      .post(`/professional/${clinicId}`, dataToSend)
+      .then((response) => {
+        console.log(response);
+        setModalShow(true); // Exibe o modal após o sucesso
 
         setFormData({
-            nome: '',
-            especialidade: '',
-        })
+          nome: "",
+          especialidade: "",
+        });
       })
-      .catch(error => {
-        alert(error.response.data.error)
-        console.log(error.response.data.error)
-      })
-  }
+      .catch((error) => {
+        alert(error.response.data.error);
+        console.log(error.response.data.error);
+      });
+  };
 
   return (
     <>
@@ -60,7 +61,7 @@ export function RegisterDoctorPage() {
         onSubmit={handleSubmit}
       >
         <div className={S.containerForm}>
-          <h3 style={{ marginBottom: '1.5rem' }}>Cadastrar profissional</h3>
+          <h3 style={{ marginBottom: "1.5rem" }}>Cadastrar profissional</h3>
 
           <label className={S.labelForm} htmlFor="nameProfessional">
             Nome:
@@ -71,7 +72,7 @@ export function RegisterDoctorPage() {
             id="nameProfessional"
             name="nome"
             onChange={handleInputChange}
-            value={formData.nome}  // Valor do campo
+            value={formData.nome} // Valor do campo
             required
           />
 
@@ -84,7 +85,7 @@ export function RegisterDoctorPage() {
             id="specialty"
             name="especialidade"
             onChange={handleInputChange}
-            value={formData.especialidade}  // Valor do campo
+            value={formData.especialidade} // Valor do campo
             required
           />
 
@@ -94,7 +95,7 @@ export function RegisterDoctorPage() {
             </Button>
 
             <Confirm
-              description='Profissional registrado com sucesso!'
+              description="Profissional registrado com sucesso!"
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
@@ -102,5 +103,5 @@ export function RegisterDoctorPage() {
         </div>
       </form>
     </>
-  )
+  );
 }

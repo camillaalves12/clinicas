@@ -1,65 +1,67 @@
-import React, { useEffect } from 'react'
-import S from './styles.module.scss'
-import { HiOutlineLogout } from 'react-icons/hi'
-import Container from 'react-bootstrap/Container'
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-import { Button } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
-import NavDropdown from 'react-bootstrap/NavDropdown'
+// import React, { useEffect } from 'react'
+import S from "./styles.module.scss";
+import { HiOutlineLogout } from "react-icons/hi";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 export function Header() {
   const getUserName = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    return userData?.user?.nome
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    return userData?.user?.nome;
+  };
 
   const getClinicName = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicName = userData?.user?.clinica
-    return clinicName
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicName = userData?.user?.clinica;
+    return clinicName;
+  };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    window.location.reload()
-    navigate("/")
-  } 
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    window.location.reload();
+    navigate("/");
+  };
 
   return (
     <div className={S.navBar}>
       <Navbar
-        style={{ background: '#e0f1e0' }}
+        style={{ background: "#e0f1e0" }}
         expand="lg"
         className={S.navBarItens}
       >
         <Container fluid>
-          <Navbar.Brand>{getClinicName()}</Navbar.Brand>
+          <Nav.Link as={Link} to="/initial">
+            <Navbar.Brand>{getClinicName()}</Navbar.Brand>
+          </Nav.Link>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
               className="me-auto my-2 my-lg-0"
-              style={{ maxHeight: '100px' }}
+              style={{ maxHeight: "100px" }}
               navbarScroll
             >
               <Nav.Link as={Link} to="/initial">
                 Painel administrativo
               </Nav.Link>
               <NavDropdown title="Resumos">
-              <NavDropdown.Item as={Link} to="/procedures">
-                Resumo diário
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/procedures_scheduling">
-                Agendamento de procedimento
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/report_professional">
-                Relatório por profissional
-              </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/procedures">
+                  Resumo
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/procedures_scheduling">
+                  Agendamento de procedimento
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/report_professional">
+                  Relatório por profissional
+                </NavDropdown.Item>
               </NavDropdown>
 
               <NavDropdown title="Procedimentos">
@@ -96,5 +98,5 @@ export function Header() {
         </Container>
       </Navbar>
     </div>
-  )
+  );
 }

@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-import PropTypes from 'prop-types'
-import { BiInfoCircle } from 'react-icons/bi'
-import { Link } from 'react-router-dom'
-import S from './styles.module.scss'
+import PropTypes from "prop-types";
+import { BiInfoCircle } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import S from "./styles.module.scss";
 
 export function ResultFound({ dados }) {
-  
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
@@ -34,8 +33,8 @@ export function ResultFound({ dados }) {
           ))}
         </tbody>
       </table>
-    )
-  }
+    );
+  };
 
   Tabela.propTypes = {
     dados: PropTypes.arrayOf(
@@ -43,10 +42,10 @@ export function ResultFound({ dados }) {
         nome: PropTypes.string.isRequired,
         cpf: PropTypes.string.isRequired,
         data_de_nasc: PropTypes.string.isRequired,
-        telefone: PropTypes.string.isRequired
+        telefone: PropTypes.string.isRequired,
       })
-    ).isRequired
-  }
+    ).isRequired,
+  };
 
   return (
     <>
@@ -60,5 +59,5 @@ export function ResultFound({ dados }) {
         </div>
       </div>
     </>
-  )
+  );
 }

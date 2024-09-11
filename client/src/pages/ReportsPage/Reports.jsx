@@ -1,99 +1,96 @@
 /* eslint-disable react/no-unknown-property */
-import { useState, useEffect } from 'react'
-import S from './styles.module.scss'
-import { Header } from '../../components/Header/Header'
-import { api } from '../../services/api'
+import { useState, useEffect } from "react";
+import S from "./styles.module.scss";
+import { Header } from "../../components/Header/Header";
+import { api } from "../../services/api";
 // import { Search } from '../../components/Search/Search'
 
 export function ReportsPage() {
-
-  const [procediments, setProcediments] = useState([])
-
-  const [professionals, setProfessionals] = useState([])
-
-  const [patientId, setPatientId] = useState('')
-
+  const [procediments, setProcediments] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const [patientId, setPatientId] = useState("");
   const [formData, setFormData] = useState({
-    paciente: '',
-    profissional: '',
-    procedimento: '',
-    valor: '',
-    data_da_consulta: '',
-    hora_da_consulta: ''
-  })
+    paciente: "",
+    profissional: "",
+    procedimento: "",
+    valor: "",
+    data_da_consulta: "",
+    hora_da_consulta: "",
+  });
 
   useEffect(() => {
-    fetchProfessionals()
-    fetchProcediments()
-  }, [])
+    fetchProfessionals();
+    fetchProcediments();
+  }, []);
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    return clinicId;
+  };
 
   const fetchProfessionals = async () => {
     try {
-      const response = await api.post('/professionalForName')
+      const response = await api.post("/professionalForName");
       if (!response.data) {
-        alert('Não existem profissionais cadastrados!')
+        alert("Não existem profissionais cadastrados!");
       } else {
-        setProfessionals(response.data)
+        setProfessionals(response.data);
       }
     } catch (error) {
-      console.error('Erro ao buscar profissional:', error)
+      console.error("Erro ao buscar profissional:", error);
     }
-  }
+  };
 
   const fetchProcediments = async () => {
     try {
-      const response = await api.get(`/procediments`)
+      const response = await api.get(`/procediments`);
 
       if (!response.data) {
-        alert('Não existem procedimentos de consulta cadastrados!')
+        alert("Não existem procedimentos de consulta cadastrados!");
       } else {
-        setProcediments(response.data)
+        setProcediments(response.data);
       }
     } catch (error) {
-      console.error('Não existem procedimentos de consulta cadastrados!', error)
-
+      console.error(
+        "Não existem procedimentos de consulta cadastrados!",
+        error
+      );
     }
-  }
+  };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-    setFormData({ ...formData, [name]: value })
-  }
+    setFormData({ ...formData, [name]: value });
+  };
 
   // eslint-disable-next-line no-unused-vars
-  const handleSubmit = e => {
-    const clinicId = getClinicId()
+  const handleSubmit = (e) => {
+    const clinicId = getClinicId();
 
     processForm()
-      .then(dataToSend => {
-        console.log(dataToSend)
+      .then((dataToSend) => {
+        console.log(dataToSend);
         api
           .post(`/scheduling/${clinicId}`, dataToSend)
-          .then(response => {
-            alert('Agendamento criado com sucesso!')
-            console.log(response)
+          .then((response) => {
+            alert("Agendamento criado com sucesso!");
+            console.log(response);
           })
-          .catch(error => {
-            alert('Erro ao processar o formulário:', error)
-            console.error('Erro ao processar o formulário:', error)
-          })
+          .catch((error) => {
+            alert("Erro ao processar o formulário:", error);
+            console.error("Erro ao processar o formulário:", error);
+          });
       })
-      .catch(error => {
-        console.error('Erro ao processar o formulário:', error)
-      })
-  }
+      .catch((error) => {
+        console.error("Erro ao processar o formulário:", error);
+      });
+  };
 
   const processForm = async () => {
     try {
-
       const dataToSend = {
         pacienteId: parseInt(patientId),
         profissionalId: parseInt(formData.profissional),
@@ -101,26 +98,26 @@ export function ReportsPage() {
         valor_da_consulta: parseInt(formData.valor),
         data_da_consulta: formData.data_da_consulta,
         hora_da_consulta: formData.hora_da_consulta,
-        clinicaId: getClinicId()
-      }
+        clinicaId: getClinicId(),
+      };
 
-      return dataToSend
+      return dataToSend;
     } catch (error) {
-      console.error('Erro ao processar o formulário:', error)
+      console.error("Erro ao processar o formulário:", error);
     }
-  }
+  };
 
-  const getPatientId = patientId => {
-    setPatientId(patientId)
-    console.log('Entrou na função getPatientId' + patientId)
-  }
+  const getPatientId = (patientId) => {
+    setPatientId(patientId);
+    console.log("Entrou na função getPatientId" + patientId);
+  };
 
   return (
     <>
       <Header />
       <form id="schedulingForm" className={S.container} onSubmit={handleSubmit}>
         <div className={S.containerForm}>
-          <h3 style={{ marginBottom: '1.5rem' }}>Relatórios</h3>
+          <h3 style={{ marginBottom: "1.5rem" }}>Relatórios</h3>
 
           <div className={S.divForms}>
             <div>
@@ -128,7 +125,7 @@ export function ReportsPage() {
                 Procedimento:
               </label>
               <select
-                style={{ width: '255px' }}
+                style={{ width: "255px" }}
                 className={S.inputForm}
                 name="procedimento"
                 onChange={handleInputChange}
@@ -136,7 +133,7 @@ export function ReportsPage() {
                 required
               >
                 <option>Selecione o procedimento</option>
-                {procediments.map(procediments => (
+                {procediments.map((procediments) => (
                   <option key={procediments.id} value={procediments.id}>
                     {procediments.nome}
                   </option>
@@ -151,14 +148,14 @@ export function ReportsPage() {
                 </label>
                 <select
                   className={S.inputForm}
-                  style={{ width: '255px' }}
+                  style={{ width: "255px" }}
                   name="profissional"
                   onChange={handleInputChange}
                   value={formData.profissional}
                   required
                 >
                   <option>Selecione o profissional</option>
-                  {professionals.map(professionals => (
+                  {professionals.map((professionals) => (
                     <option key={professionals.id} value={professionals.id}>
                       {professionals.nome}
                     </option>
@@ -175,7 +172,7 @@ export function ReportsPage() {
               </label>
               <input
                 className={S.inputForm}
-                style={{ width: '255px', padding: '5px' }}
+                style={{ width: "255px", padding: "5px" }}
                 type="date"
                 id="date_procedure"
                 name="data_da_consulta"
@@ -191,7 +188,7 @@ export function ReportsPage() {
               </label>
               <input
                 className={S.inputForm}
-                style={{ width: '255px' }}
+                style={{ width: "255px" }}
                 name="hora_da_consulta"
                 onChange={handleInputChange}
                 value={formData.hora_da_consulta}
@@ -206,7 +203,7 @@ export function ReportsPage() {
               </label>
               <input
                 className={S.inputForm}
-                style={{ width: '235px' }}
+                style={{ width: "235px" }}
                 type="text"
                 id="valor"
                 step="0.01"
@@ -221,7 +218,7 @@ export function ReportsPage() {
               <label className={S.labelForm}>Forma de Pagamento:</label>
               <select
                 className={S.inputForm}
-                style={{ width: '275px' }}
+                style={{ width: "275px" }}
                 name="forma_de_pagamento"
                 onChange={handleInputChange}
                 value={formData.forma_de_pagamento}
@@ -244,5 +241,5 @@ export function ReportsPage() {
         </div>
       </form>
     </>
-  )
+  );
 }

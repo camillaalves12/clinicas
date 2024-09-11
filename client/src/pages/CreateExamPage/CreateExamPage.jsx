@@ -1,116 +1,107 @@
 /* eslint-disable react/no-unknown-property */
-import { useState, useEffect } from 'react'
-import { Header } from '../../components/Header/Header'
-import { api } from '../../services/api'
-import S from './styles.module.scss'
-import { Search } from '../../components/Search/Search'
+import { useState, useEffect } from "react";
+import { Header } from "../../components/Header/Header";
+import { api } from "../../services/api";
+import S from "./styles.module.scss";
+import { Search } from "../../components/Search/Search";
 
-import Alert from '../../components/Alert/Alert'; 
- 
+import Alert from "../../components/Alert/Alert";
 
 export function CreateExamPage() {
-
-  const [procedimentsType, setProcedimentsType] = useState([])
-
-  const [procediments, setProcediments] = useState([])
-
-  const [professionals, setProfessionals] = useState([])
-
-  const [patientId, setPatientId] = useState('')
-
+  const [procedimentsType, setProcedimentsType] = useState([]);
+  const [procediments, setProcediments] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const [patientId, setPatientId] = useState("");
   const [formData, setFormData] = useState({
-    paciente: '',
-    profissional: '',
-    procedimento: '',
-    valor: '',
-    forma_de_pagamento: '',
-    tipo_de_procedimento: ''
-  })
+    paciente: "",
+    profissional: "",
+    procedimento: "",
+    valor: "",
+    forma_de_pagamento: "",
+    tipo_de_procedimento: "",
+  });
 
   const [confirmationAlert, setConfirmationAlert] = useState({
     visible: false,
-    message: '',
+    message: "",
   });
 
+  useEffect(() => {
+    fetchProfessionals();
+    fetchProcedimentsType();
+  }, []);
 
   useEffect(() => {
-    fetchProfessionals()
-    fetchProcedimentsType()
-  }, [])
-
-  useEffect(() => {
-    fetchProcediments()
-  }, [formData.tipo_de_procedimento])
+    fetchProcediments();
+  }, [formData.tipo_de_procedimento]);
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    return clinicId;
+  };
 
   const fetchProfessionals = async () => {
     try {
-      const response = await api.post('/professionalForName')
+      const response = await api.post("/professionalForName");
       if (!response.data) {
-        alert('Não existem profissionais cadastrados!')
+        alert("Não existem profissionais cadastrados!");
       } else {
-        console.log(response.data)
-        setProfessionals(response.data)
+        console.log(response.data);
+        setProfessionals(response.data);
       }
     } catch (error) {
-      console.error('Erro ao buscar profissional:', error)
+      console.error("Erro ao buscar profissional:", error);
     }
-  }
+  };
 
   const fetchProcediments = async () => {
-
     try {
       const response = await api.get(
         `/procedimentsForType/${parseInt(formData.tipo_de_procedimento)}`
-      )
+      );
 
       if (!response.data) {
-        alert('Não existem procedimentos de consulta cadastrados!')
+        alert("Não existem procedimentos de consulta cadastrados!");
       } else {
-        console.log(response.data)
-        setProcediments(response.data)
+        console.log(response.data);
+        setProcediments(response.data);
       }
     } catch (error) {
-      console.error('Erro na pagina de exame:', error)
-
+      console.error("Erro na pagina de exame:", error);
     }
-  }
+  };
 
   const fetchProcedimentsType = async () => {
     // const consultProcediment = 1
 
     try {
-      const response = await api.get(
-        `/procedimentTypes`
-      )
+      const response = await api.get(`/procedimentTypes`);
 
       if (!response.data) {
-        alert('Não existem procedimentos de consulta cadastrados!')
+        alert("Não existem procedimentos de consulta cadastrados!");
       } else {
-        console.log(response.data)
+        console.log(response.data);
         // Filtrar o array para remover o elemento com o ID 6
-        const filteredProcedimentsType = response.data.filter(item => item.id !== 6)
-        setProcedimentsType(filteredProcedimentsType)
+        const filteredProcedimentsType = response.data.filter(
+          (item) => item.id !== 6
+        );
+        setProcedimentsType(filteredProcedimentsType);
       }
     } catch (error) {
-      console.error('Erro na pagina de exame:', error)
+      console.error("Erro na pagina de exame:", error);
     }
-  }
+  };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-    setFormData({ ...formData, [name]: value })
-  }
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const clinicId = getClinicId();
 
     processForm()
@@ -119,20 +110,22 @@ export function CreateExamPage() {
           .post(`/consult/${clinicId}`, dataToSend)
           // eslint-disable-next-line no-unused-vars
           .then((response) => {
-            setConfirmationAlert({ visible: true, message: 'Exame criado com sucesso!' });
+            setConfirmationAlert({
+              visible: true,
+              message: "Exame criado com sucesso!",
+            });
             setTimeout(() => {
-              setConfirmationAlert({ visible: false, message: '' });
-            },4000);
+              setConfirmationAlert({ visible: false, message: "" });
+            }, 4000);
           })
           .catch((error) => {
-            console.error('Erro ao processar o formulário:', error);
+            console.error("Erro ao processar o formulário:", error);
           });
       })
       .catch((error) => {
-        console.error('Erro ao processar o formulário:', error);
+        console.error("Erro ao processar o formulário:", error);
       });
   };
-
 
   const processForm = async () => {
     try {
@@ -142,19 +135,19 @@ export function CreateExamPage() {
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),
         tipo_de_pagamento: formData.forma_de_pagamento,
-        clinicaId: getClinicId()
-      }
+        clinicaId: getClinicId(),
+      };
 
-      return dataToSend
+      return dataToSend;
     } catch (error) {
-      console.error('Erro ao processar o formulário:', error)
+      console.error("Erro ao processar o formulário:", error);
     }
-  }
+  };
 
-  const getPatientId = patientId => {
-    setPatientId(patientId)
-    console.log('Entrou na função getPatientId' + patientId)
-  }
+  const getPatientId = (patientId) => {
+    setPatientId(patientId);
+    console.log("Entrou na função getPatientId" + patientId);
+  };
 
   return (
     <>
@@ -166,10 +159,8 @@ export function CreateExamPage() {
             className={S.container}
             onSubmit={handleSubmit}
           >
-
-            
             <div className={S.containerForm}>
-              <h3 style={{ marginBottom: '1.5rem' }}>Criar Exame</h3>
+              <h3 style={{ marginBottom: "1.5rem" }}>Criar Exame</h3>
 
               <Search getPatientId={getPatientId} />
 
@@ -180,18 +171,22 @@ export function CreateExamPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '255px' }}
+                    style={{ width: "255px" }}
                     name="profissional"
                     onChange={handleInputChange}
                     value={formData.profissional}
                     required
                   >
                     <option>Selecione o profissional</option>
-                    {professionals.length > 0 ? professionals.map(professionals => (
-                      <option key={professionals.id} value={professionals.id}>
-                        {professionals.nome}
-                      </option>
-                    )) : <option>Nenhum profissional encontrado</option>}
+                    {professionals.length > 0 ? (
+                      professionals.map((professionals) => (
+                        <option key={professionals.id} value={professionals.id}>
+                          {professionals.nome}
+                        </option>
+                      ))
+                    ) : (
+                      <option>Nenhum profissional encontrado</option>
+                    )}
                   </select>
                 </div>
 
@@ -201,40 +196,50 @@ export function CreateExamPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '277px' }}
+                    style={{ width: "277px" }}
                     name="tipo_de_procedimento"
                     onChange={handleInputChange}
                     value={formData.tipo_de_procedimento}
                     required
                   >
                     <option>Selecione o tipo de exame</option>
-                    {procedimentsType.length > 0 ? procedimentsType.map(procedimentsType => (
-                      <option key={procedimentsType.id} value={procedimentsType.id}>
-                        {procedimentsType.nome}
-                      </option>
-                    )) : <option>Nenhum tipo de exame encontrado</option>}
+                    {procedimentsType.length > 0 ? (
+                      procedimentsType.map((procedimentsType) => (
+                        <option
+                          key={procedimentsType.id}
+                          value={procedimentsType.id}
+                        >
+                          {procedimentsType.nome}
+                        </option>
+                      ))
+                    ) : (
+                      <option>Nenhum tipo de exame encontrado</option>
+                    )}
                   </select>
-                  
                 </div>
               </div>
 
               <label className={S.labelForm} htmlFor="procedimento">
-                    Exame:
-                  </label>
-                  <select
-                    className={S.inputForm}
-                    name="procedimento"
-                    onChange={handleInputChange}
-                    value={formData.procedimento}
-                    required
-                  >
-                    <option>Selecione o exame</option>
-                    {procediments.length > 0 ? procediments.map(procediments => (
-                      <option key={procediments.id} value={procediments.id}>
-                        {procediments.nome}
-                      </option>
-                    )) : <option>Nenhum exame encontrado</option>}
-                  </select>
+                Exame:
+              </label>
+              <select
+                className={S.inputForm}
+                name="procedimento"
+                onChange={handleInputChange}
+                value={formData.procedimento}
+                required
+              >
+                <option>Selecione o exame</option>
+                {procediments.length > 0 ? (
+                  procediments.map((procediments) => (
+                    <option key={procediments.id} value={procediments.id}>
+                      {procediments.nome}
+                    </option>
+                  ))
+                ) : (
+                  <option>Nenhum exame encontrado</option>
+                )}
+              </select>
 
               <div className={S.divForms}>
                 <div>
@@ -243,7 +248,7 @@ export function CreateExamPage() {
                   </label>
                   <input
                     className={S.inputForm}
-                    style={{ width: '255px' }}
+                    style={{ width: "255px" }}
                     type="text"
                     id="valor"
                     step="0.01"
@@ -258,7 +263,7 @@ export function CreateExamPage() {
                   <label className={S.labelForm}>Forma de Pagamento:</label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '277px' }}
+                    style={{ width: "277px" }}
                     name="forma_de_pagamento"
                     onChange={handleInputChange}
                     value={formData.forma_de_pagamento}
@@ -282,13 +287,15 @@ export function CreateExamPage() {
               </div>
             </div>
             <Alert
-                message={confirmationAlert.message}
-                isVisible={confirmationAlert.visible}
-                onClose={() => setConfirmationAlert({ visible: false, message: '' })}
+              message={confirmationAlert.message}
+              isVisible={confirmationAlert.visible}
+              onClose={() =>
+                setConfirmationAlert({ visible: false, message: "" })
+              }
             />
           </form>
         </div>
       </div>
     </>
-  )
+  );
 }

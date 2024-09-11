@@ -1,96 +1,95 @@
-import { useState } from 'react'
-import { Header } from '../../components/Header/Header'
-import S from './styles.module.scss'
-import { api } from '../../services/api'
-import { Confirm } from '../../components/Confirm/Confirm'
-import Button from 'react-bootstrap/Button';
+import { useState } from "react";
+import { Header } from "../../components/Header/Header";
+import S from "./styles.module.scss";
+import { api } from "../../services/api";
+import { Confirm } from "../../components/Confirm/Confirm";
+import Button from "react-bootstrap/Button";
 
 export function RegisterPatientPage() {
-
   const [modalShow, setModalShow] = useState(false);
 
   const [formData, setFormData] = useState({
-    nome: '',
-    cpf: '',
-    data_de_nascimento: '',
-    telefone: '',
-    sexo: ''
-  })
+    nome: "",
+    cpf: "",
+    data_de_nascimento: "",
+    telefone: "",
+    sexo: "",
+  });
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
     // Verifica se o campo é o CPF e formata o valor com pontos e traço
-    if (name === 'cpf') {
-      const formattedCPF = formatCPF(value)
-      setFormData({ ...formData, [name]: formattedCPF })
+    if (name === "cpf") {
+      const formattedCPF = formatCPF(value);
+      setFormData({ ...formData, [name]: formattedCPF });
     } else {
-      setFormData({ ...formData, [name]: value })
+      setFormData({ ...formData, [name]: value });
     }
-  }
+  };
 
-  const formatCPF = value => {
+  const formatCPF = (value) => {
     // Remove qualquer caractere não numérico do valor do CPF
-    const numericCPF = value.replace(/\D/g, '')
+    const numericCPF = value.replace(/\D/g, "");
 
     // Aplica a formatação: XXX.XXX.XXX-XX
     const formattedCPF = numericCPF.replace(
       /(\d{3})(\d{3})(\d{3})(\d{2})/,
-      '$1.$2.$3-$4'
-    )
-    return formattedCPF
-  }
+      "$1.$2.$3-$4"
+    );
+    return formattedCPF;
+  };
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    console.log(clinicId)
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    console.log(clinicId);
+    return clinicId;
+  };
 
-  const formatDateToApiFormat = date => {
-    const parts = date.split('/')
+  const formatDateToApiFormat = (date) => {
+    const parts = date.split("/");
     if (parts.length === 3) {
-      return `${parts[0]}/${parts[1]}/${parts[2]}`
+      return `${parts[0]}/${parts[1]}/${parts[2]}`;
     }
-    return date
-  }
+    return date;
+  };
 
-  const handleSubmit = e => {
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     // Cria uma cópia do formData para evitar alterações diretas no estado
-    const dataToSend = { ...formData }
+    const dataToSend = { ...formData };
 
     // Converte a data para o formato esperado pela API antes de enviar
     dataToSend.data_de_nascimento = formatDateToApiFormat(
       formData.data_de_nascimento
-    )
+    );
 
-    console.log(dataToSend)
-    const clinicId = getClinicId()
+    console.log(dataToSend);
+    const clinicId = getClinicId();
 
     api
       .post(`/patient/${clinicId}`, dataToSend)
-      .then(response => {
-        console.log(response)
-        setModalShow(true)  // Exibe o modal após o sucesso
+      .then((response) => {
+        console.log(response);
+        setModalShow(true); // Exibe o modal após o sucesso
 
         // Limpa os campos do formulário
         setFormData({
-          nome: '',
-          cpf: '',
-          data_de_nascimento: '',
-          telefone: '',
-          sexo: ''
-        })
+          nome: "",
+          cpf: "",
+          data_de_nascimento: "",
+          telefone: "",
+          sexo: "",
+        });
       })
-      .catch(error => {
-        alert(error.response.data.error)
-        console.log(error.response.data.error)
-      })
-  }
+      .catch((error) => {
+        alert(error.response.data.error);
+        console.log(error.response.data.error);
+      });
+  };
 
   return (
     <>
@@ -101,7 +100,7 @@ export function RegisterPatientPage() {
         onSubmit={handleSubmit}
       >
         <div className={S.containerForm}>
-          <h3 style={{ marginBottom: '1.5rem' }}>Cadastrar paciente</h3>
+          <h3 style={{ marginBottom: "1.5rem" }}>Cadastrar paciente</h3>
 
           <label className={S.labelForm} htmlFor="namePatient">
             Nome Completo:
@@ -123,7 +122,7 @@ export function RegisterPatientPage() {
               </label>
               <input
                 className={S.inputForm}
-                style={{ width: '255px', padding: '5px' }}
+                style={{ width: "255px", padding: "5px" }}
                 type="date"
                 id="date_birth"
                 name="data_de_nascimento"
@@ -139,7 +138,7 @@ export function RegisterPatientPage() {
               </label>
               <input
                 className={S.inputForm}
-                style={{ width: '255px' }}
+                style={{ width: "255px" }}
                 type="text"
                 id="cpf_patient"
                 name="cpf"
@@ -155,13 +154,13 @@ export function RegisterPatientPage() {
 
           <div
             className={S.divForms}
-            style={{ gap: '1rem', marginTop: '0.2rem', marginBottom: '0.2rem' }}
+            style={{ gap: "1rem", marginTop: "0.2rem", marginBottom: "0.2rem" }}
           >
             <label className={S.labelForm} htmlFor="sex">
               Sexo:
             </label>
             <div>
-              <label htmlFor="feminine" style={{ marginRight: '7px' }}>
+              <label htmlFor="feminine" style={{ marginRight: "7px" }}>
                 Feminino
               </label>
               <input
@@ -169,12 +168,12 @@ export function RegisterPatientPage() {
                 id="feminine"
                 name="sexo"
                 value="F"
-                checked={formData.sexo === 'F'}
+                checked={formData.sexo === "F"}
                 onChange={handleInputChange}
               />
             </div>
             <div>
-              <label htmlFor="masculine" style={{ marginRight: '7px' }}>
+              <label htmlFor="masculine" style={{ marginRight: "7px" }}>
                 Masculino
               </label>
               <input
@@ -182,7 +181,7 @@ export function RegisterPatientPage() {
                 id="masculine"
                 name="sexo"
                 value="M"
-                checked={formData.sexo === 'M'}
+                checked={formData.sexo === "M"}
                 onChange={handleInputChange}
               />
             </div>
@@ -208,7 +207,7 @@ export function RegisterPatientPage() {
             </Button>
 
             <Confirm
-              description='Paciente registrado com sucesso!'
+              description="Paciente registrado com sucesso!"
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
@@ -216,5 +215,5 @@ export function RegisterPatientPage() {
         </div>
       </form>
     </>
-  )
+  );
 }

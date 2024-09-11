@@ -1,43 +1,41 @@
 // import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import { BiSearch } from 'react-icons/bi'
-import { Form, Button } from 'react-bootstrap'
-import S from './styles.module.scss'
-import { useState, useEffect } from 'react'
-import { api } from '../../services/api'
-import Refresh from '../Refresh/Refresh'
+import { Link } from "react-router-dom";
+import { BiSearch } from "react-icons/bi";
+import { Form, Button } from "react-bootstrap";
+import S from "./styles.module.scss";
+import { useState, useEffect } from "react";
+import { api } from "../../services/api";
+import Refresh from "../Refresh/Refresh";
 
 export function Table() {
-  const [consults, setConsults] = useState([])
-  const [initialDate, setInitialDate] = useState('')
-  const [finalDate, setFinalDate] = useState('')
+  const [consults, setConsults] = useState([]);
+  const [initialDate, setInitialDate] = useState("");
+  const [finalDate, setFinalDate] = useState("");
 
   useEffect(() => {
-    fetchConsults()
-  }, [])
+    fetchConsults();
+  }, []);
 
-    const fetchConsults = async () => {
+  const fetchConsults = async () => {
     try {
-      const response = await api.get('/consults')
-      const data = response.data
+      const response = await api.get("/consults");
+      const data = response.data;
 
+      console.log("Consultas recebidas:", data);
 
-      console.log('Consultas recebidas:', data);
-
-      setConsults(response.data)
+      setConsults(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
+  };
 
   const handleDateSubmit = async (e) => {
     e.preventDefault();
-    console.log('Initial Date:', initialDate);
-    console.log('Final Date:', finalDate);
+    console.log("Initial Date:", initialDate);
+    console.log("Final Date:", finalDate);
 
     if (!initialDate || !finalDate) {
-      console.log('Datas inválidas fornecidas');
+      console.log("Datas inválidas fornecidas");
       return;
     }
 
@@ -49,20 +47,20 @@ export function Table() {
       });
       const data = response.data;
 
-      console.log('Consultas por período recebidas:', data);
+      console.log("Consultas por período recebidas:", data);
 
       setConsults(data);
     } catch (error) {
-      console.log('Erro ao buscar consultas por período:', error);
+      console.log("Erro ao buscar consultas por período:", error);
     }
   };
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    return clinicId;
+  };
 
   const Tabela = () => {
     return (
@@ -78,7 +76,7 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {consults.map(consults => (
+          {consults.map((consults) => (
             <tr key={consults.id}>
               <td>{consults.paciente.nome}</td>
               <td>{consults.profissional.nome}</td>
@@ -90,8 +88,8 @@ export function Table() {
           ))}
         </tbody>
       </table>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -103,7 +101,7 @@ export function Table() {
                 type="date"
                 name="initialDate"
                 value={initialDate}
-                onChange={e => setInitialDate(e.target.value)}
+                onChange={(e) => setInitialDate(e.target.value)}
                 className={S.inputDate}
               />
 
@@ -111,7 +109,7 @@ export function Table() {
                 type="date"
                 name="finalDate"
                 value={finalDate}
-                onChange={e => setFinalDate(e.target.value)}
+                onChange={(e) => setFinalDate(e.target.value)}
                 className={S.inputDate}
               />
               <button type="submit">
@@ -124,9 +122,9 @@ export function Table() {
                   className="me-2"
                   aria-label="Search"
                   style={{
-                    outline: 'none',
-                    boxShadow: 'none',
-                    border: '1px solid #cdcdcd'
+                    outline: "none",
+                    boxShadow: "none",
+                    border: "1px solid #cdcdcd",
                   }}
                 />
                 <button>
@@ -143,7 +141,7 @@ export function Table() {
               <Button
                 variant="primary"
                 className={S.input}
-                style={{ background: '#fff', color: '#0d6efd' }}
+                style={{ background: "#fff", color: "#0d6efd" }}
               >
                 + Criar novo exame
               </Button>
@@ -154,11 +152,10 @@ export function Table() {
           {consults.length > 0 ? (
             <Tabela />
           ) : (
-            <Refresh title='Nenhuma consulta cadastrada'/> 
-
+            <Refresh title="Nenhuma consulta cadastrada" />
           )}
         </div>
       </div>
     </>
-  )
+  );
 }

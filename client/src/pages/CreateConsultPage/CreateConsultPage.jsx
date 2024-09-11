@@ -1,74 +1,74 @@
 /* eslint-disable react/no-unknown-property */
-import { useState, useEffect } from 'react'
-import { Header } from '../../components/Header/Header'
-import { api } from '../../services/api'
-import S from './styles.module.scss'
-import { Search } from '../../components/Search/Search'
+import { useState, useEffect } from "react";
+import { Header } from "../../components/Header/Header";
+import { api } from "../../services/api";
+import S from "./styles.module.scss";
+import { Search } from "../../components/Search/Search";
 
-import Alert from '../../components/Alert/Alert'
+import Alert from "../../components/Alert/Alert";
 
 export function CreateConsultPage() {
-  const [procediments, setProcediments] = useState([])
-  const [professionals, setProfessionals] = useState([])
-  const [patientId, setPatientId] = useState('')
+  const [procediments, setProcediments] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const [patientId, setPatientId] = useState("");
 
   const [formData, setFormData] = useState({
-    paciente: '',
-    profissional: '',
-    procedimento: '',
-    valor: '',
-    forma_de_pagamento: ''
-  })
+    paciente: "",
+    profissional: "",
+    procedimento: "",
+    valor: "",
+    forma_de_pagamento: "",
+  });
 
   const [confirmationAlert, setConfirmationAlert] = useState({
     visible: false,
-    message: ''
-  })
+    message: "",
+  });
 
   useEffect(() => {
-    fetchProfessionals()
-    fetchProcediments()
-  }, [])
+    fetchProfessionals();
+    fetchProcediments();
+  }, []);
 
   const getClinicId = () => {
-    const userDataString = localStorage.getItem('user')
-    const userData = JSON.parse(userDataString)
-    const clinicId = userData?.user?.clinicaId
-    return clinicId
-  }
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const clinicId = userData?.user?.clinicaId;
+    return clinicId;
+  };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-    setFormData({ ...formData, [name]: value })
-  }
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const clinicId = getClinicId()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const clinicId = getClinicId();
 
     processForm()
-      .then(dataToSend => {
+      .then((dataToSend) => {
         api
           .post(`/consult/${clinicId}`, dataToSend)
-          .then(response => {
+          .then((response) => {
             setConfirmationAlert({
               visible: true,
-              message: 'Consulta criada com sucesso!'
-            })
+              message: "Consulta criada com sucesso!",
+            });
             setTimeout(() => {
-              setConfirmationAlert({ visible: false, message: '' })
-            }, 4000)
-            console.log(response)
+              setConfirmationAlert({ visible: false, message: "" });
+            }, 4000);
+            console.log(response);
           })
-          .catch(error => {
-            console.error('Erro ao processar o formulário:', error)
-          })
+          .catch((error) => {
+            console.error("Erro ao processar o formulário:", error);
+          });
       })
-      .catch(error => {
-        console.error('Erro ao processar o formulário:', error)
-      })
-  }
+      .catch((error) => {
+        console.error("Erro ao processar o formulário:", error);
+      });
+  };
 
   const processForm = async () => {
     try {
@@ -78,49 +78,49 @@ export function CreateConsultPage() {
         procedimentoId: parseInt(formData.procedimento),
         valor_da_consulta: parseInt(formData.valor),
         tipo_de_pagamento: formData.forma_de_pagamento,
-        clinicaId: getClinicId()
-      }
+        clinicaId: getClinicId(),
+      };
 
-      return dataToSend
+      return dataToSend;
     } catch (error) {
-      console.error('Erro ao processar o formulário:', error)
+      console.error("Erro ao processar o formulário:", error);
     }
-  }
+  };
 
   const fetchProfessionals = async () => {
     try {
-      const response = await api.post('/professionalForName')
+      const response = await api.post("/professionalForName");
       if (!response.data) {
-        alert('Não existem profissionais cadastrados!')
+        alert("Não existem profissionais cadastrados!");
       } else {
-        setProfessionals(response.data)
+        setProfessionals(response.data);
       }
     } catch (error) {
-      console.error('Erro ao buscar profissional:', error)
+      console.error("Erro ao buscar profissional:", error);
     }
-  }
+  };
 
   const fetchProcediments = async () => {
-    const consultProcediment = 6
+    const consultProcediment = 6;
 
     try {
       const response = await api.get(
         `/procedimentsForType/${consultProcediment}`
-      )
+      );
 
       if (!response.data) {
-        alert('Não existem procedimentos de consulta cadastrados!')
+        alert("Não existem procedimentos de consulta cadastrados!");
       } else {
-        setProcediments(response.data)
+        setProcediments(response.data);
       }
     } catch (error) {
-      console.error('Erro:', error)
+      console.error("Erro:", error);
     }
-  }
+  };
 
-  const getPatientId = patientId => {
-    setPatientId(patientId)
-  }
+  const getPatientId = (patientId) => {
+    setPatientId(patientId);
+  };
 
   return (
     <>
@@ -136,12 +136,12 @@ export function CreateConsultPage() {
               message={confirmationAlert.message}
               isVisible={confirmationAlert.visible}
               onClose={() =>
-                setConfirmationAlert({ visible: false, message: '' })
+                setConfirmationAlert({ visible: false, message: "" })
               }
             />
 
             <div className={S.containerForm}>
-              <h3 style={{ marginBottom: '1.5rem' }}>Criar Consulta</h3>
+              <h3 style={{ marginBottom: "1.5rem" }}>Criar Consulta</h3>
 
               <Search getPatientId={getPatientId} />
 
@@ -152,7 +152,7 @@ export function CreateConsultPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '290px' }}
+                    style={{ width: "290px" }}
                     name="profissional"
                     onChange={handleInputChange}
                     value={formData.profissional}
@@ -160,7 +160,7 @@ export function CreateConsultPage() {
                   >
                     <option>Selecione o profissional</option>
                     {professionals.length > 0 ? (
-                      professionals.map(professionals => (
+                      professionals.map((professionals) => (
                         <option key={professionals.id} value={professionals.id}>
                           {professionals.nome}
                         </option>
@@ -177,7 +177,7 @@ export function CreateConsultPage() {
                   </label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '242px' }}
+                    style={{ width: "242px" }}
                     name="procedimento"
                     onChange={handleInputChange}
                     value={formData.procedimento}
@@ -185,7 +185,7 @@ export function CreateConsultPage() {
                   >
                     <option>Selecione o procedimento</option>
                     {procediments.length > 0 ? (
-                      procediments.map(procediments => (
+                      procediments.map((procediments) => (
                         <option key={procediments.id} value={procediments.id}>
                           {procediments.nome}
                         </option>
@@ -204,7 +204,7 @@ export function CreateConsultPage() {
                   </label>
                   <input
                     className={S.inputForm}
-                    style={{ width: '240px' }}
+                    style={{ width: "240px" }}
                     type="text"
                     id="valor"
                     step="0.01"
@@ -219,7 +219,7 @@ export function CreateConsultPage() {
                   <label className={S.labelForm}>Forma de Pagamento:</label>
                   <select
                     className={S.inputForm}
-                    style={{ width: '291px' }}
+                    style={{ width: "291px" }}
                     name="forma_de_pagamento"
                     onChange={handleInputChange}
                     value={formData.forma_de_pagamento}
@@ -246,5 +246,5 @@ export function CreateConsultPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

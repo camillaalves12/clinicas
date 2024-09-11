@@ -1,50 +1,46 @@
-import { useEffect, useState } from 'react'
-import { api } from '../../services/api'
-
-import S from './styles.module.scss'
-
-import { Link } from 'react-router-dom'
-
-import { BiInfoCircle } from 'react-icons/bi'
-
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
+import S from "./styles.module.scss";
+import { Link } from "react-router-dom";
+import { BiInfoCircle } from "react-icons/bi";
 
 export function Search(props) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [patients, setPatients] = useState([])
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [selectedPatient, setSelectedPatient] = useState(null)
-  const [patientId, setPatientId] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [patients, setPatients] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [patientId, setPatientId] = useState("");
 
   useEffect(() => {
-    fetchPatients()
-  }, [searchTerm])
+    fetchPatients();
+  }, [searchTerm]);
 
   useEffect(() => {
     if (selectedPatient) {
-      setPatientId(selectedPatient.id)
+      setPatientId(selectedPatient.id);
     }
-  }, [selectedPatient])
+  }, [selectedPatient]);
 
   const fetchPatients = async () => {
     try {
-      const response = await api.post('/patientForName', {
-        nome: searchTerm
-      })
+      const response = await api.post("/patientForName", {
+        nome: searchTerm,
+      });
       if (!response.data) {
-        alert('Não existem pacientes cadastrados!')
+        alert("Não existem pacientes cadastrados!");
       } else {
-        setPatients(response.data)
+        setPatients(response.data);
       }
     } catch (error) {}
-  }
+  };
 
   const dropdownExibition = () => {
     if (showDropdown) {
-      return { display: 'flex' }
+      return { display: "flex" };
     } else {
-      return { display: 'none' }
+      return { display: "none" };
     }
-  }
+  };
 
   return (
     <div className={S.patientSearch}>
@@ -56,9 +52,9 @@ export function Search(props) {
         type="text"
         id="paciente"
         name="paciente"
-        onChange={e => {
-          setSearchTerm(e.target.value)
-          setShowDropdown(true)
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setShowDropdown(true);
         }}
         value={searchTerm}
         autoComplete="off"
@@ -68,16 +64,16 @@ export function Search(props) {
       <div className={S.searchDropdown} style={dropdownExibition()}>
         <ul>
           {patients.length > 0 ? (
-            patients.map(patient => (
+            patients.map((patient) => (
               <li
                 key={patient.id}
                 onClick={() => {
-                  setSelectedPatient(patient)
-                  setSearchTerm(patient.nome)
-                  props.getPatientId(patient.id)
-                  setShowDropdown(false)
+                  setSelectedPatient(patient);
+                  setSearchTerm(patient.nome);
+                  props.getPatientId(patient.id);
+                  setShowDropdown(false);
                 }}
-                >
+              >
                 <div className={S.patientData}>
                   <p className={S.patientName}>Nome: {patient.nome}</p>
                   <p className={S.patientCPF}>CPF: {patient.cpf}</p>
@@ -90,8 +86,6 @@ export function Search(props) {
                       <BiInfoCircle className={S.iconInfo} />
                     </p>
                   </Link>
-                  
-
                 </div>
               </li>
             ))
@@ -103,5 +97,5 @@ export function Search(props) {
         </ul>
       </div>
     </div>
-  )
+  );
 }
