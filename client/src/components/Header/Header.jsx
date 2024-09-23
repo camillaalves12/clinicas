@@ -80,7 +80,7 @@ export function Header() {
                   Cadastrar paciente
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/register_doctor">
-                  Cadastrar doutor
+                  Cadastrar Profissional
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link as={Link} to="/search_patient">

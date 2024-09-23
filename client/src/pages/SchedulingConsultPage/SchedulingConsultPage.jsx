@@ -75,7 +75,10 @@ export function SchedulingConsultPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -88,6 +91,14 @@ export function SchedulingConsultPage() {
           .then((response) => {
             alert("Agendamento criado com sucesso!");
             fetchScheduledConsults(); // Atualizar a lista de agendamentos após adicionar um novo
+            setFormData({
+              paciente: "",
+              profissional: "",
+              procedimento: "",
+              valor: "",
+              data_da_consulta: "",
+              hora_da_consulta: "",
+            });
           })
           .catch((error) => {
             alert("Erro ao processar o formulário:", error);

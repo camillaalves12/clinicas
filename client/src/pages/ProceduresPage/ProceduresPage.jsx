@@ -23,7 +23,7 @@ export function ProceduresPage() {
       <>
       <Header />
       <div className={S.pageInitial}>
-      <h2>Resumo Diário</h2>
+      <h2>Resumo</h2>
          <div className={S.table }>
             <Table />
          </div>

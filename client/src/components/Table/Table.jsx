@@ -19,9 +19,9 @@ export function Table() {
   const fetchConsults = async () => {
     try {
       const response = await api.get("/consults");
-      const data = response.data;
+      // const data = response.data;
 
-      console.log("Consultas recebidas:", data);
+      // console.log("Consultas recebidas:", data);
 
       setConsults(response.data);
     } catch (error) {
