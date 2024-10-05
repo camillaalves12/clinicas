@@ -120,7 +120,7 @@ export function SearchPatient(props) {
       </Form>
 
       {patients.length > 0 ? (
-        <ResultFound dados={patients} />
+        <ResultFound dados={patients}  showFullDetails={true} />
       ) : (
         <Confirm
           title="Paciente não encontrado!"

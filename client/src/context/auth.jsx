@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from 'react'
 import { api } from '../services/api'
 import Refresh from '../components/Refresh/Refresh'

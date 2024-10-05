@@ -99,6 +99,7 @@ router.route('/consults')
 router.route('/consult/:id')
   .post(AuthMiddleware, ConsultController.createConsult) //ok
   .put(AuthMiddleware, ConsultController.updateConsult) //ok
+  .delete(AuthMiddleware, ConsultController.deleteConsult) //ok
 
 router.route('/consultForPeriod/:id')
   .get(AuthMiddleware, ConsultController.findConsultForPeriod) //ok

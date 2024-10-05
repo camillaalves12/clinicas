@@ -5,6 +5,7 @@ import S from "./styles.module.scss";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { api } from "../../services/api";
+import { BiInfoCircle } from "react-icons/bi";
 
 import { ResultFound } from "../../components/ResultFound/ResultFound";
 // import { ResultNotFound } from '../../components/ResultNotFound/ResultNotFound';
@@ -78,8 +79,6 @@ export function ReportProfessional(props) {
             >
               <option value="">Selecione uma opção</option>
               <option value="name">Nome</option>
-              <option value="dateOfBirth">Data de Nascimento</option>
-              <option value="cpf">CPF</option>
             </Form.Select>
           </Form.Group>
 
@@ -102,24 +101,6 @@ export function ReportProfessional(props) {
             </Form.Group>
           ) : null}
 
-          {searchRoute === "dateOfBirth" ? (
-            <Form.Group className="mb-3" id="inputDateNasc">
-              <Form.Label>Data de nascimento:</Form.Label>
-              <Form.Control
-                required
-                className={S.inputDoctor}
-                type="date"
-                style={{
-                  outline: "none",
-                  boxShadow: "none",
-                  border: "1px solid #cdcdcd",
-                }}
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-              />
-            </Form.Group>
-          ) : null}
-
           <div className={S.btnSearch}>
             <Button
               type="submit"
@@ -132,7 +113,7 @@ export function ReportProfessional(props) {
       </Form>
 
       {patients.length > 0 ? (
-        <ResultFound dados={patients} />
+        <ResultFound dados={patients} showFullDetails={false}  />
       ) : (
         <Confirm
           title="Profissional não encontrado!"

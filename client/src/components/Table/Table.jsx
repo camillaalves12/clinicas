@@ -19,13 +19,11 @@ export function Table() {
   const fetchConsults = async () => {
     try {
       const response = await api.get("/consults");
-      // const data = response.data;
-
-      // console.log("Consultas recebidas:", data);
 
       setConsults(response.data);
+
     } catch (error) {
-      console.log(error);
+      console.log("Erro ao tentar consultar as consultas:", error);
     }
   };
 

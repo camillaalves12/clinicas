@@ -1,7 +1,7 @@
 import { Card } from "../../components/Card/Card";
 import { Header } from "../../components/Header/Header";
 import { DashPie } from "../../components/DashPie/DashPie";
-// import { DashSpline } from '../../components/DashSpline/DashSpline'
+import { DashSpline } from '../../components/DashSpline/DashSpline'
 import { BiSearch } from "react-icons/bi";
 import S from "./styles.module.scss";
 import { useEffect, useState } from "react";
@@ -119,7 +119,7 @@ export function InitialPage() {
         </div>
         <div className={S.dashs}>
           <DashPie />
-          {/* <DashSpline /> */}
+          <DashSpline />
         </div>
       </div>
     </>
