@@ -67,7 +67,7 @@ export function Table() {
           <tr>
             <th className={S.th_thead}>Paciente</th>
             <th className={S.th_thead}>Profissional</th>
-            <th className={S.th_thead}>Especialidade</th>
+            <th className={S.th_thead}>Procedimento</th>
             <th className={S.th_thead}>Valor</th>
             <th className={S.th_thead}>Forma de pagamento</th>
             <th className={S.th_thead}>Data</th>
