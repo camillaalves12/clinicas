@@ -12,6 +12,7 @@ import ProcedimentTypeController from './controller/ProcedimentTypeController'
 import ProcedimentController from './controller/ProcedimentController'
 import SchedulingController from './controller/SchedulingController'
 import DashboardController from './controller/DashboardController'
+// import 
 
 const router = Router()
 
@@ -26,6 +27,10 @@ router.route('/user/:id')
 
   router.route('/auth')
   .post(AuthController.authenticate)
+
+  router.route('/refresh-token')
+  .post(AuthController.refreshToken)
+  
 
 router.route('/clinic')
   .post(AuthMiddleware, ClinicController.createClinic) // ok
