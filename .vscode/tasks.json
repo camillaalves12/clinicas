@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "client",
+			"group": "clean",
+			"problemMatcher": [],
+			"label": "npm: install - client",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "server",
+			"group": "clean",
+			"problemMatcher": [],
+			"label": "npm: install - server",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "server",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build - server",
+			"detail": "sucrase ./src -d ./dist --transforms imports"
+		}
+	]
+}
