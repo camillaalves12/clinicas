@@ -11,63 +11,47 @@ export function DashSpline() {
   useEffect(() => {
     fetchMonthlyDataForDay();
   }, []);
-  
+
   const fetchMonthlyDataForDay = async () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  
-    const formattedDate = `${year}-${month}`; // Use o primeiro dia do mês para garantir que há dados
+    const formattedDate = `${year}-${month}`;
 
     const dataToSend = { data: formattedDate };
-  
+
     const getClinicId = () => {
       const userDataString = localStorage.getItem("user");
       const userData = JSON.parse(userDataString);
-      const clinicId = userData?.user?.clinicaId;
-      return clinicId;
+      return userData?.user?.clinicaId;
     };
-  
+
     try {
-      const response = await api.put(`/dailyData/${getClinicId()}`, dataToSend);
-  
-      console.log(response.data); // Verificar estrutura completa da resposta
-  
-      if (response.data.detalhes_por_dia && Array.isArray(response.data.detalhes_por_dia)) {
-        const extractedDays = response.data.detalhes_por_dia.map((item) => item.dia);
+      const response = await api.put(`/monthlyData/${getClinicId()}`, dataToSend);
+      console.log("Dados recebidos:", response.data); // Verifique a resposta
+
+      // Verifica se os dados existem e inicializa as variáveis
+      if (
+        response.data.valor_por_profissional &&
+        Array.isArray(response.data.valor_por_profissional) &&
+        response.data.valor_por_profissional.length > 0
+      ) {
+        const extractedDays = response.data.valor_por_profissional.map((item) => item.profissional);
         setDaysOnly(extractedDays);
-  
-        const updatedSeries = response.data.detalhes_por_dia.reduce((acc, item) => {
-          if (Array.isArray(item.profissionais)) {
-            item.profissionais.forEach((professional) => {
-              const existingSeriesIndex = acc.findIndex(
-                (serie) => serie.name === professional.profissional
-              );
-              if (existingSeriesIndex !== -1) {
-                const existingSeries = acc[existingSeriesIndex];
-                existingSeries.data[extractedDays.indexOf(item.dia)] = professional.totalValue;
-              } else {
-                const newData = new Array(extractedDays.length).fill(0);
-                newData[extractedDays.indexOf(item.dia)] = professional.totalValue;
-                acc.push({
-                  name: professional.profissional,
-                  data: newData,
-                });
-              }
-            });
-          }
-          return acc;
-        }, []);
-  
+
+        const updatedSeries = response.data.valor_por_profissional.map((professional) => ({
+          name: professional.profissional,
+          data: [professional.totalValue], // Adicione o totalValue ao array
+        }));
+
         setSeries(updatedSeries);
       } else {
-        console.log("detalhes_por_dia está vazio ou indefinido");
+        console.log("valor_por_profissional está vazio ou indefinido");
       }
     } catch (error) {
-      console.error("Erro ao buscar dados:", error); // Mensagem de erro amigável
+      console.error("Erro ao buscar dados:", error);
     }
   };
-  
 
   if (series.length === 0) {
     return <Refresh title="Carregando" />;
@@ -85,8 +69,7 @@ export function DashSpline() {
       curve: "smooth",
     },
     xaxis: {
-      type: "datetime",
-      categories: daysOnly.map((day) => new Date(day).toISOString()), // Garantindo formato de data
+      categories: daysOnly, // Usando os profissionais como categorias
     },
     tooltip: {
       x: {
