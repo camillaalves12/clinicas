@@ -4,17 +4,22 @@ import S from "./styles.module.scss";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { ResultFound } from "../ResultFound/ResultFound";
-// import { ResultNotFound } from '../ResultNotFound/ResultNotFound'
 import { api } from "../../services/api";
-// import { Alert } from 'react-bootstrap'
 import { Confirm } from "../Confirm/Confirm";
+import Modal from "react-bootstrap/Modal";
 
-export function SearchPatient(props) {
+export function SearchPatient({title}) {
   const [nameOrCPF, setNameOrCPF] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [searchRoute, setSearchRoute] = useState("");
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
+
+  // Função para normalizar strings
+  const normalizeString = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
 
   const handleSearch = async (event) => {
     event.preventDefault(); 
@@ -22,12 +27,16 @@ export function SearchPatient(props) {
     try {
       // Limpar resultados de pesquisa anteriores
       setPatients([]);
+      setShowResults(false);
 
       let response;
 
+      // Normalizar a entrada do usuário
+      const normalizedSearchTerm = normalizeString(nameOrCPF);
+
       switch (searchRoute) {
         case "name":
-          response = await api.post("/patientForName", { nome: nameOrCPF });
+          response = await api.post("/patientForName", { nome: normalizedSearchTerm });
           break;
         case "dateOfBirth":
           response = await api.post("/patientForDateOfBirth", {
@@ -35,23 +44,34 @@ export function SearchPatient(props) {
           });
           break;
         case "cpf":
-          response = await api.post("/patientForCPF", { cpf: nameOrCPF });
+          response = await api.post("/patientForCPF", { cpf: normalizedSearchTerm });
           break;
         default:
           return; 
       }
 
-      setPatients(response.data);
+      // Verificar se há resultados
+      if (response.data && response.data.length > 0) {
+        setPatients(response.data);
+        setShowResults(true); // Exibir resultados se houver dados
+      } else {
+        setModalShow(true); // Exibir modal de erro se não houver dados
+      }
     } catch (error) {
       console.error("Erro ao buscar pacientes:", error);
+      setModalShow(true); // Exibir modal de erro em caso de exceção
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalShow(false);
   };
 
   return (
     <>
       <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
-          <h2 style={{ marginBottom: "1.5rem" }}>{props.title}</h2>
+          <h2 style={{ marginBottom: "1.5rem" }}>{title}</h2>
           <Form.Group className="mb-3" id="searchRoute">
             <Form.Label>Buscar por:</Form.Label>
             <Form.Select
@@ -111,7 +131,6 @@ export function SearchPatient(props) {
             <Button
               type="submit"
               style={{ width: "250px", height: "38px", textAlign: "center" }}
-              onClick={() => setModalShow(true)}
             >
               Procurar
             </Button>
@@ -119,16 +138,27 @@ export function SearchPatient(props) {
         </div>
       </Form>
 
-      {patients.length > 0 ? (
-        <ResultFound dados={patients}  showFullDetails={true} />
-      ) : (
-        <Confirm
-          title="Paciente não encontrado!"
-          description="Tente novamente"
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
-      )}
+      {/* Modal de Resultados */}
+      <Modal show={showResults} onHide={() => setShowResults(false)} size='lg'>
+        <Modal.Header closeButton>
+          <Modal.Title>Resultados da Busca</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {patients.length > 0 ? (
+            <ResultFound dados={patients} showFullDetails={true} />
+          ) : (
+            <p>Nenhum dado disponível.</p>
+          )}
+        </Modal.Body>
+      </Modal>
+
+      {/* Modal de Confirmação (Erro) */}
+      <Confirm
+        title="Paciente não encontrado!"
+        description="Cadastre o paciente e tente novamente."
+        show={modalShow}
+        onHide={handleCloseModal}
+      />
     </>
   );
 }
