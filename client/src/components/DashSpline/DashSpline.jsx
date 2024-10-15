@@ -41,7 +41,7 @@ export function DashSpline() {
 
         const updatedSeries = response.data.valor_por_profissional.map((professional) => ({
           name: professional.profissional,
-          data: [professional.totalValue], // Adicione o totalValue ao array
+          data: [professional.totalValue, professional.totalValue],
         }));
 
         setSeries(updatedSeries);
