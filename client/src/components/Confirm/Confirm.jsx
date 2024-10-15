@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 export function Confirm(props) {
@@ -18,11 +17,6 @@ export function Confirm(props) {
       <Modal.Body>
         <h6>{props.description}</h6>
       </Modal.Body>
-      <Modal.Footer>
-        <Button color="dark" onClick={props.onHide}>
-          Fechar
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }
