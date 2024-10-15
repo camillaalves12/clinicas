@@ -5,11 +5,9 @@ import S from "./styles.module.scss";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { api } from "../../services/api";
-import { BiInfoCircle } from "react-icons/bi";
-
 import { ResultFound } from "../../components/ResultFound/ResultFound";
-// import { ResultNotFound } from '../../components/ResultNotFound/ResultNotFound';
 import { Confirm } from "../../components/Confirm/Confirm";
+import Modal from "react-bootstrap/Modal";
 
 export function ReportProfessional(props) {
   const [nameOrCPF, setNameOrCPF] = useState("");
@@ -17,22 +15,33 @@ export function ReportProfessional(props) {
   const [searchRoute, setSearchRoute] = useState("");
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
+
+  // Função para normalizar strings
+  const normalizeString = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
 
   const handleSearch = async (event) => {
     event.preventDefault();
 
     try {
+      // Limpar resultados de pesquisa anteriores
       setPatients([]);
+      setShowResults(false);
 
       let response;
 
+      // Normalizar a entrada do usuário
+      const normalizedSearchTerm = normalizeString(nameOrCPF);
+
       console.log("Rota de pesquisa:", searchRoute);
-      console.log("Dados de pesquisa:", { nameOrCPF, dateOfBirth });
+      console.log("Dados de pesquisa:", { normalizedSearchTerm, dateOfBirth });
 
       switch (searchRoute) {
         case "name":
           response = await api.post("/professionalForName", {
-            nome: nameOrCPF,
+            nome: normalizedSearchTerm,
           });
           break;
         case "dateOfBirth":
@@ -41,7 +50,7 @@ export function ReportProfessional(props) {
           });
           break;
         case "cpf":
-          response = await api.post("/patientForCPF", { cpf: nameOrCPF });
+          response = await api.post("/patientForCPF", { cpf: normalizedSearchTerm });
           break;
         default:
           console.log("Rota de pesquisa inválida");
@@ -51,13 +60,20 @@ export function ReportProfessional(props) {
       console.log("Resposta da API:", response);
 
       // O resultado da API será um array de pacientes correspondentes
-      setPatients(response.data);
+      if (response.data && response.data.length > 0) {
+        setPatients(response.data);
+        setShowResults(true); // Exibir resultados se houver dados
+      } else {
+        setModalShow(true); // Exibir modal de erro se não houver dados
+      }
     } catch (error) {
       console.error("Erro ao buscar pacientes:", error);
-      if (error.response) {
-        console.error("Dados do erro:", error.response.data);
-      }
+      setModalShow(true); // Exibir modal de erro em caso de exceção
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalShow(false);
   };
 
   return (
@@ -112,16 +128,27 @@ export function ReportProfessional(props) {
         </div>
       </Form>
 
-      {patients.length > 0 ? (
-        <ResultFound dados={patients} showFullDetails={false}  />
-      ) : (
-        <Confirm
-          title="Profissional não encontrado!"
-          description="Tente novamente"
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
-      )}
+      {/* Modal de Resultados */}
+      <Modal show={showResults} onHide={() => setShowResults(false)} size='lg'>
+        <Modal.Header closeButton>
+          <Modal.Title>Resultados da Busca</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {patients.length > 0 ? (
+            <ResultFound dados={patients} showFullDetails={false} />
+          ) : (
+            <p>Nenhum dado disponível.</p>
+          )}
+        </Modal.Body>
+      </Modal>
+
+      {/* Modal de Confirmação (Erro) */}
+      <Confirm
+        title="Profissional não encontrado!"
+        description="Cadastre o profissional e tente novamente."
+        show={modalShow}
+        onHide={handleCloseModal}
+      />
     </>
   );
 }
