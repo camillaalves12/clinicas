@@ -4,6 +4,7 @@ import { BiInfoCircle } from "react-icons/bi"; // Importar o ícone se necessár
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import S from "./styles.module.scss";
 import { Link } from "react-router-dom";
+import generatePDF from "../../pages/GeneratePDF/GeneratePDF";
 
 export function ResultFound({ dados, showFullDetails = true,  }) {
   const Tabela = ({ dados }) => {
@@ -47,10 +48,13 @@ export function ResultFound({ dados, showFullDetails = true,  }) {
                 <>
                 <td>{item.cargo}</td>
                 <td>
-                    <Link to={`/reports/${item.id}`}>
-                      <HiOutlineDocumentReport className={S.iconInfo} />
-                    </Link>
-                  </td>
+                <HiOutlineDocumentReport
+                  className={S.iconInfo}
+                  onClick={() => generatePDF(item.id)} // Chama a função ao clicar no ícone
+                  style={{ cursor: 'pointer', color:'blue' }} // Adiciona um cursor para mostrar que é clicável
+                />
+              </td>
+
                 </>
               )}
             </tr>
