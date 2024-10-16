@@ -27,34 +27,41 @@ export function ReportProfessional(props) {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-
+  
     try {
       // Limpar resultados de pesquisa anteriores
       setPatients([]);
       setShowResults(false);
-
+  
       let response;
-
+  
       // Normalizar a entrada do usuário
       const normalizedSearchTerm = normalizeString(nameOrCPF);
-
-      console.log("Rota de pesquisa:", searchRoute);
-      console.log("Dados de pesquisa:", { normalizedSearchTerm, dateOfBirth });
-
+  
+      // console.log("Rota de pesquisa:", searchRoute);
+      // console.log("Dados de pesquisa:", { normalizedSearchTerm, dateOfBirth });
+  
       switch (searchRoute) {
-        case "name":
+        case "professional":
           response = await api.post("/professionalForName", {
             nome: normalizedSearchTerm,
           });
           break;
+  
+        case "clinic":
+          response = await api.post("/clinicForName", {
+            nome: normalizedSearchTerm,
+          });
+          break;
+  
         default:
           console.log("Rota de pesquisa inválida");
           return; // Se nenhuma rota válida foi selecionada, não faz nada
       }
-
+  
       console.log("Resposta da API:", response);
-
-      // O resultado da API será um array de pacientes correspondentes
+  
+      // O resultado da API será um array de profissionais ou clínicas correspondentes
       if (response.data && response.data.length > 0) {
         setPatients(response.data);
         setShowResults(true); // Exibir resultados se houver dados
@@ -62,10 +69,11 @@ export function ReportProfessional(props) {
         setModalShow(true); // Exibir modal de erro se não houver dados
       }
     } catch (error) {
-      console.error("Erro ao buscar pacientes:", error);
+      console.error("Erro ao buscar pacientes ou clínicas:", error);
       setModalShow(true); // Exibir modal de erro em caso de exceção
     }
   };
+  
 
   const handleCloseModal = () => {
     setModalShow(false);
@@ -76,7 +84,7 @@ export function ReportProfessional(props) {
       <Header />
       <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
-          <h2 style={{ marginBottom: "1.5rem" }}>Relatório por profissional</h2>
+          <h2 style={{ marginBottom: "1.5rem" }}>Relatório</h2>
           <Form.Group className="mb-3" id="searchRoute">
             <Form.Label>Buscar por:</Form.Label>
             <Form.Select
@@ -89,14 +97,15 @@ export function ReportProfessional(props) {
               }}
             >
               <option value="">Selecione uma opção</option>
-              <option value="name">Nome</option>
+              <option value="clinic">Clínica</option>
+              <option value="professional">Profissional</option>
             </Form.Select>
           </Form.Group>
 
-          {searchRoute === "name" || searchRoute === "cpf" ? (
+          {searchRoute === "clinic" || searchRoute === "professional" ? (
             <Form.Group className="mb-3" id="inputNameCPF">
               <Form.Label>
-                {searchRoute === "name" ? "Nome:" : "CPF:"}
+                {searchRoute === "clinic" ? "Nome da Clínica:" : "Nome do Profissional:"}
               </Form.Label>
               <Form.Control
                 required
@@ -128,9 +137,9 @@ export function ReportProfessional(props) {
         <Modal.Header closeButton>
           <Modal.Title>Resultados da Busca</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body> 
           {patients.length > 0 ? (
-            <ResultFound dados={patients} showFullDetails={false}    onSelectProfessional={(id) => {
+            <ResultFound dados={patients} showFullDetails={false} onSelectProfessional={(id) => {
               setSelectedProfessionalId(id); // Atualiza o ID do profissional selecionado
               generatePDF(id); // Gera o PDF ao selecionar
             }} />
@@ -140,13 +149,13 @@ export function ReportProfessional(props) {
         </Modal.Body>
       </Modal>
 
-      {/* Modal de Confirmação (Erro) */}
       <Confirm
-        title="Profissional não encontrado!"
-        description="Cadastre o profissional e tente novamente."
+        title={searchRoute === "clinic" ? "Clínica não encontrada!" : "Profissional não encontrado!"}
+        description={searchRoute === "clinic" ? "Cadastre a clínica e tente novamente." : "Cadastre o profissional e tente novamente."}
         show={modalShow}
         onHide={handleCloseModal}
       />
+
     </>
   );
 }
