@@ -6,8 +6,8 @@ const generatePDF = async (professionalId) => {
   try {
     // Faz a requisição para buscar os ganhos mensais do profissional
     const response = await api.post(`/professionalDetails/${professionalId}`, {
-      mes: '10', // Passe o mês dinamicamente aqui
-      ano: '2024' // Passe o ano dinamicamente também
+      mes: '10', // Mês dinâmico
+      ano: '2024' // Ano dinâmico
     });
     const professionalData = response.data;
 
@@ -18,16 +18,23 @@ const generatePDF = async (professionalId) => {
     doc.setFontSize(18);
     doc.text(`Relatório de Ganhos Mensais - ${professionalData.nome}`, 14, 22);
 
-    // Cria as colunas e o conteúdo da tabela
-    const tableColumns = ["Data", "Procedimento", "Valor da Consulta"];
+    // Cria as colunas e o conteúdo da tabela, adicionando "Forma de Pagamento"
+    const tableColumns = ["Data", "Procedimento", "Valor da Consulta", "Forma de Pagamento"];
     const tableRows = [];
 
     // Percorre os dados das consultas e formata para a tabela
     professionalData.consultas.forEach(consulta => {
+      const formattedDate = new Date(consulta.data_de_criacao).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
       const consultData = [
-        consulta.data_de_criacao,
-        consulta.procedimento.nome,
-        consulta.valor_da_consulta
+        formattedDate, // Data formatada
+        consulta.procedimento.nome, // Nome do procedimento
+        `R$ ${consulta.valor_da_consulta}`, // Valor da consulta
+        consulta.tipo_de_pagamento // Forma de pagamento (verifique o campo correto na resposta da API)
       ];
       tableRows.push(consultData);
     });
