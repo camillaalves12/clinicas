@@ -54,6 +54,23 @@ export default {
     }
   },
 
+  async ClinicForName(req, res) {
+    try {
+      const { nome } = req.body;
+      const clinic = await prisma.clinica.findUnique({
+        where: { nome }
+      })
+
+      if (!clinic) return res.json({ error: "Não foram encontradas clínicas com esse nome!" })
+
+      return res.json(clinic)
+
+    } catch (error) {
+      return res.json({ error })
+
+    }
+  },
+
   async updateClinic(req, res) {
     try {
       const { id } = req.params
@@ -96,5 +113,54 @@ export default {
 
     }
   },
+  async reportClinic(req, res) {
+    try {
+      const { nome } = req.body; // Nome da clínica no body da requisição
+  
+      // Buscar a clínica pelo nome e incluir os profissionais e suas consultas
+      const clinic = await prisma.clinica.findUnique({
+        where: { nome },
+        include: {
+          Profissional: {
+            include: {
+              Consulta: {
+                include: { procedimento: true }
+              }
+            }
+          }
+        }
+      });
+  
+      if (!clinic) {
+        return res.status(404).json({ error: 'Clínica não encontrada' });
+      }
+  
+      // Inicializar variáveis para total geral e individual
+      let totalGanhosClinica = 0;
+      const ganhosPorProfissional = clinic.Profissional.map(professional => {
+        const totalGanhosProfissional = professional.Consulta.reduce(
+          (acc, consulta) => acc + consulta.valor_da_consulta, 0
+        );
+        totalGanhosClinica += totalGanhosProfissional;
+        return {
+          nome: professional.nome,
+          cargo: professional.cargo,
+          totalGanhos: totalGanhosProfissional
+        };
+      });
+  
+      // Retornar o relatório da clínica
+      return res.json({
+        nomeClinica: clinic.nome,
+        totalGanhosClinica,
+        ganhosPorProfissional
+      });
+  
+    } catch (error) {
+      console.error('Erro ao gerar o relatório da clínica:', error.message);
+      return res.status(500).json({ error: 'Erro ao gerar o relatório' });
+    }
+  },
+  
 
 }
