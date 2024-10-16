@@ -186,6 +186,7 @@ export default {
           valor_da_consulta: consulta.valor_da_consulta,
           data_de_criacao: consulta.data_de_criacao,
           procedimento: consulta.procedimento, // Incluir detalhes do procedimento
+          tipo_de_pagamento: consulta.tipo_de_pagamento, // Campo diretamente do modelo Consulta
         })),
         totalGanhos,
       });
