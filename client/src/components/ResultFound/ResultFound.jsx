@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import { BiInfoCircle } from "react-icons/bi"; // Importar o ícone se necessário
+import { HiOutlineDocumentReport } from "react-icons/hi";
 import S from "./styles.module.scss";
 import { Link } from "react-router-dom";
 
-export function ResultFound({ dados, showFullDetails = true }) {
+export function ResultFound({ dados, showFullDetails = true,  }) {
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
@@ -21,7 +22,7 @@ export function ResultFound({ dados, showFullDetails = true }) {
             ) : (
               <>
               <th className={S.th_thead}>Especialidade</th>
-              <th className={S.th_thead}>Detalhes</th>
+              <th className={S.th_thead}>Gerar relatório</th>
               </>
               
             )}
@@ -46,8 +47,8 @@ export function ResultFound({ dados, showFullDetails = true }) {
                 <>
                 <td>{item.cargo}</td>
                 <td>
-                    <Link to={`./details/${item.id}`}>
-                      <BiInfoCircle className={S.iconInfo} />
+                    <Link to={`/reports/${item.id}`}>
+                      <HiOutlineDocumentReport className={S.iconInfo} />
                     </Link>
                   </td>
                 </>

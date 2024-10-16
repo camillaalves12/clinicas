@@ -8,6 +8,7 @@ import { api } from "../../services/api";
 import { ResultFound } from "../../components/ResultFound/ResultFound";
 import { Confirm } from "../../components/Confirm/Confirm";
 import Modal from "react-bootstrap/Modal";
+import generatePDF from "../GeneratePDF/GeneratePDF";
 
 export function ReportProfessional(props) {
   const [nameOrCPF, setNameOrCPF] = useState("");
@@ -16,6 +17,8 @@ export function ReportProfessional(props) {
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
+
+  const [selectedProfessionalId, setSelectedProfessionalId] = useState(null)
 
   // Função para normalizar strings
   const normalizeString = (str) => {
@@ -43,14 +46,6 @@ export function ReportProfessional(props) {
           response = await api.post("/professionalForName", {
             nome: normalizedSearchTerm,
           });
-          break;
-        case "dateOfBirth":
-          response = await api.post("/patientForDateOfBirth", {
-            data_de_nasc: dateOfBirth,
-          });
-          break;
-        case "cpf":
-          response = await api.post("/patientForCPF", { cpf: normalizedSearchTerm });
           break;
         default:
           console.log("Rota de pesquisa inválida");
@@ -135,7 +130,10 @@ export function ReportProfessional(props) {
         </Modal.Header>
         <Modal.Body>
           {patients.length > 0 ? (
-            <ResultFound dados={patients} showFullDetails={false} />
+            <ResultFound dados={patients} showFullDetails={false}    onSelectProfessional={(id) => {
+              setSelectedProfessionalId(id); // Atualiza o ID do profissional selecionado
+              generatePDF(id); // Gera o PDF ao selecionar
+            }} />
           ) : (
             <p>Nenhum dado disponível.</p>
           )}

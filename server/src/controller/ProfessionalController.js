@@ -132,4 +132,68 @@ export default {
     }
   },
 
+  async reportProfessional(req, res) {
+    try {
+      const { id } = req.params; // ID do profissional
+      const { mes, ano } = req.body; // Receber o mês e o ano no body da requisição
+  
+      console.log(`ID do profissional: ${id}`);
+      console.log(`Mês: ${mes}, Ano: ${ano}`);
+  
+      // Buscar o profissional pelo ID e incluir as consultas
+      const professional = await prisma.profissional.findUnique({
+        where: { id: Number(id) },
+        include: {
+          Consulta: {
+            include: {
+              procedimento: true, // Incluir os detalhes do procedimento
+            },
+          },
+        },
+      });
+  
+      if (!professional) {
+        console.log('Profissional não encontrado');
+        return res.status(404).json({ error: 'Profissional não encontrado' });
+      }
+  
+      console.log(`Profissional encontrado: ${professional.nome}`);
+  
+      // Definir o intervalo de datas para o mês específico
+      const mesInicio = new Date(ano, mes - 1, 1); // Primeiro dia do mês
+      const mesFim = new Date(ano, mes, 1); // Primeiro dia do mês seguinte
+  
+      console.log(`Período de consulta: ${mesInicio} - ${mesFim}`);
+  
+      // Filtrar as consultas do profissional dentro do período do mês
+      const consultas = professional.Consulta.filter(consulta => {
+        const dataConsulta = new Date(consulta.data_de_criacao);
+        return dataConsulta >= mesInicio && dataConsulta < mesFim;
+      });
+  
+      console.log(`Número de consultas encontradas: ${consultas.length}`);
+  
+      // Calcular o total dos ganhos no mês
+      const totalGanhos = consultas.reduce((acc, consulta) => acc + consulta.valor_da_consulta, 0);
+  
+      console.log(`Total de ganhos: ${totalGanhos}`);
+  
+      // Retornar os dados do profissional, incluindo consultas e o total de ganhos
+      return res.json({
+        nome: professional.nome,
+        cargo: professional.cargo,
+        consultas: consultas.map(consulta => ({
+          valor_da_consulta: consulta.valor_da_consulta,
+          data_de_criacao: consulta.data_de_criacao,
+          procedimento: consulta.procedimento, // Incluir detalhes do procedimento
+        })),
+        totalGanhos,
+      });
+    } catch (error) {
+      console.error('Erro ao gerar o relatório:', error.message);
+      return res.status(500).json({ error: 'Erro ao gerar o relatório' });
+    }
+  }
+  
+  
 }

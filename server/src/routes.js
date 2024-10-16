@@ -50,6 +50,13 @@ router.route('/professional/:id')
   .put(AuthMiddleware, ProfessionalController.updateProfessional) //ok
   .delete(AuthMiddleware, ProfessionalController.deleteProfessional) //ok
 
+  router.route('/professionalDetails/:id')
+    .post(AuthMiddleware, ProfessionalController.reportProfessional)
+
+  //   router.route('/professional/:id/report')
+  // .post(AuthMiddleware, ProfessionalController.reportProfessional);
+
+
 router.route('/professionalForName')
   .post(AuthMiddleware, ProfessionalController.findProfessionalForName) //ok
 
