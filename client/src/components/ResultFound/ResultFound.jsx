@@ -6,7 +6,7 @@ import S from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import generatePDF from "../../pages/GeneratePDF/GeneratePDF";
 
-export function ResultFound({ dados, showFullDetails = true,  }) {
+export function ResultFound({ dados, showFullDetails = true, type }) {
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
@@ -20,12 +20,15 @@ export function ResultFound({ dados, showFullDetails = true,  }) {
                 <th className={S.th_thead}>Telefone</th>
                 <th className={S.th_thead}>Detalhes</th>
               </>
+            ) : type === "professional" ? (
+              <>
+                <th className={S.th_thead}>Especialidade</th>
+                <th className={S.th_thead}>Gerar relatório</th>
+              </>
             ) : (
               <>
-              <th className={S.th_thead}>Especialidade</th>
-              <th className={S.th_thead}>Gerar relatório</th>
+                <th className={S.th_thead}>Gerar relatório</th>
               </>
-              
             )}
           </tr>
         </thead>
@@ -44,17 +47,29 @@ export function ResultFound({ dados, showFullDetails = true,  }) {
                     </Link>
                   </td>
                 </>
+              ) : type === "professional" ? (
+                <>
+                  <td>{item.cargo}</td>
+                  <td>
+                    <HiOutlineDocumentReport
+                      className={S.iconInfo}
+                      onClick={() => generatePDF(item.id, false)} // Para profissional, o segundo parâmetro é false
+                      style={{ cursor: "pointer", color: "blue" }}
+                    />
+                  </td>
+                </>
               ) : (
                 <>
-                <td>{item.cargo}</td>
-                <td>
-                <HiOutlineDocumentReport
-                  className={S.iconInfo}
-                  onClick={() => generatePDF(item.id)} // Chama a função ao clicar no ícone
-                  style={{ cursor: 'pointer', color:'blue' }} // Adiciona um cursor para mostrar que é clicável
-                />
-              </td>
-
+                  <td>
+                    <HiOutlineDocumentReport
+                      className={S.iconInfo}
+                      onClick={() => {
+                        console.log("Gerando PDF para o ID:", item.id);
+                        generatePDF(item.id, true); // Para clínica, o segundo parâmetro é true
+                      }}
+                      style={{ cursor: "pointer", color: "blue" }}
+                    />
+                  </td>
                 </>
               )}
             </tr>
@@ -63,20 +78,25 @@ export function ResultFound({ dados, showFullDetails = true,  }) {
       </table>
     );
   };
-
+  
   return (
     <div className={S.container}>
       <div className={S.divTable}>
-        {dados.length > 0 ? <Tabela dados={dados} /> : <p>Nenhum dado disponível.</p>}
+        {dados.length > 0 ? (
+          <Tabela dados={dados} />
+        ) : (
+          <p>Nenhum dado disponível.</p>
+        )}
       </div>
     </div>
   );
 }
 
+
 ResultFound.propTypes = {
   dados: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string.isRequired,
+      nome: PropTypes.string.isRequired,
       cargo: PropTypes.string,
       cpf: PropTypes.string,
       data_de_nascimento: PropTypes.string,
@@ -84,4 +104,5 @@ ResultFound.propTypes = {
     })
   ).isRequired,
   showFullDetails: PropTypes.bool,
+  type: PropTypes.oneOf(["professional", "clinic"]).isRequired, // Adiciona o tipo (clinic ou professional)
 };

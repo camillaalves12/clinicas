@@ -113,54 +113,65 @@ export default {
 
     }
   },
-  async reportClinic(req, res) {
+
+async reportClinic(req, res) {
     try {
-      const { nome } = req.body; // Nome da clínica no body da requisição
-  
-      // Buscar a clínica pelo nome e incluir os profissionais e suas consultas
-      const clinic = await prisma.clinica.findUnique({
-        where: { nome },
-        include: {
-          Profissional: {
+        const { id } = req.params;
+        const { mes, ano } = req.body; // Receber o mês e o ano no body da requisição
+
+        const clinic = await prisma.clinica.findUnique({
+            where: { id: Number(id) },
             include: {
-              Consulta: {
-                include: { procedimento: true }
-              }
+                Profissional: {
+                    include: {
+                        Consulta: {
+                            include: { procedimento: true }
+                        }
+                    }
+                }
             }
-          }
+        });
+
+        if (!clinic) {
+            return res.status(404).json({ error: 'Clínica não encontrada' });
         }
-      });
-  
-      if (!clinic) {
-        return res.status(404).json({ error: 'Clínica não encontrada' });
-      }
-  
-      // Inicializar variáveis para total geral e individual
-      let totalGanhosClinica = 0;
-      const ganhosPorProfissional = clinic.Profissional.map(professional => {
-        const totalGanhosProfissional = professional.Consulta.reduce(
-          (acc, consulta) => acc + consulta.valor_da_consulta, 0
-        );
-        totalGanhosClinica += totalGanhosProfissional;
-        return {
-          nome: professional.nome,
-          cargo: professional.cargo,
-          totalGanhos: totalGanhosProfissional
-        };
-      });
-  
-      // Retornar o relatório da clínica
-      return res.json({
-        nomeClinica: clinic.nome,
-        totalGanhosClinica,
-        ganhosPorProfissional
-      });
-  
+
+        // Definir o intervalo de datas para o mês específico
+        const mesInicio = new Date(ano, mes - 1, 1); // Primeiro dia do mês
+        const mesFim = new Date(ano, mes, 1); // Primeiro dia do mês seguinte
+
+        // Inicializar variáveis para total geral e individual
+        let totalGanhosClinica = 0;
+        const ganhosPorProfissional = clinic.Profissional.map(professional => {
+            // Filtrar consultas do profissional dentro do período do mês
+            const consultasFiltradas = professional.Consulta.filter(consulta => {
+                const dataConsulta = new Date(consulta.data_de_criacao);
+                return dataConsulta >= mesInicio && dataConsulta < mesFim;
+            });
+
+            const totalGanhosProfissional = consultasFiltradas.reduce(
+                (acc, consulta) => acc + consulta.valor_da_consulta, 0
+            );
+            totalGanhosClinica += totalGanhosProfissional;
+            return {
+                nome: professional.nome,
+                cargo: professional.cargo,
+                totalGanhos: totalGanhosProfissional
+            };
+        });
+
+        // Retornar o relatório da clínica
+        return res.json({
+            nomeClinica: clinic.nome,
+            totalGanhosClinica,
+            ganhosPorProfissional
+        });
+
     } catch (error) {
-      console.error('Erro ao gerar o relatório da clínica:', error.message);
-      return res.status(500).json({ error: 'Erro ao gerar o relatório' });
+        console.error('Erro ao gerar o relatório da clínica:', error.message);
+        return res.status(500).json({ error: 'Erro ao gerar o relatório' });
     }
-  },
-  
+}
+
 
 }

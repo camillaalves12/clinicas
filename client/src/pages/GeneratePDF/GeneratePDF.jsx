@@ -2,28 +2,42 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { api } from '../../services/api'; // API do seu projeto
 
-const generatePDF = async (professionalId) => {
+const generatePDF = async (id, isClinic = false) => {
+
   try {
-    // Faz a requisição para buscar os ganhos mensais do profissional
-    const response = await api.post(`/professionalDetails/${professionalId}`, {
-      mes: '10', // Mês dinâmico
-      ano: '2024' // Ano dinâmico
-    });
-    const professionalData = response.data;
+    let response
+
+    if (isClinic) {
+      response = await api.post(`/clinicReport/${id}`, {
+        mes: '10', 
+        ano: '2024' 
+      });
+    } else {
+      response = await api.post(`/professionalReport/${id}`, {
+        mes: '10', 
+        ano: '2024' 
+      });
+    }
+
+    const data = response.data;
 
     // Inicializa o jsPDF
     const doc = new jsPDF();
 
     // Define o título do relatório
     doc.setFontSize(18);
-    doc.text(`Relatório de Ganhos Mensais - ${professionalData.nome}`, 14, 22);
+    if (isClinic) {
+      doc.text(`Relatório de Ganhos Mensais - Clínica ${data.nome}`, 14, 22);
+    } else {
+      doc.text(`Relatório de Ganhos Mensais - Profissional ${data.nome}`, 14, 22);
+    }
 
-    // Cria as colunas e o conteúdo da tabela, adicionando "Forma de Pagamento"
+    // Cria as colunas e o conteúdo da tabela
     const tableColumns = ["Data", "Procedimento", "Valor da Consulta", "Forma de Pagamento"];
     const tableRows = [];
 
     // Percorre os dados das consultas e formata para a tabela
-    professionalData.consultas.forEach(consulta => {
+    data.consultas.forEach(consulta => {
       const formattedDate = new Date(consulta.data_de_criacao).toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
@@ -34,7 +48,7 @@ const generatePDF = async (professionalId) => {
         formattedDate, // Data formatada
         consulta.procedimento.nome, // Nome do procedimento
         `R$ ${consulta.valor_da_consulta}`, // Valor da consulta
-        consulta.tipo_de_pagamento // Forma de pagamento (verifique o campo correto na resposta da API)
+        consulta.tipo_de_pagamento // Forma de pagamento
       ];
       tableRows.push(consultData);
     });
@@ -48,10 +62,10 @@ const generatePDF = async (professionalId) => {
 
     // Adiciona o total de ganhos no final do PDF
     doc.setFontSize(14);
-    doc.text(`Total de Ganhos: R$ ${professionalData.totalGanhos}`, 14, doc.lastAutoTable.finalY + 10);
+    doc.text(`Total de Ganhos: R$ ${data.totalGanhos}`, 14, doc.lastAutoTable.finalY + 10);
 
     // Salva o PDF
-    doc.save('relatorio_ganhos_mensais.pdf');
+    doc.save(isClinic ? `relatorio_ganhos_clinica_${data.nome}.pdf` : `relatorio_ganhos_profissional_${data.nome}.pdf`);
   } catch (error) {
     console.error("Erro ao gerar o PDF:", error);
   }

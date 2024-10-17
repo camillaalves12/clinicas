@@ -8,7 +8,6 @@ import { api } from "../../services/api";
 import { ResultFound } from "../../components/ResultFound/ResultFound";
 import { Confirm } from "../../components/Confirm/Confirm";
 import Modal from "react-bootstrap/Modal";
-import generatePDF from "../GeneratePDF/GeneratePDF";
 
 export function ReportProfessional(props) {
   const [nameOrCPF, setNameOrCPF] = useState("");
@@ -17,8 +16,6 @@ export function ReportProfessional(props) {
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
-
-  const [selectedProfessionalId, setSelectedProfessionalId] = useState(null)
 
   // Função para normalizar strings
   const normalizeString = (str) => {
@@ -37,9 +34,6 @@ export function ReportProfessional(props) {
   
       // Normalizar a entrada do usuário
       const normalizedSearchTerm = normalizeString(nameOrCPF);
-  
-      // console.log("Rota de pesquisa:", searchRoute);
-      // console.log("Dados de pesquisa:", { normalizedSearchTerm, dateOfBirth });
   
       switch (searchRoute) {
         case "professional":
@@ -61,9 +55,9 @@ export function ReportProfessional(props) {
   
       console.log("Resposta da API:", response);
   
-      // O resultado da API será um array de profissionais ou clínicas correspondentes
+      // Verifique se os dados da resposta contêm a estrutura esperada
       if (response.data && response.data.length > 0) {
-        setPatients(response.data);
+        setPatients(response.data); // Altere conforme a estrutura de dados retornada
         setShowResults(true); // Exibir resultados se houver dados
       } else {
         setModalShow(true); // Exibir modal de erro se não houver dados
@@ -73,6 +67,7 @@ export function ReportProfessional(props) {
       setModalShow(true); // Exibir modal de erro em caso de exceção
     }
   };
+  
   
 
   const handleCloseModal = () => {
@@ -132,22 +127,23 @@ export function ReportProfessional(props) {
         </div>
       </Form>
 
-      {/* Modal de Resultados */}
       <Modal show={showResults} onHide={() => setShowResults(false)} size='lg'>
         <Modal.Header closeButton>
           <Modal.Title>Resultados da Busca</Modal.Title>
         </Modal.Header>
-        <Modal.Body> 
+        <Modal.Body>
           {patients.length > 0 ? (
-            <ResultFound dados={patients} showFullDetails={false} onSelectProfessional={(id) => {
-              setSelectedProfessionalId(id); // Atualiza o ID do profissional selecionado
-              generatePDF(id); // Gera o PDF ao selecionar
-            }} />
+            <ResultFound 
+              dados={patients} 
+              showFullDetails={false} 
+              type={searchRoute} // Passe se é clínica ou profissional
+            />
           ) : (
             <p>Nenhum dado disponível.</p>
           )}
         </Modal.Body>
       </Modal>
+
 
       <Confirm
         title={searchRoute === "clinic" ? "Clínica não encontrada!" : "Profissional não encontrado!"}

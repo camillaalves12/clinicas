@@ -36,15 +36,13 @@ router.route('/clinic')
   .post(AuthMiddleware, ClinicController.createClinic) // ok
   .get(AuthMiddleware, ClinicController.findAllClinics); //ok
 
-
-
 router.route('/clinic/:id')
   .get(AuthMiddleware, ClinicController.findClinic) //ok
   .put(AuthMiddleware, ClinicController.updateClinic) //ok
   .delete(AuthMiddleware, ClinicController.deleteClinic); //ok
 
-router.route('/clinic-report')
-  .get(AuthMiddleware, ClinicController.reportClinic)
+router.route('/clinicReport/:id')
+  .post(AuthMiddleware, ClinicController.reportClinic)
 
 router.route('/clinicForName')
   .post(AuthMiddleware, ClinicController.ClinicForName)
@@ -58,12 +56,8 @@ router.route('/professional/:id')
   .put(AuthMiddleware, ProfessionalController.updateProfessional) //ok
   .delete(AuthMiddleware, ProfessionalController.deleteProfessional) //ok
 
-  router.route('/professionalDetails/:id')
+  router.route('/professionalReport/:id')
     .post(AuthMiddleware, ProfessionalController.reportProfessional)
-
-  //   router.route('/professional/:id/report')
-  // .post(AuthMiddleware, ProfessionalController.reportProfessional);
-
 
 router.route('/professionalForName')
   .post(AuthMiddleware, ProfessionalController.findProfessionalForName) //ok
