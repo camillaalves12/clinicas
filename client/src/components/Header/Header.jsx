@@ -60,7 +60,7 @@ export function Header() {
                   Agendamento de procedimento
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/report_professional">
-                  Relatório
+                  Relatórios
                 </NavDropdown.Item>
               </NavDropdown>
 
