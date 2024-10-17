@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Modal from "react-bootstrap/Modal";
 
-export function Confirm(props) {
+export function Negative(props) {
   return (
     <Modal
       {...props}
