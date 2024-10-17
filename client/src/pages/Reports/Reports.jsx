@@ -56,11 +56,20 @@ export function Reports(props) {
       console.log("Resposta da API:", response);
   
       // Verifique se os dados da resposta contêm a estrutura esperada
-      if (response.data && response.data.length > 0) {
-        setPatients(response.data); // Altere conforme a estrutura de dados retornada
-        setShowResults(true); // Exibir resultados se houver dados
+      if (response.data) {
+        if (searchRoute === "clinic" && response.data.id) {
+          // Caso a rota seja de clínica, como os dados são um objeto, verificamos se contém o id da clínica
+          setPatients([response.data]); // Envolvemos a resposta em um array
+          setShowResults(true); // Exibir resultados se houver dados
+        } else if (searchRoute === "professional" && response.data.length > 0) {
+          // Para profissionais, verificamos se o array contém elementos
+          setPatients(response.data);
+          setShowResults(true); // Exibir resultados se houver dados
+        } else {
+          setModalShow(true); // Exibir modal de erro se não houver dados
+        }
       } else {
-        setModalShow(true); // Exibir modal de erro se não houver dados
+        setModalShow(true); // Exibir modal de erro se a resposta for vazia
       }
     } catch (error) {
       console.error("Erro ao buscar pacientes ou clínicas:", error);
@@ -68,8 +77,6 @@ export function Reports(props) {
     }
   };
   
-  
-
   const handleCloseModal = () => {
     setModalShow(false);
   };
