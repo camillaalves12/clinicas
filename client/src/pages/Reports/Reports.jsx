@@ -6,10 +6,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { api } from "../../services/api";
 import { ResultFound } from "../../components/ResultFound/ResultFound";
-import { Confirm } from "../../components/Confirm/Confirm";
+import { Negative } from "../../components/Negative/Negative";
 import Modal from "react-bootstrap/Modal";
 
-export function ReportProfessional(props) {
+export function Reports(props) {
   const [nameOrCPF, setNameOrCPF] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [searchRoute, setSearchRoute] = useState("");
@@ -144,8 +144,7 @@ export function ReportProfessional(props) {
         </Modal.Body>
       </Modal>
 
-
-      <Confirm
+      <Negative
         title={searchRoute === "clinic" ? "Clínica não encontrada!" : "Profissional não encontrado!"}
         description={searchRoute === "clinic" ? "Cadastre a clínica e tente novamente." : "Cadastre o profissional e tente novamente."}
         show={modalShow}

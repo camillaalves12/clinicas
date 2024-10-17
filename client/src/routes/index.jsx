@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { LoginPage } from '../pages/LoginPage/LoginPage'
 import { InitialPage } from '../pages/InitialPage/InitialPage'
 import {ProceduresSchedulingPage} from '../pages/ProceduresSchedulingPage/ProceduresSchedulingPage'
-import {ReportProfessional} from '../pages/ReportProfessional/ReportProfessional'
+import {Reports} from '../pages/Reports/Reports'
 import { CreateConsultPage } from '../pages/CreateConsultPage/CreateConsultPage'
 import { CreateExamPage } from '../pages/CreateExamPage/CreateExamPage'
 import { ProceduresPage } from '../pages/ProceduresPage/ProceduresPage'
@@ -13,7 +13,6 @@ import { SearchPatientPage } from '../pages/SearchPatientPage/SearchPatientPage'
 import { SchedulingConsultPage } from '../pages/SchedulingConsultPage/SchedulingConsultPage'
 import { DetailsPage } from '../pages/DetailsPage/DetailsPage'
 import { PrivateRoute } from './privateRoutes'
-import { ReportsPage } from '../pages/ReportsPage/ReportsPage'
 
 export const AppRouter = () => {
   return (
@@ -33,13 +32,9 @@ export const AppRouter = () => {
           <Route exact path="/create_consult" element={<CreateConsultPage />} />
         </Route>
 
-        <Route exact path="/report_professional" element={<PrivateRoute />}>
-          <Route exact path="/report_professional" element={<ReportProfessional />} />
+        <Route exact path="/reports" element={<PrivateRoute />}>
+          <Route exact path="/reports" element={<Reports />} />
         </Route>
-
-        <Route exact path="/reports/:id" element={<PrivateRoute />}>
-          <Route exact path="/reports/:id" element={<ReportsPage />} />
-        </Route> 
 
         <Route exact path="/create_exam" element={<PrivateRoute />}>
           <Route exact path="/create_exam" element={<CreateExamPage />} />
