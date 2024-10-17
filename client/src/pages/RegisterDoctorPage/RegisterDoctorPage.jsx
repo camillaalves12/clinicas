@@ -3,7 +3,7 @@ import { Header } from "../../components/Header/Header";
 import { useState } from "react";
 import { api } from "../../services/api";
 import Button from "react-bootstrap/Button";
-import { Confirm } from "../../components/Confirm/Confirm";
+import { Confirm } from "../../components/Negative/Negative";
 
 export function RegisterDoctorPage() {
   const [modalShow, setModalShow] = useState(false);

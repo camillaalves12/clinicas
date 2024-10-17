@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { ResultFound } from "../ResultFound/ResultFound";
 import { api } from "../../services/api";
-import { Confirm } from "../Confirm/Confirm";
+import { Negative } from "../Negative/Negative";
 import Modal from "react-bootstrap/Modal";
 
 export function SearchPatient({title}) {
@@ -153,7 +153,7 @@ export function SearchPatient({title}) {
       </Modal>
 
       {/* Modal de Confirmação (Erro) */}
-      <Confirm
+      <Negative
         title="Paciente não encontrado!"
         description="Cadastre o paciente e tente novamente."
         show={modalShow}

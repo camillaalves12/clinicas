@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Header } from "../../components/Header/Header";
 import S from "./styles.module.scss";
 import { api } from "../../services/api";
-import { Confirm } from "../../components/Confirm/Confirm";
+import { Negative } from "../../components/Negative/Negative";
 import Button from "react-bootstrap/Button";
 
 export function RegisterPatientPage() {
@@ -206,7 +206,7 @@ export function RegisterPatientPage() {
               Cadastrar
             </Button>
 
-            <Confirm
+            <Negative
               description="Paciente registrado com sucesso!"
               show={modalShow}
               onHide={() => setModalShow(false)}
