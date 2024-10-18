@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types'
+
 import { Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import { Form, Button } from "react-bootstrap";
@@ -11,6 +11,7 @@ export function Table() {
   const [consults, setConsults] = useState([]);
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Novo estado para o filtro de texto
 
   useEffect(() => {
     fetchConsults();
@@ -19,7 +20,6 @@ export function Table() {
   const fetchConsults = async () => {
     try {
       const response = await api.get("/consults");
-
       setConsults(response.data);
     } catch (error) {
       console.log("Erro ao tentar consultar as consultas:", error);
@@ -38,15 +38,17 @@ export function Table() {
 
     try {
       const clinicId = getClinicId();
-      const response = await api.get(`/consultForPeriod/${clinicId}`, {
-        initialDate,
-        finalDate,
+      const response = await api.post(`/consultForPeriod/${clinicId}`, {
+        data_inicial: initialDate,
+        data_final: finalDate,
       });
+
       const data = response.data;
 
-      console.log("Consultas por período recebidas:", data);
+      const sortedData = data.sort((a, b) => new Date(b.data_de_criacao) - new Date(a.data_de_criacao));
 
-      setConsults(data);
+      console.log("Consultas por período recebidas:", sortedData);
+      setConsults(sortedData);
     } catch (error) {
       console.log("Erro ao buscar consultas por período:", error);
     }
@@ -60,6 +62,16 @@ export function Table() {
   };
 
   const Tabela = () => {
+    // Filtra as consultas com base no termo de busca
+    const filteredConsults = consults.filter(consult => {
+      const pacienteNome = consult.paciente.nome.toLowerCase();
+      const profissionalNome = consult.profissional.nome.toLowerCase();
+      return (
+        pacienteNome.includes(searchTerm.toLowerCase()) || 
+        profissionalNome.includes(searchTerm.toLowerCase())
+      );
+    });
+
     return (
       <table className={S.table}>
         <thead>
@@ -73,16 +85,20 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {consults.map((consults) => (
-            <tr key={consults.id}>
-              <td>{consults.paciente.nome}</td>
-              <td>{consults.profissional.nome}</td>
-              <td>{consults.procedimento.nome}</td>
-              <td>{`R$ ${consults.valor_da_consulta}`}</td>
-              <td>{consults.tipo_de_pagamento}</td>
-              <td>{new Date(consults.data_de_criacao).toLocaleDateString()}</td>
-            </tr>
-          ))}
+          {filteredConsults.length > 0 ? (
+            filteredConsults.map((consult) => (
+              <tr key={consult.id}>
+                <td>{consult.paciente.nome}</td>
+                <td>{consult.profissional.nome}</td>
+                <td>{consult.procedimento.nome}</td>
+                <td>{`R$ ${consult.valor_da_consulta}`}</td>
+                <td>{consult.tipo_de_pagamento}</td>
+                <td>{new Date(consult.data_de_criacao).toLocaleDateString()}</td>
+              </tr>
+            ))
+          ) : (
+              <td colSpan="6"><Refresh title="Nenhuma consulta cadastrada" /></td>
+          )}
         </tbody>
       </table>
     );
@@ -101,7 +117,6 @@ export function Table() {
                 onChange={(e) => setInitialDate(e.target.value)}
                 className={S.inputDate}
               />
-
               <input
                 type="date"
                 name="finalDate"
@@ -115,7 +130,7 @@ export function Table() {
               <Form className={S.search}>
                 <Form.Control
                   type="search"
-                  placeholder="Pesquisar"
+                  placeholder="Pesquisar Paciente ou Profissional"
                   className="me-2"
                   aria-label="Search"
                   style={{
@@ -123,6 +138,8 @@ export function Table() {
                     boxShadow: "none",
                     border: "1px solid #cdcdcd",
                   }}
+                  value={searchTerm} // Atualiza o valor do input
+                  onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o estado com o valor do input
                 />
                 <button>
                   <BiSearch className={S.iconSearch} />

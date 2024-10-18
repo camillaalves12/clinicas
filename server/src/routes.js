@@ -134,7 +134,7 @@ router
 
 router
   .route("/consultForPeriod/:id")
-  .get(AuthMiddleware, ConsultController.findConsultForPeriod);
+  .post(AuthMiddleware, ConsultController.findConsultForPeriod);
 
 router
   .route("/consultsForPatient/:pacienteId")
