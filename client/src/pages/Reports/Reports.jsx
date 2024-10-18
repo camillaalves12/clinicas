@@ -11,13 +11,12 @@ import Modal from "react-bootstrap/Modal";
 
 export function Reports(props) {
   const [nameOrCPF, setNameOrCPF] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [searchRoute, setSearchRoute] = useState("");
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
+  const [showResults, setShowResults] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(); // Estado para o mês
 
-  // Função para normalizar strings
   const normalizeString = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
@@ -26,13 +25,11 @@ export function Reports(props) {
     event.preventDefault();
   
     try {
-      // Limpar resultados de pesquisa anteriores
       setPatients([]);
       setShowResults(false);
   
       let response;
   
-      // Normalizar a entrada do usuário
       const normalizedSearchTerm = normalizeString(nameOrCPF);
   
       switch (searchRoute) {
@@ -50,33 +47,28 @@ export function Reports(props) {
   
         default:
           console.log("Rota de pesquisa inválida");
-          return; // Se nenhuma rota válida foi selecionada, não faz nada
+          return;
       }
   
-      console.log("Resposta da API:", response);
-  
-      // Verifique se os dados da resposta contêm a estrutura esperada
       if (response.data) {
         if (searchRoute === "clinic" && response.data.id) {
-          // Caso a rota seja de clínica, como os dados são um objeto, verificamos se contém o id da clínica
-          setPatients([response.data]); // Envolvemos a resposta em um array
-          setShowResults(true); // Exibir resultados se houver dados
+          setPatients([response.data]);
+          setShowResults(true);
         } else if (searchRoute === "professional" && response.data.length > 0) {
-          // Para profissionais, verificamos se o array contém elementos
           setPatients(response.data);
-          setShowResults(true); // Exibir resultados se houver dados
+          setShowResults(true);
         } else {
-          setModalShow(true); // Exibir modal de erro se não houver dados
+          setModalShow(true);
         }
       } else {
-        setModalShow(true); // Exibir modal de erro se a resposta for vazia
+        setModalShow(true);
       }
     } catch (error) {
       console.error("Erro ao buscar pacientes ou clínicas:", error);
-      setModalShow(true); // Exibir modal de erro em caso de exceção
+      setModalShow(true);
     }
   };
-  
+
   const handleCloseModal = () => {
     setModalShow(false);
   };
@@ -87,6 +79,7 @@ export function Reports(props) {
       <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
           <h2 style={{ marginBottom: "1.5rem" }}>Relatório</h2>
+
           <Form.Group className="mb-3" id="searchRoute">
             <Form.Label>Buscar por:</Form.Label>
             <Form.Select
@@ -105,22 +98,52 @@ export function Reports(props) {
           </Form.Group>
 
           {searchRoute === "clinic" || searchRoute === "professional" ? (
-            <Form.Group className="mb-3" id="inputNameCPF">
-              <Form.Label>
-                {searchRoute === "clinic" ? "Nome da Clínica:" : "Nome do Profissional:"}
-              </Form.Label>
-              <Form.Control
-                required
-                type="text"
-                style={{
-                  outline: "none",
-                  boxShadow: "none",
-                  border: "1px solid #cdcdcd",
-                }}
-                value={nameOrCPF}
-                onChange={(e) => setNameOrCPF(e.target.value)}
-              />
-            </Form.Group>
+            <>
+              <Form.Group className="mb-3" id="inputNameCPF">
+                <Form.Label>
+                  {searchRoute === "clinic" ? "Nome da Clínica:" : "Nome do Profissional:"}
+                </Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  style={{
+                    outline: "none",
+                    boxShadow: "none",
+                    border: "1px solid #cdcdcd",
+                  }}
+                  value={nameOrCPF}
+                  onChange={(e) => setNameOrCPF(e.target.value)}
+                />
+              </Form.Group>
+
+              {/* Input para selecionar o mês */}
+              <Form.Group className="mb-3" id="selectMonth">
+                <Form.Label>Selecione o mês:</Form.Label>
+                <Form.Select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  style={{
+                    outline: "none",
+                    boxShadow: "none",
+                    border: "1px solid #cdcdcd",
+                  }}
+                >
+                  <option value="">Selecione uma opção</option>
+                  <option value="01">Janeiro</option>
+                  <option value="02">Fevereiro</option>
+                  <option value="03">Março</option>
+                  <option value="04">Abril</option>
+                  <option value="05">Maio</option>
+                  <option value="06">Junho</option>
+                  <option value="07">Julho</option>
+                  <option value="08">Agosto</option>
+                  <option value="09">Setembro</option>
+                  <option value="10">Outubro</option>
+                  <option value="11">Novembro</option>
+                  <option value="12">Dezembro</option>
+                </Form.Select>
+              </Form.Group>
+            </>
           ) : null}
 
           <div className={S.btnSearch}>
@@ -143,7 +166,8 @@ export function Reports(props) {
             <ResultFound 
               dados={patients} 
               showFullDetails={false} 
-              type={searchRoute} // Passe se é clínica ou profissional
+              type={searchRoute} 
+              selectedMonth={selectedMonth} // Passa o mês selecionado para o componente ResultFound
             />
           ) : (
             <p>Nenhum dado disponível.</p>
@@ -157,7 +181,6 @@ export function Reports(props) {
         show={modalShow}
         onHide={handleCloseModal}
       />
-
     </>
   );
 }
