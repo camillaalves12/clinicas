@@ -1,12 +1,11 @@
-/* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
-import { BiInfoCircle } from "react-icons/bi"; // Importar o ícone se necessário
+import { BiInfoCircle } from "react-icons/bi"; 
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import S from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import generatePDF from "../../pages/GeneratePDF/GeneratePDF";
 
-export function ResultFound({ dados, showFullDetails = true, type }) {
+export function ResultFound({ dados, showFullDetails = true, type, selectedMonth }) {
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
@@ -53,7 +52,7 @@ export function ResultFound({ dados, showFullDetails = true, type }) {
                   <td>
                     <HiOutlineDocumentReport
                       className={S.iconInfo}
-                      onClick={() => generatePDF(item.id, false)} // Para profissional, o segundo parâmetro é false
+                      onClick={() => generatePDF(item.id, false, selectedMonth)} 
                       style={{ cursor: "pointer", color: "blue" }}
                     />
                   </td>
@@ -63,10 +62,7 @@ export function ResultFound({ dados, showFullDetails = true, type }) {
                   <td>
                     <HiOutlineDocumentReport
                       className={S.iconInfo}
-                      onClick={() => {
-                        console.log("Gerando PDF para o ID:", item.id);
-                        generatePDF(item.id, true); // Para clínica, o segundo parâmetro é true
-                      }}
+                      onClick={() => generatePDF(item.id, true, selectedMonth)}
                       style={{ cursor: "pointer", color: "blue" }}
                     />
                   </td>
@@ -78,7 +74,7 @@ export function ResultFound({ dados, showFullDetails = true, type }) {
       </table>
     );
   };
-  
+
   return (
     <div className={S.container}>
       <div className={S.divTable}>
@@ -92,7 +88,6 @@ export function ResultFound({ dados, showFullDetails = true, type }) {
   );
 }
 
-
 ResultFound.propTypes = {
   dados: PropTypes.arrayOf(
     PropTypes.shape({
@@ -104,5 +99,6 @@ ResultFound.propTypes = {
     })
   ).isRequired,
   showFullDetails: PropTypes.bool,
-  type: PropTypes.oneOf(["professional", "clinic"]).isRequired, // Adiciona o tipo (clinic ou professional)
+  type: PropTypes.oneOf(["professional", "clinic"]).isRequired,
+  selectedMonth: PropTypes.string.isRequired,  // Adicionando o mês como prop
 };
