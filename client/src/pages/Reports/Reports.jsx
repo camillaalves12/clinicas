@@ -23,33 +23,33 @@ export function Reports(props) {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-  
+
     try {
       setPatients([]);
       setShowResults(false);
-  
+
       let response;
-  
+
       const normalizedSearchTerm = normalizeString(nameOrCPF);
-  
+
       switch (searchRoute) {
         case "professional":
           response = await api.post("/professionalForName", {
             nome: normalizedSearchTerm,
           });
           break;
-  
+
         case "clinic":
           response = await api.post("/clinicForName", {
             nome: normalizedSearchTerm,
           });
           break;
-  
+
         default:
           console.log("Rota de pesquisa inválida");
           return;
       }
-  
+
       if (response.data) {
         if (searchRoute === "clinic" && response.data.id) {
           setPatients([response.data]);
@@ -101,7 +101,9 @@ export function Reports(props) {
             <>
               <Form.Group className="mb-3" id="inputNameCPF">
                 <Form.Label>
-                  {searchRoute === "clinic" ? "Nome da Clínica:" : "Nome do Profissional:"}
+                  {searchRoute === "clinic"
+                    ? "Nome da Clínica:"
+                    : "Nome do Profissional:"}
                 </Form.Label>
                 <Form.Control
                   required
@@ -116,7 +118,6 @@ export function Reports(props) {
                 />
               </Form.Group>
 
-              {/* Input para selecionar o mês */}
               <Form.Group className="mb-3" id="selectMonth">
                 <Form.Label>Selecione o mês:</Form.Label>
                 <Form.Select
@@ -157,17 +158,17 @@ export function Reports(props) {
         </div>
       </Form>
 
-      <Modal show={showResults} onHide={() => setShowResults(false)} size='lg'>
+      <Modal show={showResults} onHide={() => setShowResults(false)} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Resultados da Busca</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {patients.length > 0 ? (
-            <ResultFound 
-              dados={patients} 
-              showFullDetails={false} 
-              type={searchRoute} 
-              selectedMonth={selectedMonth} // Passa o mês selecionado para o componente ResultFound
+            <ResultFound
+              dados={patients}
+              showFullDetails={false}
+              type={searchRoute}
+              selectedMonth={selectedMonth}
             />
           ) : (
             <p>Nenhum dado disponível.</p>
@@ -176,8 +177,16 @@ export function Reports(props) {
       </Modal>
 
       <Negative
-        title={searchRoute === "clinic" ? "Clínica não encontrada!" : "Profissional não encontrado!"}
-        description={searchRoute === "clinic" ? "Cadastre a clínica e tente novamente." : "Cadastre o profissional e tente novamente."}
+        title={
+          searchRoute === "clinic"
+            ? "Clínica não encontrada!"
+            : "Profissional não encontrado!"
+        }
+        description={
+          searchRoute === "clinic"
+            ? "Cadastre a clínica e tente novamente."
+            : "Cadastre o profissional e tente novamente."
+        }
         show={modalShow}
         onHide={handleCloseModal}
       />

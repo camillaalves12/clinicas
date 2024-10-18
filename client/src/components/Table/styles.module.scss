@@ -5,42 +5,41 @@
   width: 180vh;
 }
 
-  .container_search_and_create {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-  }
+.container_search_and_create {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
 
-      .search {
-        display: flex;
-        width: 280px;
-        align-items: center;
-        gap: 0.5rem;
-        align-content: center;
-        cursor: pointer;
-        
-      }
-        .iconSearch {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
+.search {
+  display: flex;
+  width: 280px;
+  align-items: center;
+  gap: 0.5rem;
+  align-content: center;
+  cursor: pointer;
+}
+.iconSearch {
+  width: 1.5rem;
+  height: 1.5rem;
+}
 
-        .searchDate {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-       }
-       
-       .inputDate {
-          padding: 0.4rem;
-          border-radius: 6px;
-          border: 1px solid #cdcdcd;
-       }
+.searchDate {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
-       .divCreates {
-        display: flex;
-        gap: 1rem;
-       }
+.inputDate {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #cdcdcd;
+}
+
+.divCreates {
+  display: flex;
+  gap: 1rem;
+}
 
 .divTable {
   overflow: auto;
@@ -52,14 +51,14 @@
     width: 180vh;
     border-spacing: 0 8px;
     text-align: center;
-    
+
     thead {
       background-color: #cdcdcd;
       font-size: 18px;
       position: sticky; /* Adicione posição sticky ao cabeçalho */
       top: -1px; /* Defina o deslocamento negativo para ficar imediatamente acima da div.container */
       z-index: 1; /* Ajuste o valor de z-index para garantir que o cabeçalho fique acima do conteúdo */
-      :hover{
+      :hover {
         background-color: #cdcdcd !important;
       }
     }
@@ -69,7 +68,8 @@
       text-align: center;
     }
 
-    td, th {
+    td,
+    th {
       text-align: center;
       padding: 8px;
     }
@@ -88,4 +88,3 @@
     }
   }
 }
-

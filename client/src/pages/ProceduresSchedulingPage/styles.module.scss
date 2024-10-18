@@ -3,32 +3,27 @@
   flex-direction: column;
   margin: 0 auto;
   width: 180vh;
-  margin-top: 1.5rem ;
+  margin-top: 1.5rem;
   height: 75vh;
-
   h2 {
     align-self: center;
     margin-bottom: 1rem;
   }
-  
   .iconSearch {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
- }
-
+  }
   .container_search_and_create {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
-
     .search {
       display: flex;
       width: 300px;
       align-items: center;
       cursor: pointer;
     }
-
     .searchDate {
       display: flex;
       align-items: center;
@@ -43,19 +38,18 @@
           cursor: pointer;
           background: #b8b8b8;
         }
-
       }
-  
+
       .inputDate {
-         padding: 0.4rem;
-         border-radius: 6px;
-         border: 1px solid #cdcdcd;
+        padding: 0.4rem;
+        border-radius: 6px;
+        border: 1px solid #cdcdcd;
       }
     }
-    
+
     .divCreates {
-     display: flex;
-     gap: 1rem;
+      display: flex;
+      gap: 1rem;
     }
   }
 
@@ -65,34 +59,32 @@
     min-height: 25vh;
     height: 70vh;
 
-  .iconCheck {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3rem;
-    color: #0d6efd;
+    .iconCheck {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      color: #0d6efd;
 
-    .iconCheckX {
-      color: #fd0d0d;
-      width: 3rem;
+      .iconCheckX {
+        color: #fd0d0d;
+        width: 3rem;
+      }
     }
-
-    }
-
 
     .table {
       width: 170vh;
       border-spacing: 0 8px;
       text-align: center;
-      
+
       thead {
         background-color: #cdcdcd;
         font-size: 18px;
         position: sticky;
         top: -1px;
         z-index: 1;
-        
-        :hover{
+
+        :hover {
           background-color: #cdcdcd !important;
         }
       }
@@ -102,7 +94,8 @@
         text-align: center;
       }
 
-      td, th {
+      td,
+      th {
         text-align: center;
         padding: 8px;
       }
@@ -121,5 +114,4 @@
       }
     }
   }
-
 }

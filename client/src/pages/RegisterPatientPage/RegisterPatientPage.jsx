@@ -19,7 +19,6 @@ export function RegisterPatientPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Verifica se o campo é o CPF e formata o valor com pontos e traço
     if (name === "cpf") {
       const formattedCPF = formatCPF(value);
       setFormData({ ...formData, [name]: formattedCPF });
@@ -29,10 +28,8 @@ export function RegisterPatientPage() {
   };
 
   const formatCPF = (value) => {
-    // Remove qualquer caractere não numérico do valor do CPF
     const numericCPF = value.replace(/\D/g, "");
 
-    // Aplica a formatação: XXX.XXX.XXX-XX
     const formattedCPF = numericCPF.replace(
       /(\d{3})(\d{3})(\d{3})(\d{2})/,
       "$1.$2.$3-$4"
@@ -59,10 +56,8 @@ export function RegisterPatientPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cria uma cópia do formData para evitar alterações diretas no estado
     const dataToSend = { ...formData };
 
-    // Converte a data para o formato esperado pela API antes de enviar
     dataToSend.data_de_nascimento = formatDateToApiFormat(
       formData.data_de_nascimento
     );
@@ -74,9 +69,8 @@ export function RegisterPatientPage() {
       .post(`/patient/${clinicId}`, dataToSend)
       .then((response) => {
         console.log(response);
-        setModalShow(true); // Exibe o modal após o sucesso
+        setModalShow(true);
 
-        // Limpa os campos do formulário
         setFormData({
           nome: "",
           cpf: "",
@@ -145,8 +139,8 @@ export function RegisterPatientPage() {
                 onChange={handleInputChange}
                 value={formData.cpf}
                 required
-                maxLength="14" // Limita o campo a 14 caracteres (XXX.XXX.XXX-XX)
-                pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" // Valida o padrão do CPF
+                maxLength="14"
+                pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
                 title="Digite um CPF válido"
               />
             </div>

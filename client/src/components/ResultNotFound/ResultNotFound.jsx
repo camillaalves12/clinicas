@@ -3,16 +3,6 @@ import { BiInfoCircle } from "react-icons/bi";
 import S from "./styles.module.scss";
 
 export function ResultNotFound() {
-  // const dados = [
-  //   {
-  //     index: 1,
-  //     nome: "João Lucas",
-  //     cpf: "123.456.789-11",
-  //     data_de_nasc: "23/02/2023",
-  //     telefone: 998184376,
-  //   },
-  // ];
-
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>

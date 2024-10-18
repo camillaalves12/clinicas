@@ -1,18 +1,18 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import { LoginPage } from '../pages/LoginPage/LoginPage'
-import { InitialPage } from '../pages/InitialPage/InitialPage'
-import {ProceduresSchedulingPage} from '../pages/ProceduresSchedulingPage/ProceduresSchedulingPage'
-import {Reports} from '../pages/Reports/Reports'
-import { CreateConsultPage } from '../pages/CreateConsultPage/CreateConsultPage'
-import { CreateExamPage } from '../pages/CreateExamPage/CreateExamPage'
-import { ProceduresPage } from '../pages/ProceduresPage/ProceduresPage'
-import { RegisterPatientPage } from '../pages/RegisterPatientPage/RegisterPatientPage'
-import { RegisterDoctorPage } from '../pages/RegisterDoctorPage/RegisterDoctorPage'
-import { SearchPatientPage } from '../pages/SearchPatientPage/SearchPatientPage'
-import { SchedulingConsultPage } from '../pages/SchedulingConsultPage/SchedulingConsultPage'
-import { DetailsPage } from '../pages/DetailsPage/DetailsPage'
-import { PrivateRoute } from './privateRoutes'
+import { LoginPage } from "../pages/LoginPage/LoginPage";
+import { InitialPage } from "../pages/InitialPage/InitialPage";
+import { ProceduresSchedulingPage } from "../pages/ProceduresSchedulingPage/ProceduresSchedulingPage";
+import { Reports } from "../pages/Reports/Reports";
+import { CreateConsultPage } from "../pages/CreateConsultPage/CreateConsultPage";
+import { CreateExamPage } from "../pages/CreateExamPage/CreateExamPage";
+import { ProceduresPage } from "../pages/ProceduresPage/ProceduresPage";
+import { RegisterPatientPage } from "../pages/RegisterPatientPage/RegisterPatientPage";
+import { RegisterDoctorPage } from "../pages/RegisterDoctorPage/RegisterDoctorPage";
+import { SearchPatientPage } from "../pages/SearchPatientPage/SearchPatientPage";
+import { SchedulingConsultPage } from "../pages/SchedulingConsultPage/SchedulingConsultPage";
+import { DetailsPage } from "../pages/DetailsPage/DetailsPage";
+import { PrivateRoute } from "./privateRoutes";
 
 export const AppRouter = () => {
   return (
@@ -25,7 +25,11 @@ export const AppRouter = () => {
         </Route>
 
         <Route exact path="/procedures_scheduling" element={<PrivateRoute />}>
-          <Route exact path="/procedures_scheduling" element={<ProceduresSchedulingPage />} />
+          <Route
+            exact
+            path="/procedures_scheduling"
+            element={<ProceduresSchedulingPage />}
+          />
         </Route>
 
         <Route exact path="/create_consult" element={<PrivateRoute />}>
@@ -72,7 +76,11 @@ export const AppRouter = () => {
           />
         </Route>
 
-        <Route exact path="/search_patient/details/:id" element={<PrivateRoute />}>
+        <Route
+          exact
+          path="/search_patient/details/:id"
+          element={<PrivateRoute />}
+        >
           <Route
             exact
             path="/search_patient/details/:id"
@@ -81,5 +89,5 @@ export const AppRouter = () => {
         </Route>
       </Routes>
     </Router>
-  )
-}
+  );
+};

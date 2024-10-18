@@ -74,8 +74,6 @@ export function CreateExamPage() {
   };
 
   const fetchProcedimentsType = async () => {
-    // const consultProcediment = 1
-
     try {
       const response = await api.get(`/procedimentTypes`);
 
@@ -83,7 +81,6 @@ export function CreateExamPage() {
         alert("Não existem procedimentos de consulta cadastrados!");
       } else {
         console.log(response.data);
-        // Filtrar o array para remover o elemento com o ID 6
         const filteredProcedimentsType = response.data.filter(
           (item) => item.id !== 6
         );

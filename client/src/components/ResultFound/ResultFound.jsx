@@ -1,11 +1,16 @@
 import PropTypes from "prop-types";
-import { BiInfoCircle } from "react-icons/bi"; 
+import { BiInfoCircle } from "react-icons/bi";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import S from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import generatePDF from "../../pages/GeneratePDF/GeneratePDF";
 
-export function ResultFound({ dados, showFullDetails = true, type, selectedMonth }) {
+export function ResultFound({
+  dados,
+  showFullDetails = true,
+  type,
+  selectedMonth,
+}) {
   const Tabela = ({ dados }) => {
     return (
       <table className={S.table}>
@@ -52,7 +57,7 @@ export function ResultFound({ dados, showFullDetails = true, type, selectedMonth
                   <td>
                     <HiOutlineDocumentReport
                       className={S.iconInfo}
-                      onClick={() => generatePDF(item.id, false, selectedMonth)} 
+                      onClick={() => generatePDF(item.id, false, selectedMonth)}
                       style={{ cursor: "pointer", color: "blue" }}
                     />
                   </td>
@@ -100,5 +105,5 @@ ResultFound.propTypes = {
   ).isRequired,
   showFullDetails: PropTypes.bool,
   type: PropTypes.oneOf(["professional", "clinic"]).isRequired,
-  selectedMonth: PropTypes.string.isRequired,  // Adicionando o mês como prop
+  selectedMonth: PropTypes.string.isRequired, // Adicionando o mês como prop
 };

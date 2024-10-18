@@ -1,15 +1,12 @@
 /* eslint-disable no-unused-vars */
 import S from "./styles.module.scss";
-import PropTypes from "prop-types";
 import { BiSearch } from "react-icons/bi";
-import { Form, Button } from "react-bootstrap";
 import { Header } from "../../components/Header/Header";
 import { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { HiCheck } from "react-icons/hi";
 import { HiOutlineX } from "react-icons/hi";
 import Refresh from "../../components/Refresh/Refresh";
-import Spinner from "react-bootstrap/Spinner";
 
 export function ProceduresSchedulingPage() {
   const [schedulings, setSchedulings] = useState([]);

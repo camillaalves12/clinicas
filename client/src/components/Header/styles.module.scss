@@ -1,18 +1,16 @@
 .navBarItens {
   display: flex;
-  
+
   .logout {
-     display: flex;
-     justify-content: space-evenly;
-     gap: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
 
-     .iconLogout {
-       width: 1.2rem;
-       height: 1.2rem;
-       display: flex;
-       align-items: center;
-     }
-   }
-   
+    .iconLogout {
+      width: 1.2rem;
+      height: 1.2rem;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
-

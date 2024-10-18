@@ -1,7 +1,5 @@
 import S from "./styles.module.scss";
 import { useParams } from "react-router-dom";
-// import { BiSearch } from "react-icons/bi";
-// import { Form, Button } from "react-bootstrap";
 import { Header } from "../Header/Header";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";

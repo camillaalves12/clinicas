@@ -3,13 +3,13 @@
   flex-direction: column;
   margin: 0 auto;
   width: 172vh;
-  margin-top: 1.5rem ;
-  
+  margin-top: 1.5rem;
+
   .iconSearch {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
- }
+  }
 
   .container_search_and_create {
     display: flex;
@@ -37,45 +37,40 @@
           cursor: pointer;
           background: #b8b8b8;
         }
-
       }
-  
+
       .inputDate {
-         padding: 0.4rem;
-         border-radius: 6px;
-         border: 1px solid #cdcdcd;
+        padding: 0.4rem;
+        border-radius: 6px;
+        border: 1px solid #cdcdcd;
       }
     }
-    
+
     .divCreates {
-     display: flex;
-     gap: 1rem;
+      display: flex;
+      gap: 1rem;
     }
   }
-
-
-
-
 
   .divTable {
     overflow: auto;
     overflow-x: hidden;
     min-height: 25vh;
     height: 70vh;
-    
+
     .table {
       width: 170vh;
       border-spacing: 0 8px;
       text-align: center;
-      
+
       thead {
         background-color: #cdcdcd;
         font-size: 18px;
         position: sticky; /* Adicione posição sticky ao cabeçalho */
         top: -1px; /* Defina o deslocamento negativo para ficar imediatamente acima da div.container */
         z-index: 1; /* Ajuste o valor de z-index para garantir que o cabeçalho fique acima do conteúdo */
-        
-        :hover{
+
+        :hover {
           background-color: #cdcdcd !important;
         }
       }
@@ -85,7 +80,8 @@
         text-align: center;
       }
 
-      td, th {
+      td,
+      th {
         text-align: center;
         padding: 8px;
       }
@@ -104,5 +100,4 @@
       }
     }
   }
-
 }

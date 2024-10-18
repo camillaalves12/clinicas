@@ -27,22 +27,28 @@ export function DashSpline() {
     };
 
     try {
-      const response = await api.put(`/monthlyData/${getClinicId()}`, dataToSend);
-      console.log("Dados recebidos:", response.data); // Verifique a resposta
+      const response = await api.put(
+        `/monthlyData/${getClinicId()}`,
+        dataToSend
+      );
+      console.log("Dados recebidos:", response.data);
 
-      // Verifica se os dados existem e inicializa as variáveis
       if (
         response.data.valor_por_profissional &&
         Array.isArray(response.data.valor_por_profissional) &&
         response.data.valor_por_profissional.length > 0
       ) {
-        const extractedDays = response.data.valor_por_profissional.map((item) => item.profissional);
+        const extractedDays = response.data.valor_por_profissional.map(
+          (item) => item.profissional
+        );
         setDaysOnly(extractedDays);
 
-        const updatedSeries = response.data.valor_por_profissional.map((professional) => ({
-          name: professional.profissional,
-          data: [professional.totalValue, professional.totalValue],
-        }));
+        const updatedSeries = response.data.valor_por_profissional.map(
+          (professional) => ({
+            name: professional.profissional,
+            data: [professional.totalValue, professional.totalValue],
+          })
+        );
 
         setSeries(updatedSeries);
       } else {
@@ -69,7 +75,7 @@ export function DashSpline() {
       curve: "smooth",
     },
     xaxis: {
-      categories: daysOnly, // Usando os profissionais como categorias
+      categories: daysOnly,
     },
     tooltip: {
       x: {

@@ -21,7 +21,6 @@ export function Table() {
       const response = await api.get("/consults");
 
       setConsults(response.data);
-
     } catch (error) {
       console.log("Erro ao tentar consultar as consultas:", error);
     }

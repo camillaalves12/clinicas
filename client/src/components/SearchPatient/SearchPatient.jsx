@@ -8,35 +8,34 @@ import { api } from "../../services/api";
 import { Negative } from "../Negative/Negative";
 import Modal from "react-bootstrap/Modal";
 
-export function SearchPatient({title}) {
+export function SearchPatient({ title }) {
   const [nameOrCPF, setNameOrCPF] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [searchRoute, setSearchRoute] = useState("");
   const [patients, setPatients] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [showResults, setShowResults] = useState(false); // Controla a exibição do modal de resultados
+  const [showResults, setShowResults] = useState(false);
 
-  // Função para normalizar strings
   const normalizeString = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
   const handleSearch = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     try {
-      // Limpar resultados de pesquisa anteriores
       setPatients([]);
       setShowResults(false);
 
       let response;
 
-      // Normalizar a entrada do usuário
       const normalizedSearchTerm = normalizeString(nameOrCPF);
 
       switch (searchRoute) {
         case "name":
-          response = await api.post("/patientForName", { nome: normalizedSearchTerm });
+          response = await api.post("/patientForName", {
+            nome: normalizedSearchTerm,
+          });
           break;
         case "dateOfBirth":
           response = await api.post("/patientForDateOfBirth", {
@@ -44,22 +43,23 @@ export function SearchPatient({title}) {
           });
           break;
         case "cpf":
-          response = await api.post("/patientForCPF", { cpf: normalizedSearchTerm });
+          response = await api.post("/patientForCPF", {
+            cpf: normalizedSearchTerm,
+          });
           break;
         default:
-          return; 
+          return;
       }
 
-      // Verificar se há resultados
       if (response.data && response.data.length > 0) {
         setPatients(response.data);
-        setShowResults(true); // Exibir resultados se houver dados
+        setShowResults(true);
       } else {
-        setModalShow(true); // Exibir modal de erro se não houver dados
+        setModalShow(true);
       }
     } catch (error) {
       console.error("Erro ao buscar pacientes:", error);
-      setModalShow(true); // Exibir modal de erro em caso de exceção
+      setModalShow(true);
     }
   };
 
@@ -138,8 +138,7 @@ export function SearchPatient({title}) {
         </div>
       </Form>
 
-      {/* Modal de Resultados */}
-      <Modal show={showResults} onHide={() => setShowResults(false)} size='lg'>
+      <Modal show={showResults} onHide={() => setShowResults(false)} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Resultados da Busca</Modal.Title>
         </Modal.Header>
@@ -152,7 +151,6 @@ export function SearchPatient({title}) {
         </Modal.Body>
       </Modal>
 
-      {/* Modal de Confirmação (Erro) */}
       <Negative
         title="Paciente não encontrado!"
         description="Cadastre o paciente e tente novamente."

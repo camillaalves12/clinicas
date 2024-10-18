@@ -34,7 +34,6 @@ export function DashPie() {
     try {
       const response = await api.put(`/dailyData/${getClinicId()}`, dataToSend);
       setDailyData(response.data);
-      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }

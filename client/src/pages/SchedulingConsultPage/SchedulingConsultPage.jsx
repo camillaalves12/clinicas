@@ -90,7 +90,7 @@ export function SchedulingConsultPage() {
           .post(`/scheduling/${clinicId}`, dataToSend)
           .then((response) => {
             alert("Agendamento criado com sucesso!");
-            fetchScheduledConsults(); // Atualizar a lista de agendamentos após adicionar um novo
+            fetchScheduledConsults();
             setFormData({
               paciente: "",
               profissional: "",
@@ -254,21 +254,6 @@ export function SchedulingConsultPage() {
           </div>
         </div>
       </form>
-      {/* Renderiza os agendamentos ordenados */}
-      <div className={S.containerScheduled}>
-        {/* <h3>Agendamentos Futuros</h3>
-        <ul>
-          {scheduledConsults.map((consult, index) => (
-            <li key={index}>
-              <p>Data: {consult.data_da_consulta}</p>
-              <p>Hora: {consult.hora_da_consulta}</p>
-              <p>Paciente: {consult.paciente.nome}</p>
-              <p>Profissional: {consult.profissional.nome}</p>
-              <p>Procedimento: {consult.procedimento.nome}</p>
-            </li>
-          ))}
-        </ul> */}
-      </div>
     </>
   );
 }

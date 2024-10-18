@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -6,11 +6,9 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
   }
-
   #root, body {
     font: 16px 'Roboto', sans-serif;
   }
-
   span {
     margin: 0;
     padding: 0;

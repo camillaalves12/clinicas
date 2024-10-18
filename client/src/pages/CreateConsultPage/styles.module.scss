@@ -3,17 +3,14 @@
   flex-direction: column;
   height: 90vh;
 }
-
 .container {
   display: flex;
-  //width: 1200px;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
   height: 90vh;
   flex-direction: column;
 }
-
 .containerForm {
   width: 620px;
   display: flex;
@@ -24,20 +21,17 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.3);
   gap: 0.5rem;
 }
-
 .divForms {
   display: flex;
   gap: 0.5rem;
   width: auto;
 }
-
 .inputForm {
   outline: none;
   border: 1px solid #cdcdcd;
   border-radius: 4px;
   height: 2rem;
 }
-
 .divBtn {
   display: flex;
   align-items: center;
