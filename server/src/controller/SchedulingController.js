@@ -164,57 +164,43 @@ export default {
       return res.json({ error });
     }
   },
-
+  
   async findSchedulingsForDate(req, res) {
     try {
       const { data } = req.body;
-
-      const transformDate = (date) => {
-        const transformedDate = `${date}T00:00:00.000Z`;
-        return transformedDate;
-      };
-
+  
+      // Criar a data sem fuso horário UTC
+      const startOfDay = new Date(data + 'T00:00:00'); // Não usar "Z", pois isso força UTC
+      const endOfDay = new Date(data + 'T23:59:59'); // Definir o final do dia local
+  
+      // Ajuste para comparar corretamente as datas no formato local
       const schedulings = await prisma.agendamento.findMany({
         where: {
           data_da_consulta: {
-            contains: data,
+            gte: startOfDay,
+            lte: endOfDay,
           },
         },
         select: {
           id: true,
           data_de_criacao: true,
-          paciente: {
-            select: {
-              nome: true,
-            },
-          },
-          procedimento: {
-            select: {
-              nome: true,
-            },
-          },
-          profissional: {
-            select: {
-              nome: true,
-            },
-          },
-          clinica: {
-            select: {
-              nome: true,
-            },
-          },
+          paciente: { select: { nome: true } },
+          procedimento: { select: { nome: true } },
+          profissional: { select: { nome: true } },
+          clinica: { select: { nome: true } },
           valor_da_consulta: true,
           tipo_de_pagamento: true,
           data_da_consulta: true,
           hora_da_consulta: true,
         },
       });
-
+  
       return res.json(schedulings);
     } catch (error) {
-      return res.json({ error });
+      console.error("Error fetching schedulings:", error);
+      return res.status(500).json({ error: error.message });
     }
-  },
+  } ,
 
   async findSchedulingsForPatient(req, res) {
     try {

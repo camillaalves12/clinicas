@@ -78,7 +78,7 @@ export function Reports(props) {
       <Header />
       <Form className={S.container} onSubmit={handleSearch}>
         <div className={S.containerForm}>
-          <h2 style={{ marginBottom: "1.5rem" }}>Relatório</h2>
+          <h2 style={{ marginBottom: "1.5rem" }}>Relatórios</h2>
 
           <Form.Group className="mb-3" id="searchRoute">
             <Form.Label>Buscar por:</Form.Label>

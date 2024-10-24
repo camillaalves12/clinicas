@@ -10,51 +10,13 @@ import Refresh from "../../components/Refresh/Refresh";
 
 export function ProceduresSchedulingPage() {
   const [schedulings, setSchedulings] = useState([]);
-  const [date, setDate] = useState("");
-  const [professional, setProfessional] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para o filtro de texto
 
   const getClinicId = () => {
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const clinicId = userData?.user?.clinicaId;
     return clinicId;
-  };
-
-  const handleDateSubmit = () => {
-    const dataToSend = {
-      data: date,
-    };
-
-    api
-      .put(`/schedulingsForDate`, dataToSend)
-      .then((response) => {
-        setSchedulings(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleDailySchedules = () => {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-
-    const dataToSend = {
-      data: formattedDate,
-    };
-
-    api
-      .put(`/schedulingsForDate`, dataToSend)
-      .then((response) => {
-        setSchedulings(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const fetchSchedulings = async () => {
@@ -70,14 +32,14 @@ export function ProceduresSchedulingPage() {
     fetchSchedulings();
   }, []);
 
-  const handleCreateConsult = (schedulings) => {
+  const handleCreateConsult = (scheduling) => {
     const dataToSend = {
-      pacienteId: schedulings.paciente.id,
-      profissionalId: schedulings.profissional.id,
-      procedimentoId: schedulings.procedimento.id,
-      valor_da_consulta: schedulings.valor_da_consulta,
-      tipo_de_pagamento: schedulings.tipo_de_pagamento,
-      clinicaId: schedulings.clinica.id,
+      pacienteId: scheduling.paciente.id,
+      profissionalId: scheduling.profissional.id,
+      procedimentoId: scheduling.procedimento.id,
+      valor_da_consulta: scheduling.valor_da_consulta,
+      tipo_de_pagamento: scheduling.tipo_de_pagamento,
+      clinicaId: scheduling.clinica.id,
     };
 
     api
@@ -91,7 +53,7 @@ export function ProceduresSchedulingPage() {
       });
 
     api
-      .put(`/confirmScheduling/${schedulings.id}`)
+      .put(`/confirmScheduling/${scheduling.id}`)
       .then((response) => {
         console.log(response);
         fetchSchedulings();
@@ -101,9 +63,9 @@ export function ProceduresSchedulingPage() {
       });
   };
 
-  const handleDeleteScheduling = (schedulings) => {
+  const handleDeleteScheduling = (scheduling) => {
     api
-      .delete(`/scheduling/${schedulings.id}`)
+      .delete(`/scheduling/${scheduling.id}`)
       .then((response) => {
         console.log(response);
         fetchSchedulings();
@@ -114,6 +76,16 @@ export function ProceduresSchedulingPage() {
   };
 
   const Tabela = () => {
+    // Filtra os agendamentos com base no termo de busca
+    const filteredSchedulings = schedulings.filter(scheduling => {
+      const pacienteNome = scheduling.paciente.nome.toLowerCase();
+      const profissionalNome = scheduling.profissional.nome.toLowerCase();
+      return (
+        pacienteNome.includes(searchTerm.toLowerCase()) || 
+        profissionalNome.includes(searchTerm.toLowerCase())
+      );
+    });
+
     return (
       <table className={S.table}>
         <thead>
@@ -128,30 +100,33 @@ export function ProceduresSchedulingPage() {
           </tr>
         </thead>
         <tbody>
-          {schedulings.map((schedulings) => (
-            <tr key={schedulings.id}>
-              <td>{schedulings.paciente.nome}</td>
-              <td>{schedulings.profissional.nome}</td>
-              <td>{schedulings.procedimento.nome}</td>
-              <td>{`R$ ${schedulings.valor_da_consulta}`}</td>
-              <td>{schedulings.hora_da_consulta}</td>
-              <td>
-                {new Date(schedulings.data_da_consulta).toLocaleDateString()}
-              </td>
-
-              <td className={S.iconCheck}>
-                <HiCheck
-                  style={{ width: "3rem" }}
-                  onClick={() => handleCreateConsult(schedulings)}
-                />
-                <div className={S.iconCheckX}>
-                  <HiOutlineX
-                    onClick={() => handleDeleteScheduling(schedulings)}
+          {filteredSchedulings.length > 0 ? (
+            filteredSchedulings.map((scheduling) => (
+              <tr key={scheduling.id}>
+                <td>{scheduling.paciente.nome}</td>
+                <td>{scheduling.profissional.nome}</td>
+                <td>{scheduling.procedimento.nome}</td>
+                <td>{`R$ ${scheduling.valor_da_consulta}`}</td>
+                <td>{scheduling.hora_da_consulta}</td>
+                <td>
+                  {new Date(scheduling.data_da_consulta).toLocaleDateString()}
+                </td>
+                <td className={S.iconCheck}>
+                  <HiCheck
+                    style={{ width: "3rem" }}
+                    onClick={() => handleCreateConsult(scheduling)}
                   />
-                </div>
-              </td>
-            </tr>
-          ))}
+                  <div className={S.iconCheckX}>
+                    <HiOutlineX
+                      onClick={() => handleDeleteScheduling(scheduling)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <td colSpan="6"><Refresh title="Nenhum agendamento cadastrado" /></td>
+          )}
         </tbody>
       </table>
     );
@@ -165,20 +140,14 @@ export function ProceduresSchedulingPage() {
         <div className={S.container_search_and_create}>
           <div className={S.search_and__date}>
             <form className={S.searchDate}>
-              <button
-                className={S.btnHoje}
-                type="button"
-                onClick={() => handleDailySchedules()}
-              >
-                Hoje
-              </button>
               <input
-                type="date"
-                name="date"
-                className={S.inputDate}
-                onChange={(e) => setDate(e.target.value)}
+                type="text"
+                placeholder="Pesquisar Paciente ou Profissional"
+                className={S.inputSearch}
+                value={searchTerm} // Atualiza o valor do input
+                onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o estado com o valor do input
               />
-              <button type="button" onClick={() => handleDateSubmit()}>
+              <button type="button">
                 <BiSearch className={S.iconSearch} />
               </button>
             </form>
